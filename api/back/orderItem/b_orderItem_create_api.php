@@ -1,0 +1,45 @@
+<?php
+
+
+    $data = file_get_contents("php://input", "r");
+    if($data !=""){
+        $mydata = array();
+        $mydata = json_decode($data, true);
+        if(isset($mydata["PoNo"]) && ($mydata["PoNo"]!="")){
+                $p_PoNo = $mydata["PoNo"];
+                $p_PNO = $mydata["PNO"];
+                $p_Price = $mydata["Price"];
+                $p_Num = $mydata["Num"];
+
+                //  /   根目錄
+                //  ./  目前所在目錄
+                //  ../ 跳到上一層              
+                require_once '../../conn.php';
+            
+                // 資料庫查詢
+               // $sql = "INSERT INTO age(Name) VALUES ('$p_Name')";
+
+               $sql = "INSERT INTO orderItem(PoNo, PNO, Price, Num) VALUES (?,?,?,?)";
+               $stmt = $conn->prepare($sql);
+               $stmt->bind_param("ssii", $p_PoNo, $p_PNO, $p_Price, $p_Num);
+               
+                
+                //if(mysqli_query($conn, $sql)){
+                if($stmt->execute()){
+                    echo '{"state":true, "message":"新增訂單項目成功"}';
+                }else{
+                    echo '{"state":false, "message":"新增訂單項目失敗"}';
+                }
+                $stmt->close();
+                mysqli_close($conn);
+            }else{
+                echo '{"state" : false, "message" : "傳遞參數格式錯誤!"}';
+            }
+    }else{
+        echo '{"state":false, "message":"未傳遞任何參數"}';
+    }
+
+   
+
+    
+?>
