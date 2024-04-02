@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>訂單管理</title>
+    <link rel="stylesheet" href="../../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../css/all.min.css">
+    <link rel="stylesheet" href="../../css/adminlte.min.css">
+    <link rel="stylesheet" href="../../css/jquery-ui_v1.13.2.css">
+    <style>
+      /* 移除分頁focus時的光暈 */
+      .pagination .page-item .page-link:focus {
+          border-color: none;
+          box-shadow: none;
+          outline: 0 none;
+      }
+
+        .table th, .table td {
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .orderState_P{
+            color: red;
+        }
+
+        .orderState_D{
+            color: blue;
+        }
+
+        .orderState_F{
+            color: green;
+        }
+
+        .orderState_C{
+            color: gray;
+        }
+  </style>
+</head>
+<body>
+      <!-- sidebar -->
+      <script src="../../js/addBackSidebar.js"></script>
+    
+      <!-- <div class="content-wrapper"> -->
+        <div class="container">
+          <div class="row d-flex justify-content-center mt-3 mx-3"> 
+            <div class="card">
+              <div class="card-header">
+                <!-- <button class="btn btn-primary" id="add_btn"  data-bs-toggle="modal" data-bs-target="#modal_add">新增</button> -->
+                <button class="btn btn-primary" id="add_btn">新增</button>
+              </div>
+            </div>
+              <table class="table table-bordered mb-3 text-center">
+                <thead>
+                  <tr>
+                    <th style="width: 10%;">項次</th>
+                    <th style="width: 20%;">訂單編號</th>
+                    <th style="width: 20%;">訂購日期</th>
+                    <th style="width: 10%;">帳號</th>
+                    <th style="width: 10%;">金額</th>
+                    <th style="width: 10%;">狀態</th>
+                    <th>功能</th>
+                  </tr>
+                </thead>
+                <tbody id="mybody">
+                </tbody>
+              </table>        
+          </div>
+          <div class="row mt-3" >
+            <nav aria-label="...">
+                <ul class="pagination justify-content-center" id="pm_pageList">                   
+                </ul>
+            </nav>   
+          </div> 
+        </div>
+        <!-- </div> -->
+
+        <!-- Modal: 新增 -->
+        <div class="modal fade" id="modal_add" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+              <div class="modal-header text-bg-success">
+              <h1 class="modal-title fs-5 fw-900" id="exampleModalLabel">新增訂單</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <div id="tabs_add">
+                  <ul>
+                      <li><a href="#tabs-1">訂單資料</a></li>
+                      <li><a href="#tabs-2">訂購項目</a></li>   
+                  </ul>
+                  <div id="tabs-1">
+                    <div class="row mb-3 input-group">
+                      <label for="modal_add_webName" class="col-2 input-group-text">帳號</label>
+                      <input type="text" class="col-3 form-control" id="modal_add_webName" name="modal_add_webName" placeholder="必須輸入">
+                      <!-- <div class="valid-feedback offset-2" id="modal_add_pno_msg_OK">帳號符合規則</div>              
+                      <div class="invalid-feedback offset-2" id="modal_add_pno_msg_NG">帳號不符合規則</div>  -->
+                    </div>
+                    <div class="row mb-3 input-group">
+                        <label for="modal_add_payOptions" class="col-2 input-group-text">付款方式</label> 
+                        <select class="col-3 form-select text-center" name="modal_add_payOptions" id="modal_add_payOptions">
+                            <option selected disabled>請選擇付款方式</option>
+                        </select>   
+                        <div class="valid-feedback">已選擇付款方式</div>              
+                        <div class="invalid-feedback">未選擇付款方式</div>        
+                    </div>
+                    <div class="row mb-3 input-group">
+                        <label for="modal_add_deliveryOptions" class="col-2 input-group-text">取件方式</label> 
+                        <select class="col-3 form-select text-center" name="modal_add_deliveryOptions" id="modal_add_deliveryOptions">
+                            <option selected disabled>請選擇取件方式</option>
+                        </select>   
+                        <div class="valid-feedback">已選擇取件方式</div>              
+                        <div class="invalid-feedback">未選擇取件方式</div>         
+                    </div>
+                    <div class="row flex-column mb-3" id="deliveryItem">
+                        <label for="" class="col-2 form-label">收件地址</label> 
+                        <div class="col-5 mb-2">
+                            <div class="input-group">
+                                <label for="modal_add_cityOptions" class="col-4 input-group-text ps-3">縣市</label> 
+                                <select class="form-select text-center" name="modal_add_cityOptions" id="modal_add_cityOptions">
+                                    <option selected disabled>請選擇縣市</option>
+                                </select>  
+                            </div>   
+                        </div>  
+                        <div class="col-5 mb-2">
+                            <div class="input-group">
+                                <label for="modal_add_townOptions" class="col-4 input-group-text ps-3">鄉鎮</label> 
+                                <select class="form-select text-center" name="modal_add_townOptions" id="modal_add_townOptions">
+                                    <option selected disabled>請選擇鄉鎮區</option>
+                                </select>  
+                            </div>   
+                        </div>  
+                        <div class="col-5 mb-2 d-none" id="deliveryHome">
+                            <div class="input-group">
+                                <label for="modal_add_roadOptions" class="col-4 input-group-text ps-3">道路</label> 
+                                <select class="form-select text-center" name="modal_add_roadOptions" id="modal_add_roadOptions">
+                                    <option selected disabled>請選擇道路名稱</option>
+                                </select>  
+                            </div>   
+                        </div>
+                        <div class="col-5 mb-2" id="delivery711">
+                            <div class="input-group">
+                                <label for="modal_add_storeOptions" class="col-4 input-group-text ps-3">門市</label> 
+                                <select class="form-select text-center" name="modal_add_storeOptions" id="modal_add_storeOptions">
+                                    <option selected disabled>請選擇門市</option>
+                                </select>  
+                            </div>   
+                        </div>
+                        <div class="col mb-2">
+                            <input type="text" class="form-control text-center" placeholder="地址" id="modal_add_addr" readonly>
+                        </div>
+                    </div>
+                    <div class="row mb-3 input-group">
+                        <label for="modal_add_fullName" class="col-2 input-group-text">收件人</label>
+                        <input type="text" class="col-3 form-control text-center" name="modal_add_fullName" id="modal_add_fullName" placeholder="姓名" maxlength="15">
+                        <div class="valid-feedback offset-2">姓名符合規則</div>              
+                        <div class="invalid-feedback offset-2">姓名不符合規則</div>                          
+                    </div>
+                    <div class="row mb-3 input-group">
+                        <label for="modal_add_mobile" class="col-2 input-group-text">手機</label>
+                        <input type="text" class="col-3 form-control text-center" name="modal_add_mobile" id="modal_add_mobile" placeholder="手機號碼字數10碼" maxlength="10">
+                        <div class="valid-feedback offset-2">手機號碼符合規則</div>              
+                        <div class="invalid-feedback offset-2">手機號碼不符合規則</div>                            
+                    </div>             
+                  </div>
+                  <div id="tabs-2">
+                    <div class="card">
+                      <div class="card-header">
+                        <div class="row">
+                          <div class="col-6 text-center">
+                            <div class="input-group">
+                              <label for="modal_add_prodcutOptions" class="col-4 input-group-text ps-3">商品</label> 
+                              <select class="form-select text-center" name="modal_add_prodcutOptions" id="modal_add_prodcutOptions">
+                                  <option selected disabled>請選擇商品</option>
+                              </select>  
+                            </div> 
+                          </div>
+                          <div class="col-3">
+                            <button class="btn btn-success" id="">加入</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <table class="table">
+                      <thead class="text-center">
+                          <tr>
+                              <th>項次</th>
+                              <th>品名</th>
+                              <th>單價</th>
+                              <th>數量</th>
+                              <th>金額</th>
+                              <th>功能</th>
+                          </tr>
+                      </thead>
+                      <tbody class="text-center" id="order_item_list">
+                          <tr>
+                              <td>1</td>
+                              <td>原味</td>
+                              <td>45</td>
+                              <td class="text-center">
+                                <input type="number" class="col-6" value="1" min="1" max="100">
+                              </td>
+                              <td>45</td>
+                              <td><button class="btn btn-danger">刪除</button></td>
+                          </tr>
+                      </tbody>
+                    </table>  
+                  </div>
+                </div> 
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-primary" id="modal_add_ok">新增</button>
+                  <button type="button" class="btn btn-secondary" id="modal_add_cancel" data-bs-dismiss="modal">取消</button>
+              </div>
+          </div>
+          </div>
+      </div>
+
+        <!-- Modal: 修改 -->
+        <div class="modal fade" id="modal_update" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+              <div class="modal-header text-bg-success">
+              <h1 class="modal-title fs-5 fw-900" id="exampleModalLabel">修改訂單</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <div id="tabs_update">
+                  <ul>
+                      <li><a href="#tabs-1">訂單資料</a></li>
+                      <li><a href="#tabs-2">訂購項目</a></li>   
+                  </ul>
+                  <div id="tabs-1">
+                    <div class="row mb-3 input-group">
+                      <label for="modal_update_pono" class="col-2 input-group-text">訂單編號</label>
+                      <input type="text" class="col-5 form-control" id="modal_update_pono" name="modal_update_pono" placeholder="" readonly>
+                    </div>
+                    <div class="row mb-3 input-group">
+                      <label for="modal_update_money" class="col-2 input-group-text">金額</label> 
+                      <input type="text" class="col-3 form-control" id="modal_update_money" name="modal_update_money" placeholder="">   
+                    </div>
+                    <div class="row mb-3 input-group">
+                      <label for="modal_update_stateOptions" class="col-2 input-group-text">狀態</label> 
+                      <select class="col-3 form-select" id="modal_update_stateOptions">
+                      </select>               
+                    </div>  
+                    <div class="row mb-3 input-group">
+                      <label for="modal_update_webName" class="col-2 input-group-text">帳號</label>
+                      <input type="text" class="col-3 form-control" id="modal_update_webName" name="modal_update_webName" placeholder="" readonly>
+                    </div>
+                    <div class="row mb-3 input-group">
+                        <label for="modal_update_pay" class="col-2 input-group-text">付款方式</label> 
+                        <input type="text" class="col-3 form-control" id="modal_update_pay" name="modal_update_pay" placeholder="" readonly>   
+                    </div>
+                    <div class="row mb-3 input-group">
+                        <label for="modal_update_delivery" class="col-2 input-group-text">取件方式</label> 
+                        <input type="text" class="col-3 form-control" id="modal_update_delivery" name="modal_update_delivery" placeholder="" readonly>   
+                    </div>
+                    <div class="row mb-3 input-group">
+                      <label for="modal_update_addr" class="col-2 input-group-text">地址</label> 
+                      <input type="text" class="col form-control" id="modal_update_addr" name="modal_update_addr" placeholder="" readonly>   
+                    </div>
+                    <div class="row mb-3 input-group">
+                        <label for="modal_update_fullName" class="col-2 input-group-text">收件人</label>
+                        <input type="text" class="col-3 form-control" name="modal_update_fullName" id="modal_update_fullName" placeholder="姓名" maxlength="15" readonly>                          
+                    </div>
+                    <div class="row mb-3 input-group">
+                        <label for="modal_update_mobile" class="col-2 input-group-text">手機</label>
+                        <input type="text" class="col-3 form-control" name="modal_update_mobile" id="modal_update_mobile" placeholder="手機號碼字數10碼" maxlength="10" readonly>                        
+                    </div>             
+                  </div>
+                  <div id="tabs-2">
+                    <div class="card">
+                      <div class="card-header">
+                        <div class="row">
+                          <div class="col-6 text-center">
+                            <div class="input-group">
+                              <label for="modal_update_prodcutOptions" class="col-4 input-group-text ps-3">商品</label> 
+                              <select class="form-select text-center" name="modal_update_prodcutOptions" id="modal_update_prodcutOptions">
+                                  <option selected disabled>請選擇商品</option>
+                              </select>  
+                            </div> 
+                          </div>
+                          <div class="col-3">
+                            <button class="btn btn-success" id="">加入</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <table class="table">
+                      <thead class="text-center">
+                          <tr>
+                              <th>項次</th>
+                              <th>品名</th>
+                              <th>單價</th>
+                              <th>數量</th>
+                              <th>金額</th>
+                              <th>功能</th>
+                          </tr>
+                      </thead>
+                      <tbody class="text-center" id="modal_update_order_item_list">
+                      </tbody>
+                      <tbody>
+                          <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>總金額</td>
+                            <td id="modal_update_totalMoney"></td>
+                            <td></td>
+                          </tr>
+                      </tbody>
+                    </table>  
+                  </div>
+                </div> 
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-primary" id="modal_update_ok">修改</button>
+                  <button type="button" class="btn btn-secondary" id="modal_update_cancel" data-bs-dismiss="modal">取消</button>
+              </div>
+          </div>
+          </div>
+      </div>
+
+      
+      <!-- footer -->
+      <script src="../../js/addBackFooter.js"></script>   
+      <script src="../../js/bootstrap.bundle.min.js"></script>
+      <script src="../../js/jquery-3.7.1.min.js"></script>
+      <script src="../../js/adminlte.min.js"></script>    
+      <script src="../../js/paginationManagerSingle.js"></script> 
+      <script src="../../js/jquery-ui_v1.13.2.js"></script>
+      <script>
+        
+        var updateImgFolder = "../../upload/images/product/";
+        var pageNowIdx = 0;
+        var mapPayData = new Map();
+        var mapDeliveryData = new Map();
+        var mapOrderStateData = new Map();
+        var mapProductData = new Map();
+        var mapOrderData = new Map();
+        var mapOrderItemData = new Map();
+
+        
+        $(function(){
+            // 標題
+            $("#webTitle").text("訂單管理");
+
+            // sidebar提示
+            $("#sidebar_order").addClass("menu-open");
+            $("#sidebar_order a:first").addClass("active");
+            $("#sidebar_order ul li:first a").addClass("active");
+
+            $( "#tabs_add" ).tabs();
+            $( "#tabs_update" ).tabs();
+
+            // 取得付款方式
+            getPayData();
+
+            // 取得交貨方式
+            getDeliveryData();
+
+            // 取得訂單狀態資料
+            getOrderState();
+
+            // 取得商品資料
+            getProductData();
+
+            // 更新資料
+            updateData();
+          
+            // 顯示: 新增產品的modal
+            $("#add_btn").click(function(){
+              $("#modal_add").modal("show");
+            })
+           
+            // 顯示更新modal
+            $("body").on("click", "#mybody #btn_update", function(){
+                var pono = $(this).data("pono");
+                var data = mapOrderData.get(pono);
+                $("#modal_update_pono").val(pono);
+                $("#modal_update_webName").val(data.WebName);
+                $("#modal_update_pay").val(mapPayData.get(data.Pay_ID));
+                $("#modal_update_delivery").val(mapDeliveryData.get(data.Delivery_ID));
+                $("#modal_update_addr").val(data.Addr);
+                $("#modal_update_fullName").val(data.Receiver);
+                $("#modal_update_mobile").val(data.Mobile);
+                $("#modal_update_money").val(data.Money);
+                $("#modal_update_stateOptions").val(data.OrderState);
+
+                // 訂購內容
+                $("#modal_update_order_item_list").empty();
+                $("#modal_update_totalMoney").text("");
+                if(mapOrderItemData.has(pono)){
+                  var orderItem = mapOrderItemData.get(pono);
+                  if(orderItem != undefined){ 
+                    var totalMoney = 0;                  
+                    orderItem.forEach(function(item, idx){
+                      var html = '<tr>'+
+                                    '<td>'+(idx+1)+'</td>'+
+                                    '<td>'+mapProductData.get(item.PNO)+'</td>'+
+                                    '<td>'+item.Price+'</td>'+
+                                    '<td class="text-center">'+
+                                      '<input type="number" class="col-6" value='+item.Num+' min="1" max="100">'+
+                                    '</td>'+
+                                    '<td>'+item.Price*item.Num+'</td>'+
+                                    '<td><button class="btn btn-danger">刪除</button></td>'+
+                                '</tr>';
+                      $("#modal_update_order_item_list").append(html);
+                      totalMoney += item.Price*item.Num;
+                    });
+                    $("#modal_update_totalMoney").text(totalMoney.toString());
+                  }
+                }
+                
+                $("#modal_update").modal("show");
+            });
+
+            // 刪除
+            $("body").on("click", "#mybody #btn_delete", function () {
+                if (confirm("確認刪除?")) {
+                    var dataJSON = {};
+                    dataJSON["PoNo"] = $(this).data("pono");
+                    $.ajax({
+                        type: "POST",
+                        url: "../../api/back/order/b_order_delete_api.php",
+                        data: JSON.stringify(dataJSON),
+                        dataType: "json",
+                        success: function(data){
+                          if(data.state){
+                            updateData();
+                          }else{
+                            alert(data.message);
+                          }
+                        },
+                        error: function () {
+                            alert("error: b_product_delete_api.php");
+                        }
+                    });
+                }
+            });
+
+            // modal:新增
+            $("#modal_add_ok").click(function(){
+
+              // var dataJSON={};
+              // dataJSON["Name"] = $("#modal_add_name").val();
+              // dataJSON["PNO"] = $("#modal_add_pno").val();
+              // dataJSON["Price"] = $("#modal_add_price").val();
+              // dataJSON["Content"] = $("#modal_add_content").val();
+              // dataJSON["Type_ID"] = $("#modal_add_typeOptions").val();
+              // dataJSON["OpenOrder"] = $("#modal_add_openOrder").is(':checked') ? "Y" :"N";
+              // dataJSON["Active"] = $("#modal_add_active").is(':checked') ? "Y" :"N";
+              // dataJSON["SaleTitle_ID"] = $("#modal_add_saleTitleOptions").val();
+              // dataJSON["Photo"] = upload_photo_name;              
+
+              // $.ajax({
+              //   type:"POST",
+              //   url:"../../api/back/product/b_product_create_api.php",
+              //   data:JSON.stringify(dataJSON),
+              //   dataType:"json",
+              //   success:showData_add,
+              //   error:function(){
+              //     alert("error: b_product_create_api.php");
+              //   }
+              // });
+
+            });
+
+            // modal:修改
+            $("#modal_update_ok").click(function(){   
+                var dataJSON={};
+                dataJSON["PoNo"] = $("#modal_update_pono").val();
+                dataJSON["OrderState"] = $("#modal_update_stateOptions").val();
+               
+                $.ajax({
+                  type:"POST",
+                  url:"../../api/back/order/b_order_update_api.php",
+                  data:JSON.stringify(dataJSON),
+                  dataType:"json",
+                  success:function(data){
+                    if(data.state){
+                      $("#modal_update").modal("hide");
+                      updateData();                      
+                    }else{
+                      alert(data.message);
+                    }
+                  },
+                  error:function(){
+                    alert("error: b_product_update_api.php");
+                  }
+                });
+            });
+
+            // 監聽: modal_add的開放訂購
+            $("#modal_add_openOrder").change(function(){
+              $(this).next().text($(this).is(':checked') ? "開啟": "關閉");
+            });
+
+            // 監聽: modal_add的狀態
+            $("#modal_add_active").change(function(){
+              $(this).next().text($(this).is(':checked') ? "上架": "下架");
+            });
+
+            // 監聽: modal_add的上傳圖片
+            $("#modal_add_fileUpload").change(function(){
+              var type = modal_add_fileUpload.files[0].type;
+                if(type == "image/jpeg" || type=="image/png"){
+                    var path = URL.createObjectURL(modal_add_fileUpload.files[0]);
+                    $("#modal_add_prevImg").attr("src", path);
+                }else{
+                    $("#modal_add_prevImg").addClass("d-none");
+                }
+            });
+
+            // 取消新增
+            $("#modal_add_cancel").click(function(){
+              resetModalAdd();
+            });
+
+            // 監聽: modal_add的開放訂購
+            $("#modal_update_openOrder").change(function(){
+              $(this).next().text($(this).is(':checked') ? "開啟": "關閉");
+            });
+
+            // 監聽: modal_add的狀態
+            $("#modal_update_active").change(function(){
+              $(this).next().text($(this).is(':checked') ? "上架": "下架");
+            });
+
+
+        });
+        
+        function showData(data){
+          if(data.state){
+            pm_resetData();
+            mapOrderData.clear();
+            $("#mybody").empty();
+              data.data.forEach(function(item, idx){
+              pm_dataSrc.push(item);
+              mapOrderData.set(item.PoNo, item);
+              getOrderItemData(item.PoNo);
+            })            
+            pm_setShowDataNum(5);           
+            pm_drawPageList();
+            drawTable(pageNowIdx);
+          }else{
+            alert(data.message);
+          }
+        }
+
+        function showData_add(data){          
+          if(data.state){
+            $("#modal_add").modal("hide");
+     
+
+            // 清空新增modal內所有欄位
+            resetModalAdd();
+
+            pageNowIdx = 0;
+            updateData();
+          }else{
+            alert(data.message);
+          }
+        }
+
+        function showData_update(data){          
+          if(data.state){
+            $("#modal_update").modal("hide");
+            pageNowIdx = pl_nowIdx;            
+            updateData();
+          }else{
+            alert(data.message);
+          }
+        }
+
+
+        function showdata_delete(data){          
+          // if(data.state){
+          //   pageNowIdx = 0;
+          //   updateData();
+          // }else{
+          //   alert(data.message);
+          // }
+          
+        }
+
+
+
+        //-----------------------------------
+
+        // 取得訂單資料
+        function updateData(){      
+          $.ajax({
+            type:"GET",
+            url:"../../api/back/order/b_order_read_api.php",
+            dataType:"json",
+            async:false,
+            success:showData,
+            error:function(){
+              alert("error: b_order_read_api.php");
+            }          
+          });
+        }
+
+        function pm_callback(data, startIdx){
+            $("#mybody").empty();
+            data.forEach(function(item, idx){
+              var textColor = "orderState_"+item.OrderState;
+              var html ='<tr>'+
+                          '<td>'+(startIdx+idx+1)+'</td>'+
+                          '<td>'+item.PoNo+'</td>'+
+                          '<td>'+item.OrderTime+'</td>'+
+                          '<td>'+item.WebName+'</td>'+
+                          '<td>'+item.Money+'</td>'+
+                          '<td class='+textColor+'>'+mapOrderStateData.get(item.OrderState)+'</td>'+
+                          '<td>'+
+                            '<button class="btn btn-success" data-pono='+item.PoNo+' id="btn_update">更新</button>'+
+                            '<button class="ms-2 btn btn-danger" data-pono='+item.PoNo+' id="btn_delete">刪除</button>'+
+                          '</td>'+
+                        '</tr>';
+              $("#mybody").append(html);
+            });
+        }
+
+        
+        function getPayData(){
+            $.ajax({
+                type:"GET",
+                url:"../../api/back/pay/b_pay_read_api.php",
+                dataType:"json",
+                success: function(data){
+                    data.data.forEach(function(item){
+                        mapPayData.set(item.ID, item.Name);
+                    });
+                },
+                error:function(){
+                    alert("error: cityAllData.json");
+                },
+            });
+        }
+
+        function getDeliveryData(){
+            $.ajax({
+                type:"GET",
+                url:"../../api/back/delivery/b_delivery_read_api.php",
+                dataType:"json",
+                success: function(data){
+                    data.data.forEach(function(item){
+                        mapDeliveryData.set(item.ID, item.Name);
+                    });
+                },
+                error:function(){
+                    alert("error: cityAllData.json");
+                },
+            });
+        }
+
+        function getOrderState(){
+            $.ajax({
+                type:"GET",
+                url:"../../api/back/orderState/b_orderState_read_api.php",
+                dataType:"json",
+                async:false,
+                success:function(data){
+                    data.data.forEach(function(item, idx){
+                        mapOrderStateData.set(item.Tag, item.Name);
+                        var html ='<option value='+item.Tag+'>'+item.Name+'</option>';
+                        $("#modal_update_stateOptions").append(html);
+                    })
+                },
+                error:function(){
+                    alert("error: b_orderState_read_api.php");
+                }          
+          });
+        }
+
+        function getProductData(){
+            $.ajax({
+                type:"GET",
+                url:"../../api/front/product/f_product_read_api.php",
+                dataType:"json",
+                async:false,
+                success: function(data){
+                  $("#modal_update_prodcutOptions").empty();
+                  $("#modal_update_prodcutOptions").append('<option selected disabled>請選擇商品</option>');
+                    data.data.forEach(function(item){
+                        mapProductData.set(item.PNO, item.Name);
+                        var html ='<option value='+item.PNO+'>'+item.Name+'</option>';
+                        $("#modal_update_prodcutOptions").append(html);
+                    });
+                },
+                error: function(){
+                    alert("error: f_product_read_api.php");
+                }
+            })
+        }
+
+        function getOrderItemData(poNo){
+            var dataJSON={};
+            dataJSON["PoNo"] = poNo;
+            $.ajax({
+                type:"POST",
+                url:"../../api/back/orderItem/b_orderItem_read_api_single.php",
+                data: JSON.stringify(dataJSON),   
+                dataType:"json",   
+                async:false,          
+                success:function(data){
+                    mapOrderItemData.set(poNo, data.data);
+                },
+                error:function(){
+                    alert("error: b_order_read_api_single.php");
+                }
+            }); 
+        }
+      </script>
+</body>
+</html>

@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>會員專區</title>
+    <link rel="stylesheet" href="../../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../css/all.min.css">
+    <link rel="stylesheet" href="../../css/myall.css">
+    <style>
+
+        /* 移除分頁focus時的光暈 */
+        .pagination .page-item .page-link:focus {
+            border-color: none;
+            box-shadow: none;
+            outline: 0 none;
+        }
+
+       .iconBtnMember, .iconBtnShop{
+            color: white;
+        }
+
+        .iconBtnMember:hover{
+            color: rgb(231, 210, 117);
+        }
+
+        .iconBtnShop:hover{
+            color: rgb(231, 210, 117);
+        }
+
+        .mem_menu {
+            border: 1px solid var(--mycolor01);
+        }
+        .mem_menu.active {
+            background-color: var(--mycolor04);
+        }
+        .mem_menu:hover {
+            background-color: var(--mycolor02);
+            color: #fff;
+            cursor: pointer;
+            border: 1px solid var(--mycolor02);
+        }
+
+        .orderState_P{
+            color: red;
+        }
+
+        .orderState_D{
+            color: blue;
+        }
+
+        .orderState_F{
+            color: green;
+        }
+
+        .orderState_C{
+            color: gray;
+        }
+
+    </style>
+</head>
+<body>
+        <!-- navbar -->
+        <script src="../../js/addFrontNavbar.js"></script>
+        
+        <!-- 網頁標頭 -->
+        </section>
+            <div class="container">
+                <h1 class="border border-start-0 border-top-0 border-end-0 border-3 border-sencodary text-center mb-3 py-3">會員專區</h1>
+            </div>
+        <section>
+    
+        <!-- 內容 -->
+        <section>
+            <div class="container">
+                <div class="row mb-3">
+                    <div class="col-2 offset-1">
+                        <ul class="list-group">
+                            <li class="list-group-item mem_menu active text-center h2 fw-600" id="btn_memberData" data-area="member_page">會員資料</li>
+                            <li class="list-group-item mem_menu text-center h2 fw-600" id="btn_orderData" data-area="order_page">訂單資料</li>
+                            <li class="list-group-item mem_menu text-center h2 fw-600 d-none" id="btn_backManager">後台管理</li>
+                        </ul>
+                    </div>
+                    <div class="col-7 mem_area" id="member_page">
+                        <div class="row flex-column mb-3 text-center offset-1 p-3 rounded-3 shadow-lg border border-2 border-dark">
+                            <div class="text-center">
+                                <h3>會員資料</h3>
+                            </div>
+                            <div class="col-12">
+                                <img src="#" id="member_prevImg" alt="" class="w-50 my-3">
+                            </div>
+                            <div id="member_info_page">
+                                <table class="table table-bordered table-lg" >
+                                    <tbody id="table_member_info"></tbody>
+                                </table>                                
+                            </div>
+                            <div class="col-12 d-none" id="member_update_page">
+                                <div class="mb-3 input-group" id="input_file_member_upload">
+                                    <label for="member_page_fileUpload" class="input-group-text">大頭照</label> 
+                                    <input type="file" class="form-control" id="member_page_fileUpload" name="member_page_fileUpload">   
+                                </div>
+                                <div class="m-3 pe-5 input-group">
+                                    <label for="member_page_pwd" class="col-3 input-group-text">密碼</label>
+                                    <input type="password" class="form-control" id="member_page_pwd" name="member_page_pwd" placeholder="密碼字數6-10" maxlength="10">
+                                    <div class="valid-feedback offset-2">密碼符合規則</div>              
+                                    <div class="invalid-feedback offset-2">密碼不符合規則</div> 
+                                </div>
+                                <div class="m-3 pe-5 input-group">
+                                    <label for="member_page_checkPwd" class="col-3 input-group-text">確認密碼</label>
+                                    <input type="password" class="form-control" placeholder="確認密碼" id="member_page_checkPwd" name="member_page_checkPwd">
+                                    <div class="valid-feedback offset-2">密碼一致</div>              
+                                    <div class="invalid-feedback offset-2">密碼不一致</div> 
+                                </div>
+                                <div class="m-3 pe-5 input-group">
+                                    <label for="member_page_email" class="col-3 input-group-text">Email</label>
+                                    <input type="email" class="form-control" id="member_page_email" name="member_page_email" placeholder="email須包含@符號" maxlength="50">
+                                    <div class="valid-feedback offset-2">email符合規則</div>              
+                                    <div class="invalid-feedback offset-2">email不符合規則</div> 
+                                </div> 
+                                <div class="m-3 pe-5 input-group">
+                                    <label for="member_page_fullName" class="col-3 input-group-text">姓名</label>
+                                    <input type="text" class="form-control" name="member_page_fullName" id="member_page_fullName" placeholder="姓名字數15碼以內" maxlength="15">
+                                    <div class="valid-feedback offset-2">姓名符合規則</div>              
+                                    <div class="invalid-feedback offset-2">姓名不符合規則</div> 
+                                </div>
+                                <div class="m-3 pe-5 input-group">
+                                    <label for="member_page_mobile" class="col-3 input-group-text">手機</label>
+                                    <input type="text" class="form-control" name="member_page_mobile" id="member_page_mobile" placeholder="手機號碼字數10碼" maxlength="10">
+                                    <div class="valid-feedback offset-2">手機號碼符合規則</div>              
+                                    <div class="invalid-feedback offset-2">手機號碼不符合規則</div> 
+                                </div>
+                                <div class="m-3 pe-5 input-group">
+                                    <label for="member_page_ageOptions" class="col-3 input-group-text">年齡層</label> 
+                                    <select class="col-9 form-select" name="member_page_ageOptions" id="member_page_ageOptions">
+                                        <option selected disabled>請選擇年齡層</option>
+                                    </select>   
+                                    <div class="valid-feedback">已選擇年齡層</div>              
+                                    <div class="invalid-feedback">未選擇年齡層</div>               
+                                </div>
+                            </div>
+                            <div class="text-end">
+                                <button class="btn btn-primary" id="btn_open_update_member">修改</button>
+                                <button class="btn btn-primary d-none" id="btn_update_member_ok">提交</button>
+                                <button class="btn btn-secondary d-none" id="btn_update_member_cancel">取消</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-8 mem_area d-none" id="order_page">                        
+                        <table class="table table-bordered" id="order_list">
+                            <thead class="text-center">
+                                <tr>
+                                    <th width="10%">項次</th>
+                                    <th width="25%">訂單編號</th>
+                                    <th width="25%">訂購時間</th>
+                                    <th width="10%">金額</th>
+                                    <th width="15%">狀態</th>
+                                    <th>功能</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-center" id="order_page_list">
+                            </tbody>     
+                        </table>  
+                        <div class="row mt-3" id="pagination_item">
+                            <nav aria-label="...">
+                                <ul class="pagination justify-content-center" id="pm_pageList">                   
+                                </ul>
+                            </nav>   
+                        </div> 
+                        <div class="row flex-column mb-3 offset-1 p-3 rounded-3 shadow-lg border border-2 border-dark d-none" id="order_content">
+                            <div class="row mb-2">
+                                <div class="col-2">訂單編號 :</div>                          
+                                <div class="col" id="order_pono">T20240324</div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-2">訂單狀態 :</div>                             
+                                <div class="col" id="order_state">處理中</div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-2">訂購日期 :</div>
+                                <div class="col" id="order_date">20240324</div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-2">付款方式 :</div>
+                                <div class="col" id="order_pay">信用卡</div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-2">取貨方式 :</div>
+                                <div class="col" id="order_delivery">711</div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-2">收件地址 :</div>
+                                <div class="col" id="order_addr">台中市西屯區XXXXXXX</div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-2">收件人 :</div> 
+                                <div class="col" id="order_receiver">王小明</div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-2">金額 :</div>              
+                                <div class="col" id="order_money">450</div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-2">內容 :</div>
+                                <div class="col">
+                                    <table class="table">
+                                        <thead class="text-center">
+                                            <tr>
+                                                <th>項次</th>
+                                                <th>品名</th>
+                                                <th>單價</th>
+                                                <th>數量</th>
+                                                <th>金額</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="text-center" id="order_item_list">
+                                            <tr>
+                                                <td>1</td>
+                                                <td>原味</td>
+                                                <td>45</td>
+                                                <td>1</td>
+                                                <td>45</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="row mb-2 justify-content-end">
+                                <button class="col-2 btn btn-primary" id="btn_order_leave">離開</button>
+                                <button class="col-2 ms-2 btn btn-danger" id="btn_cancelOrder">取消訂單</button>
+                            </div>  
+                        </div> 
+                   
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- footer -->
+        <script src="../../js/addBackFooter.js"></script>   
+
+        <script src="../../js/bootstrap.bundle.min.js"></script>
+        <script src="../../js//jquery-3.7.1.min.js"></script>
+        <script src="../../js/cookieManager.js"></script>
+        <script src="../../js/paginationManagerSingle.js"></script>
+        <script>
+            var updateImgFolder = "../../upload/images/member/";
+            var mapAgeData = new Map();
+            var mapMemberTypeData = new Map();
+            var mapPayData = new Map();
+            var mapDeliveryData = new Map();
+            var mapMemberTypeTageData = new Map();
+            var mapOrderStateData = new Map();
+            var mapOrderData = new Map();
+            var mapOrdetItemData = new Map();
+            var mapProductData = new Map();
+            var webName = "";
+            var member_photo_name ="";
+            var member = new Array();
+            var flag_memberUpdate_Pwd = true;           // 建立密碼
+            var flag_memberUpdate_CheckPwd = true;      // 確認密碼
+            var flag_memberUpdate_Email = true;         // 建立信箱
+            var flag_memberUpdate_FullName = true;      // 輸入姓名
+            var flag_memberUpdate_Mobile = true;        // 輸入手機
+            var pageNowIdx = 0;
+         
+
+            $(function(){
+                // 取得年齡層資料
+                getAgeData();
+
+                // 取得會員分類資料
+                getMemberType();
+
+                // 取得付款方式
+                getPayData();
+
+                // 取得交貨方式
+                getDeliveryData();
+
+                // 取得商品資料
+                getProductData();
+
+                // 取得訂單狀態資料
+                getOrderState();
+
+                // 取得購物車
+                getShopcarDataDefault();
+
+                // 讀取cookie
+                if(getCookie("UIDMP")!=""){
+                    checkCookieUser("UIDMP");
+                }else{
+                    location.href = "../../f_index.html";
+                }
+
+                // 顯示資訊
+                var page = localStorage.getItem("WebMember");
+                if(page == "order"){
+                    $("#btn_memberData").removeClass("active");
+                    $("#member_page").addClass("d-none");
+
+                    $("#btn_orderData").addClass("active");
+                    $("#order_page").removeClass("d-none");
+                }
+
+                // 監聽: 左側功能選單
+                $(".mem_menu").click(function(){
+                    $(".mem_menu").removeClass("active");
+                    $(this).addClass("active");
+                    let ss = $(this).data("area");
+                    $(".mem_area").addClass("d-none");
+                    $("#"+ss).removeClass("d-none");
+                });
+
+                // 監聽: 會員資料的修改按鈕
+                $("#btn_open_update_member").click(function(){
+                    // 按鈕
+                    $(this).addClass("d-none");
+                    $("#btn_update_member_ok").removeClass("d-none");
+                    $("#btn_update_member_cancel").removeClass("d-none");
+                 
+                    // 頁面
+                    $("#member_info_page").addClass("d-none");
+                    $("#member_update_page").removeClass("d-none")
+                })
+
+                // 監聽: 會員資料的提交按鈕
+                $("#btn_update_member_ok").click(function(){
+
+                    if(!flag_memberUpdate_Pwd || !flag_memberUpdate_CheckPwd || !flag_memberUpdate_Email  || !flag_memberUpdate_FullName || !flag_memberUpdate_Mobile){
+                        alert("欄位輸入有誤, 請重新確認!")
+                        return;
+                    }
+
+                    // 上傳大頭照
+                    if(member_page_fileUpload.files.length > 0){
+                        // console.log("update member image");
+                        // console.log(member_page_fileUpload);
+                        imgUpload();
+                    }
+
+                    var dataJSON={};
+                    dataJSON["ID"] = member.ID;
+                    dataJSON["Pwd"] = $("#member_page_pwd").val();
+                    dataJSON["Email"] = $("#member_page_email").val();
+                    dataJSON["FullName"] = $("#member_page_fullName").val();
+                    dataJSON["Mobile"] = $("#member_page_mobile").val();
+                    dataJSON["Age_ID"] = $("#member_page_ageOptions").val();     
+                    dataJSON["Photo"] = member_photo_name;  
+                    // console.log(JSON.stringify(dataJSON));
+
+                    //傳遞至後端
+                    $.ajax({
+                        type: "POST",
+                        url: "../../api/front/member/f_member_update_api.php",
+                        data: JSON.stringify(dataJSON),                    
+                        dataType:"json",
+                        success: showdata_updateMember,
+                        error: function(){
+                            alert("error-member-Create-api.php");
+                        }
+                    });
+                 
+                })
+
+                // 監聽: 會員資料的取消按鈕
+                $("#btn_update_member_cancel").click(function(){
+                    // 修改頁面復原
+                    setMembrImg();
+                    setMemberUpdatePage();
+
+                    // 將上傳狀態復原
+                    $("#input_file_member_upload").empty();
+                    var html = '<label for="member_page_fileUpload" class="input-group-text">大頭照</label> <input type="file" class="form-control" id="member_page_fileUpload" name="member_page_fileUpload">';
+                    $("#input_file_member_upload").append(html);
+
+                  
+
+                    // 按鈕
+                    $(this).addClass("d-none");
+                    $("#btn_open_update_member").removeClass("d-none");
+                    $("#btn_update_member_ok").addClass("d-none");
+
+                    // 頁面
+                    $("#member_info_page").removeClass("d-none");
+                    $("#member_update_page").addClass("d-none");    
+                })
+
+                // 監聽: 密碼建立規則
+                $("#member_page_pwd").bind("input propertychange", function(){
+                    var num = $(this).val().length;
+                    if(num>5 && num<11){
+                        // 字數符合規定
+                        $(this).removeClass("is-invalid");
+                        $(this).addClass("is-valid");
+                        flag_memberUpdate_Pwd = true;
+                    }else{
+                        // 字數不符合規定
+                        $(this).removeClass("is-valid");
+                        $(this).addClass("is-invalid");
+                        flag_memberUpdate_Pwd = false;
+                    }
+                });
+
+                // 監聽: 密碼重複輸入確認
+                $("#member_page_checkPwd").bind("input propertychange", function(){
+                    if($(this).val() ==  $("#member_page_pwd").val()){
+                        // 字數符合規定
+                        $(this).removeClass("is-invalid");
+                        $(this).addClass("is-valid");
+                        flag_memberUpdate_CheckPwd = true;
+                    }else{
+                        // 字數不符合規定
+                        $(this).removeClass("is-valid");
+                        $(this).addClass("is-invalid");
+                        flag_memberUpdate_CheckPwd = false;
+                    }
+                });
+
+                // 監聽: Email建立規則
+                $("#member_page_email").bind("input propertychange", function(){
+                    if($(this).val().includes("@")){
+                        // 字數符合規定
+                        $(this).removeClass("is-invalid");
+                        $(this).addClass("is-valid");
+                        flag_memberUpdate_Email = true;
+                    }else{
+                        // 字數不符合規定
+                        $(this).removeClass("is-valid");
+                        $(this).addClass("is-invalid");
+                        flag_memberUpdate_Email = false;
+                    }
+                });
+
+                // 監聽: 姓名輸入規則
+                $("#member_page_fullName").bind("input propertychange", function(){
+                    var num = $(this).val().length;
+
+                    if(num>1 && num<16){
+                        // 字數符合規定
+                        $(this).removeClass("is-invalid");
+                        $(this).addClass("is-valid");
+                        flag_memberUpdate_FullName = true;
+                    }else{
+                        // 字數不符合規定
+                        $(this).removeClass("is-valid");
+                        $(this).addClass("is-invalid");
+                        flag_memberUpdate_FullName = false;
+                    }
+                });
+
+                // 監聽: 手機輸入規則
+                $("#member_page_mobile").bind("input propertychange", function(){
+                    var num = $(this).val().length;
+                    if(num==10){
+                        // 字數符合規定
+                        $(this).removeClass("is-invalid");
+                        $(this).addClass("is-valid");
+                        flag_memberUpdate_Mobile = true;
+                    }else{
+                        // 字數不符合規定
+                        $(this).removeClass("is-valid");
+                        $(this).addClass("is-invalid");
+                        flag_memberUpdate_Mobile = false;
+                    }
+                });
+
+                // 監聽modal修改大頭照
+                $("#member_page_fileUpload").change(function(){
+                    var type = member_page_fileUpload.files[0].type;
+                    if(type == "image/jpeg" || type=="image/png"){
+                        var path = URL.createObjectURL(member_page_fileUpload.files[0]);
+                        $("#member_prevImg").attr("src", path);
+                    }else{        
+                        $("#member_prevImg").addClass("d-none");
+                    }
+                });
+
+                // 登出
+                $("#btn_logout").click(function(){
+                    // cookie清空
+                    setCookie("UIDMP", "", 7);
+                    location.href ="../../f_index.html";
+                });
+
+                $("#btn_backManager").click(function(){
+                    // location.href ="../back/b_member_list.html";
+                    window.open("../back/b_home.html");
+                });
+
+                // 監聽: 離開訂購內容
+                $("#btn_order_leave").click(function(){
+                    $("#order_list").removeClass("d-none");
+                    $("#pagination_item").removeClass("d-none");
+                    $("#order_content").addClass("d-none");
+                });
+
+                $("#btn_cancelOrder").click(function(){
+                    var dataJSON={};
+                    dataJSON["PoNo"] = $("#order_pono").text();
+                    dataJSON["OrderState"] = "C";
+                    // console.log(JSON.stringify(dataJSON));
+                    $.ajax({
+                        type:"POST",
+                        url:"../../api/back/order/b_order_update_api.php",
+                        data: JSON.stringify(dataJSON),   
+                        dataType:"json",             
+                        success:function(data){
+                            if(data.state){
+                                $("#order_list").removeClass("d-none");
+                                $("#pagination_item").removeClass("d-none");
+                                $("#order_content").addClass("d-none");
+                                pageNowIdx = pl_nowIdx;
+                                getOrderData("demo", webName, "WebName");
+                            }else{
+                                alert(data.message);
+                            }
+                        },
+                        error:function(){
+                            alert("error: b_order_update_api.php");
+                        }
+                    }); 
+                });
+            });
+
+            function checkCookieUser_callback(data)
+            {
+                if(data.state){
+                    // 會員資料
+                    member = data.data[0];
+
+                    // webName
+                    webName = member.WebName;
+
+                    // 大頭照   
+                    setMembrImg();
+
+                    // 會員資料
+                    setMemberInfoPage();
+                    
+                    // 修改資料的page
+                    setMemberUpdatePage();
+
+                    // 取得訂單列表
+                    getOrderData("demo", webName, "WebName");
+
+                    // 判斷是否為管理員
+                    if(mapMemberTypeTageData.get(member.MemberType_ID) == "A")
+                        $("#btn_backManager").removeClass("d-none");
+
+                    // 顯示當前使用者
+                    $("#user_message").text(member.WebName + " 歡迎!");
+                    
+                }else{
+                    alert(data.message);
+                    location.href = "../../f_index.html";
+                }
+            }
+
+        // 取得年齡層資料
+        function getAgeData(){
+          $.ajax({
+            type:"GET",
+            url:"../../api/common/c_age_read_api.php",
+            dataType:"json",
+            async:false,
+            success:showData_age,
+            error:function(){
+              alert("error: b_age_read_api.php");
+            }          
+          });
+        }
+
+        function showData_age(data){
+          if(data.state){
+            data.data.forEach(function(item){
+              mapAgeData.set(item["ID"], item["Name"]);
+            });
+          }else{
+            alert(data.message);
+          }
+      
+        }
+
+        // 取得分類資料
+        function getMemberType(){
+          $.ajax({
+            type:"GET",
+            url:"../../api/common/c_memberType_read_api.php",
+            dataType:"json",
+            async:false,
+            success:showData_memberType,
+            error:function(){
+              alert("error: c_age_read_api.php");
+            }          
+          });
+        };
+
+        function showData_memberType(data){
+          if(data.state){
+            data.data.forEach(function(item){
+              mapMemberTypeData.set(item["ID"], item["Name"]);
+              mapMemberTypeTageData.set(item["ID"], item["Tag"]);
+            });
+          }else{
+            alert(data.message);
+          }
+        }
+
+        function setMemberInfoPage(){
+            $("#table_member_info").empty();
+            var html =  '<tr><th class="col-2 h5">會員等級</th><td class="col-4 h5">'+mapMemberTypeData.get(member.MemberType_ID)+'</td></tr>'+
+                        '<tr><th class="col-2 h5">帳號</th><td class="col-4 h5">'+member.WebName+'</td></tr>'+
+                        '<tr><th class="col-2 h5">Email</th><td class="col-4 h5">'+member.Email+'</td></tr>'+
+
+                        '<tr><th class="col-2 h5">姓名</th><td class="col-4 h5">'+member.FullName+'</td></tr>'+
+                        '<tr><th class="col-2 h5">手機</th><td class="col-4 h5">'+member.Mobile+'</td></tr>'+
+                        '<tr><th class="col-2 h5">年齡</th><td class="col-4 h5">'+mapAgeData.get(member.Age_ID)+'</td></tr>';
+            $("#table_member_info").append(html); 
+
+
+        }
+
+        // 大頭照
+        function setMembrImg(){
+            var path = updateImgFolder +"member_sample.svg";
+            var photoData = member.Photo;
+            if(photoData!="")
+                path = updateImgFolder + photoData;
+            // console.log("photo: " + path);
+            $("#member_prevImg").attr("src", path);
+        }
+
+        // 設定會員更新頁面
+        function setMemberUpdatePage(){
+            // 修改資料
+            $("#member_page_email").val(member.Email);
+            $("#member_page_fullName").val(member.FullName);
+            $("#member_page_mobile").val(member.Mobile);
+
+            // 年齡層
+            $("#member_page_ageOptions").empty();
+            for(var[key, value] of mapAgeData){
+                var enable = (key==member.Age_ID) ? "selected" :"";
+                var html = '<option value="'+key+'" '+enable+'>'+value+'</option>';
+                $("#member_page_ageOptions").append(html);
+            }  
+        }
+
+        function showdata_updateMember(data){
+            if(data.state){
+                member = data.data[0];
+
+                // 更新頁面資料
+                setMembrImg();
+                setMemberInfoPage();
+                setMemberUpdatePage();
+
+                // 按鈕                
+                $("#btn_open_update_member").removeClass("d-none");
+                $("#btn_update_member_ok").addClass("d-none");
+                $("#btn_update_member_cancel").addClass("d-none");
+
+                // 頁面
+                $("#member_info_page").removeClass("d-none");
+                $("#member_update_page").addClass("d-none");   
+            }else{
+                alert(data.message);
+            }
+        }
+
+        // 上傳大頭照
+        function imgUpload()
+        {
+            var formData = new FormData();
+            formData.append("file", member_page_fileUpload.files[0]);
+
+            // for (const value of formData.values()) {
+            //     console.log(value);
+            // }
+
+            //傳遞formdata至後端api
+            $.ajax({
+                type:"POST", 
+                url:"../../api/common/c_member_imgUpload_api.php",
+                data: formData,
+                dataType: "json",
+                cache: false,
+                contentType:false,
+                processData:false,
+                async:false,
+                success:showdata_imgUpload,
+                error:function(){
+                    alert("error: c_member_imgUpload_api.php");
+                }
+            });
+        }
+
+        function showdata_imgUpload(data)
+        {
+            if(data.state){
+                member_photo_name = data.data.serverfilename;
+            }else{
+                alert(data.message);
+            }
+        }
+
+        function getShopcarDataDefault(){            
+            var getData = localStorage.getItem('shopcar');
+            if((getData==null) || getData==(""))
+                return;
+                    
+            var getDataArr = JSON.parse(getData);            
+            if(getDataArr.length>0)   
+                $("#shopcarNum").text("+" + getDataArr.length.toString());            
+        }
+
+        function getOrderState(){
+            $.ajax({
+                type:"GET",
+                url:"../../api/back/orderState/b_orderState_read_api.php",
+                dataType:"json",
+                async:false,
+                success:function(data){
+                    data.data.forEach(function(item){
+                        mapOrderStateData.set(item.Tag, item.Name);
+                    })
+                    // console.log(mapOrderStateData);
+                },
+                error:function(){
+                    alert("error: b_orderState_read_api.php");
+                }          
+          });
+        }
+
+        function getOrderData( poNo, webName, type){
+            var dataJSON={};
+            dataJSON["PoNo"] = poNo;
+            dataJSON["WebName"] = webName;
+            dataJSON["SearchType"] = type;
+            // console.log(JSON.stringify(dataJSON));
+
+            $.ajax({
+                type:"POST",
+                url:"../../api/back/order/b_order_read_api_single.php",
+                data: JSON.stringify(dataJSON),   
+                dataType:"json",             
+                success:showdata_orderData,
+                error:function(){
+                    alert("error: b_order_read_api_single.php");
+                }
+            }); 
+        }
+
+        function showdata_orderData(data){    
+            // console.log(data);    
+            if(!data.state)    
+                return;
+            
+            pm_resetData();
+            mapOrderData.clear();
+            $("#order_page_list").empty();
+              data.data.forEach(function(item, idx){
+              pm_dataSrc.push(item);
+              mapOrderData.set(item.PoNo, item);
+              getOrderItemData(item.PoNo);
+            })            
+            pm_setShowDataNum(5);           
+            pm_drawPageList();
+            drawTable(pageNowIdx);
+
+            // 取得訂購內容
+            mapOrderData.forEach(function(item, key){
+                getOrderItemData(key);
+            })
+        }
+
+
+        function pm_callback(data){
+            $("#order_page_list").empty();
+            data.forEach(function(item, index){
+                var textColor = "orderState_"+item.OrderState;
+                var html = '<tr>'+
+                            '<td>'+(index+1)+'</td>'+
+                            '<td>'+item.PoNo+'</td>'+
+                            '<td>'+item.OrderTime+'</td>'+
+                            '<td>$'+item.Money+'</td>'+
+                            '<td class='+textColor+'>'+mapOrderStateData.get(item.OrderState)+'</td>'+
+                            '<td><button class="btn btn-outline-info" onclick="showOrderContent(\''+item.PoNo+'\')">查看</button></td>'+
+                        '</tr>';
+                $("#order_page_list").append(html);
+            });
+        }
+
+        function getPayData(){
+            $.ajax({
+                type:"GET",
+                url:"../../api/back/pay/b_pay_read_api.php",
+                dataType:"json",
+                success: function(data){
+                    data.data.forEach(function(item){
+                        mapPayData.set(item.ID, item.Name);
+                    });
+                },
+                error:function(){
+                    alert("error: cityAllData.json");
+                },
+            });
+        }
+
+        function getDeliveryData(){
+            $.ajax({
+                type:"GET",
+                url:"../../api/back/delivery/b_delivery_read_api.php",
+                dataType:"json",
+                success: function(data){
+                    data.data.forEach(function(item){
+                        mapDeliveryData.set(item.ID, item.Name);
+                    });
+                },
+                error:function(){
+                    alert("error: cityAllData.json");
+                },
+            });
+        }
+
+        function getOrderItemData(poNo){
+            var dataJSON={};
+            dataJSON["PoNo"] = poNo;
+            $.ajax({
+                type:"POST",
+                url:"../../api/back/orderItem/b_orderItem_read_api_single.php",
+                data: JSON.stringify(dataJSON),   
+                dataType:"json",   
+                async:false,          
+                success:function(data){
+                    mapOrdetItemData.set(poNo, data.data);
+                },
+                error:function(){
+                    alert("error: b_order_read_api_single.php");
+                }
+            }); 
+        }
+
+        function getProductData(){
+            $.ajax({
+                type:"GET",
+                url:"../../api/front/product/f_product_read_api.php",
+                dataType:"json",
+                async:false,
+                success: function(data){
+                    data.data.forEach(function(item){
+                        mapProductData.set(item.PNO, item.Name);
+                    });
+                },
+                error: function(){
+                    alert("error: f_product_read_api.php");
+                }
+            })
+        }
+
+        function showOrderContent(pono){
+            $("#order_list").addClass("d-none");
+            $("#pagination_item").addClass("d-none");
+            $("#order_content").removeClass("d-none");
+
+            var data = mapOrderData.get(pono);
+            $("#order_pono").text(data.PoNo);
+            $("#order_state").text(mapOrderStateData.get(data.OrderState));
+            $("#order_date").text(data.OrderTime);
+            $("#order_pay").text(mapPayData.get(data.Pay_ID));
+            $("#order_delivery").text(mapDeliveryData.get(data.Delivery_ID));
+            $("#order_addr").text(data.Addr);
+            $("#order_receiver").text(data.Receiver);
+            $("#order_money").text("$"+data.Money);
+          
+            // 隱藏取消按鈕
+            if(data.OrderState=="P"){
+                $("#btn_cancelOrder").removeClass("d-none");
+            }else{
+                $("#btn_cancelOrder").addClass("d-none");
+            }
+
+            if(mapOrdetItemData.has(pono)){
+                var orderItemData = mapOrdetItemData.get(pono);
+                $("#order_item_list").empty();
+                if(orderItemData!=undefined){
+                    orderItemData.forEach(function(item, idx){
+                        var html='<tr>'+
+                                    '<td>'+(idx+1)+'</td>'+
+                                    '<td>'+mapProductData.get(item.PNO)+'</td>'+
+                                    '<td>'+item.Price+'</td>'+
+                                    '<td>'+item.Num+'</td>'+
+                                    '<td>'+(item.Price*item.Num)+'</td>'+
+                                '</tr>';
+                        $("#order_item_list").append(html);
+                    });
+                }
+            }
+        }
+
+        </script>
+</body>
+</html>

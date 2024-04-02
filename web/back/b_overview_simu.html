@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>總覽</title>
+    <link rel="stylesheet" href="../../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../css/all.min.css">
+    <link rel="stylesheet" href="../../css/adminlte.min.css">
+</head>
+<body>
+    <!-- sidebar -->
+    <script src="../../js/addBackSidebar.js"></script>
+
+    <section>
+      <div class="container">
+        <div class="row m-3">
+            <div class="col-lg-3 col-6">
+              <!-- small box -->
+              <div class="small-box bg-info">
+                <div class="inner">
+                  <h3 id="num_member">0</h3><p>會員人數</p>
+                </div>
+                <div class="icon">
+                    <i class="fa-solid fa-users"></i>
+                </div>
+                <!-- <a href="b_member_list.html" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> -->
+              </div>
+            </div>
+            <!-- ./col -->
+            <div class="col-lg-3 col-6">
+              <!-- small box -->
+              <div class="small-box bg-success">
+                <div class="inner">
+                  <!-- <h3>53<sup style="font-size: 20px">%</sup></h3> -->
+                    <h3 id="num_money">0</h3><p>銷售總額</p>
+                </div>
+                <div class="icon">
+                    <i class="fa-solid fa-money-bill-1-wave"></i>
+                </div>
+                <!-- <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> -->
+              </div>
+            </div>
+            <!-- ./col -->
+            <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box bg-danger">
+                <div class="inner">
+                    <h3 id="num_process">0</h3><p>新訂單</p>
+                </div>
+                <div class="icon">
+                    <i class="fa-solid fa-list-check"></i>
+                </div>
+                <!-- <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> -->
+                </div>
+            </div>
+            <div class="col-lg-3 col-6">
+              <!-- small box -->
+              <div class="small-box bg-warning">
+                <div class="inner">
+                  <h3 id="num_delivery">0</h3><p>配送中訂單</p>
+                </div>
+                <div class="icon">
+                    <i class="fa-solid fa-truck-fast"></i>
+                </div>
+                <!-- <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> -->
+              </div>
+            </div>
+
+          </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="row mb-3">
+          <div class="col-5" style="margin-top: 100px;">
+            <canvas id="chartMemberAge"></canvas>
+          </div>
+          <div class="col-5 mb-2" style="margin-left: 100px;">
+            <canvas id="chartMemberType"></canvas>
+          </div>
+        </div>
+        <div class="row mb-1"><hr style="border-color:rgb(77, 76, 81);"></div>
+        <div class="row mb-3">
+          <div class="col-5" style="margin-top: 50px;">
+            <canvas id="chartOrderDelivery"></canvas>
+          </div>
+          <div class="col-5" style="margin-top: 100px; margin-left: 100px;">
+            <canvas id="chartOrderCityMoney"></canvas>
+          </div>
+        </div>
+        <div class="row mb-1"><hr style="border-color:rgb(77, 76, 81);"></div>
+        <div class="row">
+          <div class="col-5" style="margin-top: 100px;">
+            <canvas id="chartOrderItem"></canvas>
+          </div>
+          <div class="col-5" style="margin-left: 100px;">
+            <canvas id=""></canvas>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- footer -->
+    <script src="../../js/addBackFooter.js"></script>   
+
+
+    <script src="../../js/bootstrap.bundle.min.js"></script>
+    <script src="../../js/jquery-3.7.1.min.js"></script>
+    <script src="../../js/adminlte.min.js"></script>   
+    <script src="../../js/chart.js"></script>  
+    <script>
+      var mapAgeData = new Map();
+      var mapMemberTypeData = new Map();
+      var mapMemberAgeData = new Map();
+      var mapDeliveryData = new Map();
+      var mapProductData = new Map();
+
+      const chartMemberAge = new Chart(document.getElementById('chartMemberAge'), {
+          type: 'bar',
+          data: {
+              labels: [],
+              datasets: [{
+                  label: '各區旅館分布圖',
+                  data: [],
+                  borderWidth: 1,
+                  backgroundColor: [
+                      'rgb(255, 99, 132)',
+                      'rgb(54, 162, 235)',
+                      'rgb(50, 205, 86)',
+                      'rgb(255, 199, 132)',
+                      'rgb(254, 102, 235)',
+                      'rgb(255, 205, 20)',
+                      'rgb(155, 99, 132)',
+                      'rgb(154, 162, 235)',
+                      'rgb(155, 205, 86)',
+                      ],
+                  color: '#666'
+                  }]
+          },
+          options: {
+              scales: {
+              y: {
+                  beginAtZero: true
+              }
+              }
+          }
+      });
+
+      const chartMemberType = new Chart($("#chartMemberType"), {
+          type: 'pie',
+          data: {
+              labels: [],
+              datasets: [{
+                  label: '各區旅館分布圖',
+                  data: [],
+                  borderWidth: 1,
+                  backgroundColor: [
+                      'rgb(255, 99, 132)',
+                      'rgb(254, 102, 235)',
+                      'rgb(54, 162, 235)',
+                      'rgb(50, 205, 86)',
+                      'rgb(255, 199, 132)',                      
+                      'rgb(255, 205, 20)',
+                      'rgb(155, 99, 132)',
+                      'rgb(154, 162, 235)',
+                      'rgb(155, 205, 86)',                      
+                      ],
+                  color: '#666'
+                  }]
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: {
+                position: 'top',
+              },
+              title: {
+                display: true,
+                text: '會員等級分布圖'
+              }
+            }
+          },
+      });
+
+      const chartOrderDelivery = new Chart($("#chartOrderDelivery"), {
+          type: 'doughnut',
+          data: {
+              labels: [],
+              datasets: [{
+                  label: '各區旅館分布圖',
+                  data: [],
+                  borderWidth: 1,
+                  backgroundColor: [
+                      'rgb(255, 99, 132)',
+                      'rgb(54, 162, 235)',
+                      'rgb(50, 205, 86)',
+                      'rgb(50, 205, 86)',
+                      'rgb(255, 199, 132)',                      
+                      'rgb(255, 205, 20)',
+                      'rgb(155, 99, 132)',
+                      'rgb(154, 162, 235)',
+                      'rgb(155, 205, 86)',                      
+                      ],
+                  color: '#666'
+                  }]
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: {
+                position: 'top',
+              },
+              title: {
+                display: true,
+                text: '配送方式分布圖'
+              }
+            }
+          },
+      });
+
+      const chartOrderCityMoney = new Chart($("#chartOrderCityMoney"), {
+          type: 'line',
+          data:{
+             labels: [],
+              datasets: [
+                {
+                  label: '訂單數',
+                  data: [],
+                  backgroundColor: [
+                      'rgb(255, 99, 132)',
+                      'rgb(154, 162, 235)',
+                      'rgb(50, 205, 86)',
+                      'rgb(255, 199, 132)',
+                      'rgb(254, 102, 235)',
+                      'rgb(255, 205, 20)',
+                      'rgb(155, 99, 132)',
+                      'rgb(154, 162, 235)',
+                      'rgb(155, 205, 86)',                  
+                      ],
+                  stack: 'combined',
+                  type: 'bar'
+                },
+                {
+                  label: '收入 (千元為單位)',
+                  data: [],
+                  backgroundColor: 'rgb(54, 102, 235)',
+                  stack: 'combined'
+                }
+              ]
+            },
+          options: {
+            plugins: {
+                title: {
+                display: true,
+                text: '顧客來源'
+              }
+            },
+            scales: {
+              y: {
+                stacked: true
+              }
+            }
+          },
+        });
+
+
+        const chartOrderItem = new Chart(document.getElementById('chartOrderItem'), {
+          type: 'bar',
+          data: {
+              labels: [],
+              datasets: [{
+                  label: '各區旅館分布圖',
+                  data: [],
+                  borderWidth: 1,
+                  backgroundColor: [
+                      'rgb(255, 99, 132)',
+                      'rgb(54, 162, 235)',
+                      'rgb(50, 205, 86)',
+                      'rgb(255, 199, 132)',
+                      'rgb(254, 102, 235)',
+                      'rgb(255, 205, 20)',
+                      'rgb(155, 99, 132)',
+                      'rgb(154, 162, 235)',
+                      'rgb(155, 205, 86)',
+                      ],
+                  color: '#666'
+                  }]
+          },
+          options: {
+              scales: {
+              y: {
+                  beginAtZero: true
+              }
+              }
+          }
+      });
+
+
+
+      $(function(){
+          // 標題
+          $("#webTitle").text("總覽");
+
+          // sidebar提示
+          $("#sidebar_analysis").addClass("menu-open");
+          $("#sidebar_analysis a:first").addClass("active");
+          $("#sidebar_analysis ul li:first a").addClass("active");
+
+            // 取得年齡層資料
+            getAgeData();
+
+            // 取得會員等級資料
+           getMemberType();
+
+            // 取得會員資料
+            getMemberData();
+
+            // 取得運送方式
+            getDeliveryData();
+
+            // 取得訂單資料
+            getOrderData();
+
+            // 取得商品資料
+            getProductData();
+
+            // 取得訂單內容資料
+            getOrderItemData();
+        });
+
+        function getAgeData(){
+          $.ajax({
+            type:"GET",
+            // url:"../../api/back/age/b_age_read_api.php",
+            url:"../../js/demo/ageData.json",
+            dataType:"json",
+            async:false,
+            success:function(data){
+              if(data.state){
+                data.data.forEach(function(item){
+                  mapAgeData.set(item["ID"], item["Name"]);
+                });
+                // console.log(mapAgeData);
+              }else{
+                alert(data.message);
+              }
+            },
+            error:function(){
+              alert("error: b_age_read_api.php");
+            }          
+          });
+        }
+
+
+        // 取得分類資料
+        function getMemberType(){
+          $.ajax({
+            type:"GET",
+            // url:"../../api/back/memberType/b_memberType_read_api.php",
+            url:"../../js/demo/memberTypeData.json",
+            dataType:"json",
+            async:false,
+            success:function(data){
+              if(data.state){
+                data.data.forEach(function(item){
+                  mapMemberTypeData.set(item["ID"], item["Name"]);
+                });
+              }else{
+                alert(data.message);
+              }
+            },
+            error:function(){
+              alert("error: b_memberType_read_api.php");
+            }          
+          });
+        };
+
+        function getMemberData(){
+          $.ajax({
+            type:"GET",
+            url:"../../js/demo/member.json",
+            dataType:"json",
+            async:false,
+            success:showdata_member,
+            error:function(){
+              alert("error: b_analysis_member_api.php");
+            }          
+          });
+        };
+
+        function showdata_member(data){
+
+          if(!data.state){
+            alert(data.message);
+            return;
+          }
+
+          var memberNum = 0;
+
+          // 會員年齡層
+          chartMemberAge.data.labels = [];
+          chartMemberAge.data.datasets[0].data = [];
+          data.dataAge.forEach(function(item){
+              // X軸
+              chartMemberAge.data.labels.push(mapAgeData.get(item.Age_ID));
+              // Y軸
+              chartMemberAge.data.datasets[0].data.push(item.Num);    
+
+               memberNum += parseInt(item.Num);
+              // console.log(memberNum);
+          });
+          chartMemberAge.data.datasets[0].label = '會員年齡層分析圖表';
+          chartMemberAge.update();
+          $("#num_member").text(memberNum);
+
+          // 會員等級
+          chartMemberType.data.labels = [];
+          chartMemberType.data.datasets[0].data = [];
+          data.dataType.forEach(function(item){
+              // X軸
+              chartMemberType.data.labels.push(mapMemberTypeData.get(item.MemberType_ID));
+              // Y軸
+              chartMemberType.data.datasets[0].data.push(item.Num);    
+          });
+          chartMemberType.update();
+        }
+
+        function getDeliveryData(){
+          $.ajax({
+            type:"GET",
+            // url:"../../api/back/delivery/b_delivery_read_api.php",
+            url:"../../js/demo/delivery.json",
+            dataType:"json",
+            async:false,
+            success:function(data){
+              if(data.state){
+                data.data.forEach(function(item){
+                  mapDeliveryData.set(item["ID"], item["Name"]);
+                });
+              }else{
+                alert(data.message);
+              }
+            },
+            error:function(){
+              alert("error: b_delivery_read_api.php");
+            }          
+          })
+        }
+
+        function getOrderData(){
+          $.ajax({
+            type:"GET",
+            url:"../../js/demo/orderPayDelivery.json",
+            dataType:"json",
+            async:false,
+            success:showdata_order,
+            error:function(){
+              alert("error: b_analysis_member_api.php");
+            }          
+          });
+        }
+
+        function showdata_order(data){
+          if(!data.state){
+            alert(data.message);
+            return;
+          }
+
+          // 配送方式
+          chartOrderDelivery.data.labels = [];
+          chartOrderDelivery.data.datasets[0].data = [];
+          data.dataDelivery.forEach(function(item){
+              // X軸
+              chartOrderDelivery.data.labels.push(mapDeliveryData.get(item.Delivery_ID));
+              // Y軸
+              chartOrderDelivery.data.datasets[0].data.push(item.Num);    
+          });
+          chartOrderDelivery.update();
+
+          // 顧客來源
+          var totalMoney = 0;
+          chartOrderCityMoney.data.labels = [];
+          chartOrderCityMoney.data.datasets[0].data = [];
+          data.dataCityMoney.forEach(function(item){
+
+              var city = item.County;
+              if(city=="")
+                city = "店取";
+
+              // X軸
+              chartOrderCityMoney.data.labels.push(city);
+              // Y軸
+              chartOrderCityMoney.data.datasets[0].data.push(item.cityNum);    
+
+              chartOrderCityMoney.data.datasets[1].data.push(item.cityMoney/1000);   
+              
+              totalMoney += parseInt(item.cityMoney);
+          });
+          chartOrderCityMoney.update();
+          $("#num_money").text("$"+numberComma(totalMoney));
+
+          // 訂單狀態
+          var mapOrderState = new Map();
+          data.dataState.forEach(function(item){
+            mapOrderState.set(item.OrderState, item.Num);
+          })
+          $("#num_process").text(mapOrderState.get("P"));
+          $("#num_delivery").text(mapOrderState.get("D"));
+        }
+
+        function getProductData(){
+          $.ajax({
+            type:"GET",
+            // url:"../../api/back/memberType/b_memberType_read_api.php",
+            url:"../../js/demo/product.json",
+            dataType:"json",
+            async:false,
+            success:function(data){
+              if(data.state){
+                data.data.forEach(function(item){
+                  mapProductData.set(item.PNO, item.Name);
+                });
+              }else{
+                alert(data.message);
+              }
+            },
+            error:function(){
+              alert("error: b_memberType_read_api.php");
+            }          
+          });
+        };
+
+        function getOrderItemData(){
+          $.ajax({
+            type:"GET",
+            url:"../../js/demo/orderItem.json",
+            dataType:"json",
+            async:false,
+            success:showdata_orderItem,
+            error:function(){
+              alert("error: b_analysis_member_api.php");
+            }          
+          });
+        }
+
+        function showdata_orderItem(data){
+          if(!data.state){
+            alert(data.message);
+            return;
+          }
+
+          // 會員年齡層
+          chartOrderItem.data.labels = [];
+          chartOrderItem.data.datasets[0].data = [];
+          data.dataPNO.forEach(function(item){
+              // X軸
+              chartOrderItem.data.labels.push(mapProductData.get(item.PNO));
+              // Y軸
+              chartOrderItem.data.datasets[0].data.push(item.Num);    
+          });
+          chartOrderItem.data.datasets[0].label = '商品分析表';
+          chartOrderItem.update();
+        }
+
+        function numberComma(num){
+          let comma=/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g
+          return num.toString().replace(comma, ',')
+        }
+    </script>
+</body>
+</html>

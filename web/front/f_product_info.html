@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商品選購</title>
+    <link rel="stylesheet" href="../../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../css/all.min.css">
+    <link rel="stylesheet" href="../../css/myall.css">
+    <link rel="stylesheet" href="../../css/jquery-ui_v1.13.2.css">    
+    <style>
+
+        /* 移除分頁focus時的光暈 */
+        .pagination .page-item .page-link:focus {
+            border-color: none;
+            box-shadow: none;
+            outline: 0 none;
+        }
+
+        .iconBtnMember, .iconBtnShop{
+            color: white;
+        }
+
+        .iconBtnMember:hover{
+            color: rgb(231, 210, 117);
+        }
+
+        .iconBtnShop:hover{
+            color: rgb(231, 210, 117);
+        }
+
+        .boxProduct{
+            width: 200px;
+            border: 2px solid var(--mycolor04);
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 2px 2px 2px 2px var(--mycolor01);
+        }
+
+        .saleTitle1{
+            background-color: rgba(231, 22, 22, 0.7); 
+            color: white;
+            width: 65px; 
+            height: 30px;
+        }
+
+        .saleTitle2{
+            background-color: rgba(255, 251, 0, 0.7); 
+            width: 50px; 
+            height: 30px;
+        }
+
+        .saleTitle3{
+            background-color: rgba(161, 172, 174, 0.7); 
+            color: white;
+            width: 50px; 
+            height: 30px;
+        }
+
+        .saleTitle4{
+            background-color: rgba(219, 43, 216, 0.7); 
+            color: white;
+            width: 80px; 
+            height: 30px;
+        }
+
+        .iconProductShopCar{
+            color: rgb(83, 80, 80);
+        }
+
+        .iconProductShopCar:hover{
+            color: rgb(231, 210, 117);
+        }
+
+        .iconProductShopCarSelect{
+            color:  rgb(231, 90, 24);
+        }
+
+        .modal{
+            margin-top: 5%;
+        }
+
+        .box03{
+            width: 180px;
+            height: 180px;
+            border-radius: 5%;
+            border: 1px solid rgba(110, 109, 109, 0.8);
+        }
+
+    </style>
+</head>
+<body>   
+    <!-- navbar -->
+    <script src="../../js/addFrontNavbar.js"></script>
+
+    <!-- 網頁標頭 -->
+    <div class="container">
+        <h1 class="border border-start-0 border-top-0 border-end-0 border-3 border-sencodary text-center mb-3 py-3">商品選購</h1>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-10 offset-1">
+                <div id="tabs">
+                    <ul id="tabs_page_list">
+                      <li><a href="#tabs-All">全部</a></li>
+                    </ul>
+                    <div id="tabs-All">
+                        <div class="row mx-2" id="productList1"></div>
+                        <div class="row mt-3" >
+                            <ul class="pagination justify-content-center" id="pm_pageList"></ul>
+                          </div> 
+                    </div>
+                    <div id="tabs_product_type">
+                    </div>
+                  </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- modal: 商品細節資訊 -->
+    <div class="modal fade" id="modal_info" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+          <div class="modal-content">
+            <div class="modal-header text-bg-success">
+              <h1 class="modal-title fs-5 fw-900" id="exampleModalLabel">商品介紹</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-7">        
+                        <div class="d-flex flex-column h-100 row text-center">
+                            <img src="#" id="modal_info_mainImg" alt="" class="col-4 offset-4 w-50 my-3">
+                            <ul class="col-10 offset-1 list-unstyled d-flex justify-content-between flex-nowrap overflow-auto" id="mylist"></ul>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <h2 id="modal_info_title"></h2>
+                        <p id="modal_info_content"></p>
+                        <p>成份: <span id="modal_info_type"></span></p>
+                        <p>銷售: <span id="modal_info_saleTitle"></span></p>
+                        <p>價格: <span id="modal_info_price"></span></p>
+                        <div class="text-center">
+                            <button class="btn btn-primary w-50 mt-3 ">加入購物車</button>
+                        </div>                        
+                    </div>                    
+                </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">離開</button>
+            </div>
+          </div>
+        </div>
+    </div>
+
+    <!-- footer -->
+    <script src="../../js/addBackFooter.js"></script>   
+
+    <script src="../../js/bootstrap.bundle.min.js"></script>
+    <script src="../../js//jquery-3.7.1.min.js"></script>
+    <script src="../../js//jquery-ui_v1.13.2.js"></script>
+    <script src="../../js/paginationManagerSingle.js"></script>
+    <script src="../../js/cookieManager.js"></script>
+    <script>
+        var productImgFolder = "../../upload/images/product/";        
+        var mapProductType = new Map();        
+        var mapSaleTitle = new Map();
+        var mapProduct = new Map();        
+        var mapPhoto = new Map();
+        var arrPhotoData = [];
+        var mapShopcar = new Map();
+        var bIsMember = false;
+        var memberData;
+        
+        $(function(){
+
+            // 偵測: 離開網頁
+            $(window).on("beforeunload", function(){
+                saveCartData();
+            });
+
+            $("#navItem_member").addClass("d-none");
+            $("#btn_logout").addClass("d-none");
+            $("#user_message").text("訪客 歡迎!");
+
+            // 取得購物車資料
+            getShopcarData();
+
+            // 讀取cookie
+            checkCookieUser("UIDMP");
+
+            // 取得商品分類
+            getProductTypeData();
+            $( "#tabs" ).tabs();
+
+            // 取得銷售標題
+            getSaleTitleData();
+
+            // 取得商品細部圖
+            getPhotoData();
+
+            // 取得商品資料
+            getProductData();
+
+ 
+
+            // modal: 商品細節資訊
+            $("body").on("click", "#btn_info", function(){
+                var pno = $(this).data("pno");
+    
+
+                var data = mapProduct.get(pno);
+            
+
+                $("#modal_info_mainImg").attr("src", productImgFolder + data.Photo);
+                $("#modal_info_title").text(data.Name);
+                $("#modal_info_content").text(data.Content);
+
+                var type = mapProductType.get(data.Type_ID);
+                if(type =="未分類")
+                    type = "";
+                $("#modal_info_type").text(type);
+
+                var saleTitle = mapSaleTitle.get(data.SaleTitle_ID);
+                if(saleTitle=="未分類")
+                saleTitle = "";
+                $("#modal_info_saleTitle").text(saleTitle);
+
+                $("#modal_info_price").text("$"+data.Price);
+
+                $("#modal_info").modal("show");
+
+
+                $("#mylist").empty();
+                var headerImg = '<li class="text-nowrap p-1 me-0"><div class="box03 bg-cover" style="background-image: url('+productImgFolder+data.Photo+');" onclick="selectModalInfoImg(\''+productImgFolder+data.Photo+'\')"></div></li>';
+                $("#mylist").append(headerImg);
+                if(mapPhoto.has(pno)){
+                    var photoData = arrPhotoData[mapPhoto.get(pno)];      
+                    photoData.forEach(function(item, idx){
+                        var root = '<li class="text-nowrap p-1 me-0"><div class="box03 bg-cover" style="background-image: url('+productImgFolder+item+');" onclick="selectModalInfoImg(\''+productImgFolder+item+'\')"></div></li>';
+                        $("#mylist").append(root);
+                    });
+                }
+            });
+
+            // 登出
+            $("#btn_logout").click(function(){
+                // cookie清空
+                setCookie("UIDMP", "", 7);
+
+                // 購物車清空
+                localStorage.setItem('shopcar', "");
+                $("#shopcarNum").text("");
+
+                // 隱藏會員專區
+                $("#navItem_member").addClass("d-none");
+
+                // 隱藏登出按鈕
+                $("#btn_logout").addClass("d-none");
+
+                // 清除會員登入訊息
+                $("#user_message").text("訪客 歡迎!!");
+
+            });
+        });
+
+        function selectModalInfoImg(path)
+        {
+            console.log("selectImg: "+path);
+            $("#modal_info_mainImg").attr("src", path);
+        }
+
+
+        function getProductTypeData()
+        {
+            $.ajax({
+                type:"GET",
+                url:"../../api/common/c_productType_read_api.php",
+                // url:"../../js/productType.json",
+                dataType:"json",
+                async:false,
+                success: showdata_productType,
+                error: function(){
+                    alert("error: c_productType_read_api.php");
+                }
+            })
+        }
+
+        function showdata_productType(data){
+            data.data.forEach(function(item, idx){
+
+                if(item.Name=="未分類")
+                    return;
+
+                mapProductType.set(item.ID, item.Name); 
+                
+                var tabId = "tabP-"+item.ID;
+                var html = '<li><a href="#'+tabId+'">'+item.Name+'</a></li>';
+                $("#tabs_page_list").append(html);
+
+                var tabContentId = "productList-"+item.ID;
+                var htmlTabs = '<div id='+tabId+'><div class="row mx-2" id='+tabContentId+'></div></div>';
+                $("#tabs_product_type").append(htmlTabs);
+
+            });
+        }
+
+
+
+        // 取得銷售標題
+        function getSaleTitleData(){
+            $.ajax({
+                type:"GET",
+                url:"../../api/common/c_productSaleTitle_read_api.php",
+                // url:"../../js/saleTitle.json",
+                dataType:"json",
+                async:false,
+                success: showdata_saleTitle,
+                error: function(){
+                    alert("error: c_productSaleTitle_read_api.php");
+                }
+            })
+        }
+
+        function showdata_saleTitle(data){
+            data.data.forEach(function(item){
+                mapSaleTitle.set(item.ID, item.Name);
+            });            
+        }
+
+        // 取得商品細部圖片
+        function getPhotoData(){
+            $.ajax({
+                type:"GET",
+                url:"../../api/common/c_productPhoto_read_api.php",
+                dataType:"json",
+                async:false,
+                success: showdata_productPhoto,
+                error: function(){
+                    alert("error: c_productPhoto_read_api.php");
+                }
+            })
+        }
+
+        function showdata_productPhoto(data){
+            data.data.forEach(function(item){
+                if(!mapPhoto.has(item.PNO)){
+                    mapPhoto.set(item.PNO, arrPhotoData.length);
+                    arrPhotoData.push(new Array);
+                }
+                arrPhotoData[mapPhoto.get(item.PNO)].push(item.Photo);
+            }); 
+        }
+
+        // 取得產品資料
+        function getProductData(){
+            $.ajax({
+                type:"GET",
+                url:"../../api/front/product/f_product_read_api.php",
+                // url:"../../js/product.json",
+                dataType:"json",
+                async:false,
+                success: showdata_product,
+                error: function(){
+                    alert("error: f_product_read_api.php");
+                }
+            })
+        }
+
+        function showdata_product(data){
+            // console.log(data);
+            var arrTypeData = [];
+            var mapType = new Map();
+    
+            data.data.forEach(function(item){     
+                
+                // 下架商品
+                if(item.Active=="N")
+                    return;
+
+                mapProduct.set(item.PNO, item);
+
+                if(!mapType.has(item.Type_ID))
+                {
+                    mapType.set(item.Type_ID, mapType.size);
+                    arrTypeData.push(new Array);
+                }
+                var idx = mapType.get(item.Type_ID);
+                arrTypeData[idx].push(item);
+            })
+
+            // 全部
+            // showProductTab(mapProduct, "#productList1");
+            pm_resetData();
+            mapProduct.forEach(function(item){
+              pm_dataSrc.push(item);
+            });
+            pm_setShowDataNum(8);
+            pm_drawPageList(0);
+
+
+            mapProductType.forEach(function(item, key){
+                if(mapType.has(key)){
+                    showProductTab(arrTypeData[mapType.get(key)], "#productList-"+key);
+                }
+            });
+        }
+
+        function showProductTab(arrData, tagId){
+            $(tagId).empty();
+            arrData.forEach(function(item){
+                var openOrder = (item.OpenOrder == "N") ? "d-none" : "";
+                var showTitle = (mapSaleTitle.get(item.SaleTitle_ID) == "未分類")? "d-none" : "";
+                var saleType = "";
+                var shopColor = mapShopcar.has(item.PNO) ? "iconProductShopCarSelect" : "iconProductShopCar";
+                var idShopcar = "shopcar_"+ item.PNO;
+                switch(item.SaleTitle_ID){
+                    case '1': saleType = "saleTitle1"; break;
+                    case '2': saleType = "saleTitle2"; break;
+                    case '3': saleType = "saleTitle3"; break;
+                    case '4': saleType = "saleTitle4"; break;
+                }
+                var html ='<div class="col-3 my-3">'+
+                    '<div class="boxProduct">'+
+                        '<div class="row flex-column">'+
+                            '<div class="col-10 text-center" style="position: relative;">'+
+                                '<p>'+item.Name+'</p><span style="position: absolute; top: 0; right: 10px;">$'+item.Price+'</span></div>'+
+                                '<div class="col-10 offset-2 mb-2 text-start" style="position: relative;">'+
+                                    '<img src="'+productImgFolder+item.Photo+'" class="img-fluid " alt="">'+
+                                    // '<img src="'+item.Photo+'" class="img-fluid " alt="">'+
+                                    '<div style="position: absolute; top: 0px; left: 0px; z-index: 20;"><p class="border border-1 rounded-3 text-center '+showTitle+' '+saleType+'">'+mapSaleTitle.get(item.SaleTitle_ID)+'</p></div>'+
+                                    '<div class="'+openOrder+'" style="position: absolute; right: 20px; top: 100px;">'+
+                                        '<span style="font-size: 3em;" class=" '+idShopcar+' '+shopColor+'" onclick="setShopCar(\''+item.PNO+'\')"><i class="fa-solid fa-cart-shopping"></i></span>'+
+                                        '</div>'+
+                                        '</div>'+
+                                        '<div class="col-10">'+
+                                            '<button class="btn btn-outline-info ms-3" id="btn_info" data-pno="'+item.PNO+'">詳細情況</button>'+
+                                            '</div>'+
+                                            '</div>'+
+                                            '</div>'+
+                                            '</div>';
+                $(tagId).append(html);
+            })
+        }
+
+        function pm_callback(data, startIdx){
+            showProductTab(data, "#productList1");
+        }
+
+        function setShopCar(pno){
+            // console.log("shopcar pno: "+pno);
+            var idShopcar = ".shopcar_"+ pno;
+            // console.log("id: " + idShopcar);
+            if(!mapShopcar.has(pno)){
+                // 此商品不在購物車內，則加入
+                mapShopcar.set(pno, 1);                
+                $(idShopcar).removeClass("iconProductShopCar");
+                $(idShopcar).addClass("iconProductShopCarSelect");
+            }else{
+                // 此商品在購物車內，則移除
+                mapShopcar.delete(pno);
+                $(idShopcar).removeClass("iconProductShopCarSelect");
+                $(idShopcar).addClass("iconProductShopCar");
+            } 
+            
+            // 設定localStorage
+            const myMapArray = Array.from(mapShopcar);
+            const myMapString = JSON.stringify(myMapArray);
+            localStorage.setItem('shopcar', myMapString);
+
+            // 購物車顯示數量
+            if(mapShopcar.size>0)
+                $("#shopcarNum").text("+" + mapShopcar.size.toString());
+            else
+                $("#shopcarNum").text("");
+            // console.log(myMapString);
+        }
+
+        function getShopcarData(){            
+            var getData = localStorage.getItem('shopcar');
+            if((getData==null) || (getData==""))
+                return;
+
+            var getDataArr = JSON.parse(getData);            
+            mapShopcar.clear();
+            getDataArr.forEach(function(item){                
+                mapShopcar.set(item[0], item[1]);
+            });  
+
+            if(mapShopcar.size>0)   
+                $("#shopcarNum").text("+" + mapShopcar.size.toString());
+        }
+
+        function checkCookieUser_callback(data){
+            var userName = "訪客";
+            if(data.state){
+                memberData = data.data[0];
+                userName = data.data[0].WebName;
+                bIsMember = true;
+                $("#navItem_member").removeClass("d-none");
+                $("#btn_logout").removeClass("d-none");
+            }
+
+            // 顯示當前使用者
+            $("#user_message").text(userName + " 歡迎!");
+
+            // 設定會員專區連接到的內容
+            localStorage.setItem("WebMember", "member");
+        }
+
+        function saveCartData()
+        {
+            if(!bIsMember)
+                return;
+            createCartData(memberData.WebName);
+        }
+
+        function createCartData(WebName){
+            const myMapArray = Array.from(mapShopcar);
+            const myMapString = JSON.stringify(myMapArray);
+
+            var dataJSON={};
+                dataJSON["WebName"] = WebName;
+                dataJSON["Content"] = myMapString;
+            //  localStorage.setItem('msg', JSON.stringify(dataJSON));
+          
+            $.ajax({
+                type:"POST",
+                url:"../../api/back/cart/b_cart_create_update_api.php",
+                data: JSON.stringify(dataJSON),   
+                dataType:"json",             
+                success:function(data){
+                    localStorage.setItem('msg', data.message);
+                },
+                error:function(){
+                    alert("error: b_cart_create_api.php");
+                }
+            }); 
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>會員管理</title>
+    <link rel="stylesheet" href="../../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../css/all.min.css">
+    <link rel="stylesheet" href="../../css/adminlte.min.css">
+    <style>
+      /* 移除分頁focus時的光暈 */
+      .pagination .page-item .page-link:focus {
+          border-color: none;
+          box-shadow: none;
+          outline: 0 none;
+      }
+  </style>
+</head>
+<body>
+      <!-- sidebar -->
+      <script src="../../js/addBackSidebar.js"></script>
+    
+      <!-- <div class="content-wrapper"> -->
+        <div class="container">
+          <div class="row d-flex justify-content-center mt-3 mx-3"> 
+            <div class="card">
+              <div class="card-header">
+                <button class="btn btn-primary" id="add_btn"  data-bs-toggle="modal" data-bs-target="#modal_register">新增</button>
+              </div>
+            </div>
+              <table class="table table-bordered mb-3 text-center">
+                <thead>
+                  <tr>
+                    <th style="width: 10%;">項次</th>
+                    <!-- <th style="width: 10%;">ID</th> -->
+                    <th style="width: 15%;">帳號</th>
+                    <th style="width: 15%;">姓名</th>
+                    <th style="width: 15%;">分類</th>
+                    <th style="width: 10%;">狀態</th>
+                    <th>功能</th>
+                  </tr>
+                </thead>
+                <tbody id="mybody">
+                  <tr>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>test</td>
+                    <td>
+                      <button class="btn btn-success">更新</button>
+                      <button class="btn btn-danger">刪除</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>        
+          </div>
+          <div class="row mt-3" >
+            <nav aria-label="...">
+                <ul class="pagination justify-content-center" id="pm_pageList">
+                    <li class="page-item"><a class="page-link" href="#" onclick="drawTable(0)">1</a></li>
+                </ul>
+            </nav>   
+          </div> 
+        </div>
+        <!-- </div> -->
+
+        <!-- Modal: 新增 -->
+        <div class="modal fade" id="modal_register" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-xl">
+          <div class="modal-content">
+              <div class="modal-header text-bg-success">
+              <h1 class="modal-title fs-5 fw-900" id="exampleModalLabel">會員註冊</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body ">
+              <div class="row">
+                  <div class="col-6">            
+                      <div class="m-3 pe-5 input-group">
+                          <label for="modal_register_webName" class="col-3 input-group-text">帳號</label>
+                          <input type="text" class="form-control is-invalid" id="modal_register_webName" name="modal_register_webName" placeholder="必須輸入" maxlength="8">  
+                          <div class="valid-feedback offset-2" id="userNameMsg_OK">帳號符合規則</div>              
+                          <div class="invalid-feedback offset-2" id="userNameMsg_NG">帳號不符合規則</div>                                        
+                      </div>
+                      <div class="m-3 pe-5 input-group">
+                        <label for="modal_register_memberTypeOptions" class="col-3 input-group-text">會員等級</label>   
+                        <select class="form-select is-invalid" id="modal_register_memberTypeOptions">
+                          <option selected disabled>請選擇會員等級</option>
+                        </select>         
+                        <div class="valid-feedback offset-2">已選擇會員等級</div>              
+                        <div class="invalid-feedback offset-2">未選擇會員等級</div>           
+                      </div>
+                      <div class="m-3 pe-5 input-group">
+                          <label for="modal_register_pwd" class="col-3 input-group-text">密碼</label>
+                          <input type="password" class="form-control is-invalid" id="modal_register_pwd" name="modal_register_pwd" placeholder="必須輸入" maxlength="10">
+                          <div class="valid-feedback offset-2">密碼符合規則</div>              
+                          <div class="invalid-feedback offset-2">密碼不符合規則</div> 
+                      </div>
+                      <div class="m-3 pe-5 input-group">
+                          <label for="modal_register_checkPwd" class="col-3 input-group-text">確認密碼</label>
+                          <input type="password" class="form-control is-invalid" placeholder="必須輸入" id="modal_register_checkPwd" name="modal_register_checkPwd">
+                          <div class="valid-feedback offset-2">密碼一致</div>              
+                          <div class="invalid-feedback offset-2">密碼不一致</div> 
+                      </div>
+                      <div class="m-3 pe-5 input-group">
+                          <label for="modal_register_email" class="col-3 input-group-text">Email</label>
+                          <input type="email" class="form-control" id="modal_register_email" name="modal_register_email" placeholder="" maxlength="50">
+                      </div>                 
+                  </div>
+                  <div class="col-6">
+                    <div class="m-3 pe-5 input-group">
+                      <label for="modal_register_fullName" class="col-3 input-group-text">姓名</label>
+                      <input type="text" class="form-control" name="modal_register_fullName" id="modal_register_fullName" placeholder="" maxlength="15">
+                  </div>
+                  <div class="m-3 pe-5 input-group">
+                      <label for="modal_register_mobile" class="col-3 input-group-text">手機</label>
+                      <input type="text" class="form-control" name="modal_register_mobile" id="modal_register_mobile" placeholder="" maxlength="10">
+                  </div>
+                  <div class="m-3 pe-5 input-group">
+                      <label for="modal_register_ageOptions" class="col-3 input-group-text">年齡層</label> 
+                      <select class="col-9 form-select" name="modal_register_ageOptions" id="modal_register_ageOptions">
+                          <option selected disabled>請選擇年齡層</option>
+                      </select>                
+                  </div>
+                      <div class="mb-3 input-group" id="modal_register_photo">
+                          <label for="modal_register_fileUpload" class="input-group-text">大頭照</label> 
+                          <input type="file" class="form-control" id="modal_register_fileUpload" name="modal_register_fileUpload">                     
+                      </div> 
+                      <div class="text-center">
+                          <img src="#" id="modal_register_prevImg" alt="" class="w-50 my-3">
+                      </div>
+                  </div>
+              </div>
+  
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-primary" id="modal_register_ok">新增</button>
+                  <button type="button" class="btn btn-secondary" id="modal_register_cancel" data-bs-dismiss="modal">取消</button>
+              </div>
+          </div>
+          </div>
+      </div>
+
+        <!-- Modal: 修改 -->
+        <div class="modal fade" id="modal_update" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+            <input type="hidden" id="modal_update_id">
+            <div class="modal-content">
+              <div class="modal-header text-bg-info">
+                <h1 class="modal-title fs-5 fw-900" id="exampleModalLabel">修改會員資料</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <div class="row">
+                  <div class="col-5">  
+                    <div class="text-center"><img src="#" id="modal_update_prevImg" alt="" class="w-50 my-3"></div>
+                    <div class="mb-3 input-group">
+                      <label for="modal_update_fileUpload" class="input-group-text">大頭照</label> 
+                      <input type="file" class="form-control" id="modal_update_fileUpload" name="modal_update_fileUpload"> 
+                      
+                    </div>
+                    <div class="mb-3 input-group">
+                      <label for="modal_update_fullName" class="col-3 input-group-text">姓名</label>
+                      <input type="text" class="form-control" name="modal_update_fullName" id="modal_update_fullName">
+                    </div>
+                    <div class="mb-3 input-group">
+                      <label for="modal_update_mobile" class="col-3 input-group-text">手機</label>
+                      <input type="text" class="form-control" name="modal_update_mobile" id="modal_update_mobile">
+                    </div>
+                    <div class="mb-3 input-group">
+                      <label for="modal_update_ageOptions" class="col-3 input-group-text">年齡層</label> 
+                      <select class="col-9 form-select" id="modal_update_ageOptions">
+                      </select>               
+                    </div>                 
+                  </div>
+                  <div class="col-7">
+                    <div class="mb-3 input-group">
+                        <label for="modal_update_webName" class="col-3 input-group-text">帳號</label>
+                        <input type="text" class="form-control" name="modal_update_webName" id="modal_update_webName">
+                    </div>
+                    <div class="mb-3 input-group">
+                      <label for="modal_update_email" class="col-3 input-group-text">Email</label>
+                      <input type="email" class="form-control" name="modal_update_email" id="modal_update_email">
+                    </div>
+
+                    <div class="mb-3 input-group">
+                      <label for="modal_update_pwd" class="col-3 input-group-text">密碼</label>
+                      <input type="password" class="form-control" name="modal_update_pwd" id="modal_update_pwd" placeholder="********">
+                    </div>
+                    <div class="mb-3 input-group">
+                      <label for="modal_update_active" class="col-3 input-group-text">狀態</label>
+                      <div class="col">
+                        <div class="row">
+                          <div class="col-3 offset-1 form-check form-switch">
+                            <input type="checkbox" name="modal_update_active" id="modal_update_active" class="form-check-input" checked>
+                            <label for="" class="form-check-label">啟用</label>
+                          </div>                 
+                        </div>
+                      </div>
+                    </div>
+                    <div class="mb-3 input-group">
+                      <label for="modal_update_memberTypeOptions" class="col-3 input-group-text">會員等級</label>   
+                      <select class="col-9 form-select" id="modal_update_memberTypeOptions">
+                      </select>               
+                    </div>
+                    <div class="mb-3 input-group">
+                      <label for="modal_update_createdAt" class="col-3 input-group-text">建檔時間</label>
+                      <input type="text" class="form-control" name="modal_update_createdAt" id="modal_update_createdAt">
+                    </div>
+                    <div class="mb-3 input-group">
+                      <label for="modal_update_updatedAt" class="col-3 input-group-text">更新時間</label>
+                      <input type="text" class="form-control" name="modal_update_updatedAt" id="modal_update_updatedAt">
+                    </div> 
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-success" id="modal_update_ok">確認</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      
+      <!-- footer -->
+      <script src="../../js/addBackFooter.js"></script>   
+      <script src="../../js/bootstrap.bundle.min.js"></script>
+      <script src="../../js/jquery-3.7.1.min.js"></script>
+      <script src="../../js/adminlte.min.js"></script>    
+      <script src="../../js/paginationManagerSingle.js"></script> 
+      <script src="../../js/cookieManager.js"></script>
+      <script>
+        var mapAgeData = new Map();
+        var mapMemberTypeData = new Map();
+        var member_photo_name ="";
+        var flag_registerWebName = false;       // 建立帳號
+        var flag_registerPwd = false;           // 建立密碼
+        var flag_registerCheckPwd = false;      // 確認密碼
+        var flag_registerMemberType = false;    // 會員等級
+        var lastImgName = "";
+        var webName = "";
+        var pageNowIdx = 0;
+        
+        $(function(){
+          var updateImgFolder = "../../upload/images/member/";
+            // 標題
+            $("#webTitle").text("會員管理");
+
+            // sidebar提示
+            $("#sidebar_member").addClass("menu-open");
+            $("#sidebar_member a:first").addClass("active");
+            $("#sidebar_member ul li:first a").addClass("active");
+
+            // 讀取cookie
+            if(getCookie("UIDMP")!=""){
+              checkCookieUser("UIDMP");
+            }else{
+              location.href = "../../f_index.html";
+            }
+
+            // 取得資料
+            getAgeData();
+            getMemberType();
+            updateData();
+           
+
+            // 顯示更新modal
+            $("body").on("click", "#mybody #btn_update", function(){
+              $("#modal_update_id").val($(this).data("id"));
+              $("#modal_update_webName").val($(this).data("webname"));
+              $("#modal_update_fullName").val($(this).data("fullname"));
+              $("#modal_update_mobile").val($(this).data("mobile"));
+              $("#modal_update_email").val($(this).data("email"));            
+              $("#modal_update_createdAt").val($(this).data("createdat"));
+              $("#modal_update_updatedAt").val($(this).data("updatedat"));
+
+              // 年齡層
+              $("#modal_update_ageOptions").empty();
+              for(var[key, value] of mapAgeData){
+                var enable = key==$(this).data("age") ? "selected" :"";
+                 var html = '<option value="'+key+'" '+enable+'>'+value+'</option>';
+                 $("#modal_update_ageOptions").append(html);
+              }  
+
+              // 會員分類
+              $("#modal_update_memberTypeOptions").empty();
+              for(var[key, value] of mapMemberTypeData){
+                var enable = key==$(this).data("type") ? "selected" :"";
+                 var html = '<option value="'+key+'" '+enable+'>'+value+'</option>';
+                 $("#modal_update_memberTypeOptions").append(html);
+              }  
+
+              // 狀態
+              if( $(this).data("active")=="Y"){
+                  $("#modal_update_active").prop('checked', true).next().text("啟用");
+              }else{
+                  $("#modal_update_active").prop('checked', false).next().text("停權");
+              }
+
+              // 大頭照              
+              var path = updateImgFolder +"member_sample.svg";
+              var photoData = $(this).data("photo");
+              if(photoData!=""){
+                path = updateImgFolder + photoData;                
+              }
+              $("#modal_update_prevImg").attr("src", path);
+
+              // lastImgName = photoData;
+            });
+
+            // 刪除
+            $("body").on("click", "#mybody #btn_delete", function () {
+                if (confirm("確認刪除?")) {
+                    var dataJSON = {};
+                    dataJSON["ID"] = $(this).data("id");
+                    $.ajax({
+                        type: "POST",
+                        url: "../../api/back/member/b_member_delete_api.php",
+                        data: JSON.stringify(dataJSON),
+                        dataType: "json",
+                        success: showdata_delete,
+                        error: function () {
+                            alert("error: b_member_delete_api.php");
+                        }
+                    });
+                }
+            });
+
+            // modal:新增
+            $("#modal_register_ok").click(function(){
+
+              if(!flag_registerWebName || !flag_registerPwd || !flag_registerCheckPwd || !flag_registerMemberType){
+                    alert("欄位輸入有誤, 請重新確認!")
+                    return;
+                }
+
+              // 上傳大頭照
+              if(modal_register_fileUpload.files.length > 0){
+                  imgUpload(modal_register_fileUpload);
+              }
+
+              var dataJSON={};
+              dataJSON["WebName"] = $("#modal_register_webName").val();
+              dataJSON["Pwd"] = $("#modal_register_pwd").val();
+              dataJSON["Email"] = $("#modal_register_email").val();
+              dataJSON["FullName"] = $("#modal_register_fullName").val();
+              dataJSON["Mobile"] = $("#modal_register_mobile").val();
+              dataJSON["Age_ID"] = $("#modal_register_ageOptions").val();     
+              dataJSON["Photo"] = member_photo_name;  
+              dataJSON["MemberType_ID"] = $("#modal_register_memberTypeOptions").val();              
+
+              $.ajax({
+                type:"POST",
+                url:"../../api/back/member/b_member_create_api.php",
+                data:JSON.stringify(dataJSON),
+                dataType:"json",
+                success:showData_add,
+                error:function(){
+                  alert("error: b_member_create_api.php");
+                }
+              });
+            });
+
+            // modal:修改
+            $("#modal_update_ok").click(function(){   
+              
+                // 上傳大頭照
+                if(modal_update_fileUpload.files.length > 0){                  
+                    imgUpload(modal_update_fileUpload);
+                }
+
+                // 刪除最後一次照片
+                // if(lastImgName !=""){                
+                //   deletPhoto(lastImgName);
+                //   lastImgName = "";
+                // }
+
+                var dataJSON ={};
+                dataJSON["ID"] = $("#modal_update_id").val();
+                dataJSON["FullName"] = $("#modal_update_fullName").val();
+                dataJSON["Mobile"] = $("#modal_update_mobile").val();
+                dataJSON["Email"] = $("#modal_update_email").val();
+                dataJSON["Age_ID"] = $("#modal_update_ageOptions").val();
+                dataJSON["MemberType_ID"] = $("#modal_update_memberTypeOptions").val();
+                dataJSON["Active"]=$("#modal_update_active").is(':checked') ? "Y" :"N";
+                dataJSON["Photo"] = member_photo_name;  
+                dataJSON["Pwd"] = $("#modal_update_pwd").val();                
+
+                $.ajax({
+                  type:"POST",
+                  url:"../../api/back/member/b_member_update_api.php",
+                  data:JSON.stringify(dataJSON),
+                  dataType:"json",
+                  success:showData_update,
+                  error:function(){
+                    alert("error: b_member_update_api.php");
+                  }
+                });
+
+                // TODO: 變更密碼
+            });
+
+            // 監聽狀態
+            $("#modal_update_active").change(function(){
+              $(this).next().text($(this).is(':checked') ? "啟用": "停權");
+            });
+
+            // modal:修改相片
+            $("#modal_update_fileUpload").change(function(){
+                if(modal_update_fileUpload.files[0].type == "image/jpeg" || modal_update_fileUpload.files[0].type=="image/png"){
+                    var path = URL.createObjectURL(modal_update_fileUpload.files[0]);
+                    $("#modal_update_prevImg").attr("src", path);
+                }else{
+                    $("#modal_update_prevImg").addClass("d-none");
+                }
+            });
+
+            // 監聽: 帳號建立規則
+            $("#modal_register_webName").bind("input propertychange", function(){
+              var num = $(this).val().length;
+              var name = $(this).val();
+                      
+              var dataJSON={};
+              dataJSON["WebName"] = name;
+
+              $.ajax({
+                  type:"POST",
+                  url:"../../api/common/c_member_check_name_api.php",
+                  data: JSON.stringify(dataJSON),
+                  dataType:"json",                
+                  success:showdata_check_userName,
+                  error:function(){
+                      alert("error-f_member_check_name_api.php");
+                  }
+              });
+            });
+
+            // 監聽: 密碼建立規則
+            $("#modal_register_pwd").bind("input propertychange", function(){
+                var num = $(this).val().length;
+
+                if(num>1){
+                    // 字數符合規定
+                    $(this).removeClass("is-invalid");
+                    $(this).addClass("is-valid");
+                    flag_registerPwd = true;
+                }else{
+                    // 字數不符合規定
+                    $(this).removeClass("is-valid");
+                    $(this).addClass("is-invalid");
+                    flag_registerPwd = false;
+                }
+            });
+
+            // 監聽: 密碼重複輸入確認
+            $("#modal_register_checkPwd").bind("input propertychange", function(){
+                if($(this).val() ==  $("#modal_register_pwd").val()){
+                    // 字數符合規定
+                    $(this).removeClass("is-invalid");
+                    $(this).addClass("is-valid");
+                    flag_registerCheckPwd = true;
+                }else{
+                    // 字數不符合規定
+                    $(this).removeClass("is-valid");
+                    $(this).addClass("is-invalid");
+                    flag_registerCheckPwd = false;
+                }
+            });
+
+            // 監聽: 會員等級
+            $('#modal_register_memberTypeOptions').bind("input propertychange", function(){
+                if($(this).val()!=""){
+                    $(this).removeClass("is-invalid");
+                    $(this).addClass("is-valid");
+                    flag_registerMemberType = true;
+                }else{
+                    $(this).removeClass("is-valid");
+                    $(this).addClass("is-invalid");
+                    flag_registerMemberType = false;
+                }
+            });
+
+            // 新增modal:上傳圖片
+            $("#modal_register_fileUpload").change(function(){
+              var type = modal_register_fileUpload.files[0].type;
+                if(type == "image/jpeg" || type=="image/png"){
+                    var path = URL.createObjectURL(modal_register_fileUpload.files[0]);
+                    $("#modal_register_prevImg").attr("src", path);
+                }else{
+                    $("#modal_register_prevImg").addClass("d-none");
+                }
+            });
+
+
+            // 取消新增
+            $("#modal_register_cancel").click(function(){
+              resetModalRegiter();
+            });
+        });
+
+        // 取得會員資料
+        function updateData(){          
+          $.ajax({
+            type:"GET",
+            url:"../../api/back/member/b_member_read_api.php",
+            dataType:"json",
+            async:false,
+            success:showData,
+            error:function(){
+              alert("error: b_member_read_api.php");
+            }          
+          });
+        }
+
+        // 取得年齡層資料
+        function getAgeData(){
+          $.ajax({
+            type:"GET",
+            url:"../../api/back/age/b_age_read_api.php",
+            dataType:"json",
+            async:false,
+            success:showData_age,
+            error:function(){
+              alert("error: b_age_read_api.php");
+            }          
+          });
+        }
+
+        // 取得分類資料
+        function getMemberType(){
+          $.ajax({
+            type:"GET",
+            url:"../../api/back/memberType/b_memberType_read_api.php",
+            dataType:"json",
+            async:false,
+            success:showData_memberType,
+            error:function(){
+              alert("error: b_memberType_read_api.php");
+            }          
+          });
+        };
+
+        function showData(data){
+
+          if(data.state){
+            pm_resetData();
+            $("#mybody").empty();
+            data.data.forEach(function(item, idx){
+              // 判斷是否為自己
+              if(item.WebName== webName)
+                  return;
+
+              pm_dataSrc.push(item);
+            })
+            pm_setShowDataNum(5);
+            pm_drawPageList();
+            drawTable(pageNowIdx);
+          }else{
+            alert(data.message);
+          }
+        }
+
+        function showData_age(data){
+          if(data.state){
+            data.data.forEach(function(item){
+              mapAgeData.set(item["ID"], item["Name"]);
+
+              // 新增modal:年齡層
+              var html = '<option value="'+item["ID"]+'">'+item["Name"]+'</option>'
+              $("#modal_register_ageOptions").append(html);
+            });
+          }else{
+            alert(data.message);
+          }
+      
+        }
+
+        function showData_memberType(data){
+          if(data.state){
+            data.data.forEach(function(item){
+              mapMemberTypeData.set(item["ID"], item["Name"]);
+
+              // 新增modal:會員等級
+              var html = '<option value="'+item["ID"]+'">'+item["Name"]+'</option>'
+              $("#modal_register_memberTypeOptions").append(html);
+            });
+          }else{
+            alert(data.message);
+          }
+        }
+
+        function showData_add(data){          
+          if(data.state){
+            $("#modal_register").modal("hide");
+     
+
+            // 清空新增modal內所有欄位
+            resetModalRegiter();
+
+            pageNowIdx = 0;
+            updateData();
+          }else{
+            alert(data.message);
+          }
+        }
+
+        function showData_update(data){          
+          if(data.state){
+            $("#modal_update").modal("hide");
+            pageNowIdx = pl_nowIdx;
+            updateData();
+          }else{
+            alert(data.message);
+          }
+        }
+
+
+        function showdata_delete(data){          
+          if(data.state){
+            updateData();
+          }else{
+            alert(data.message);
+          }
+          
+        }
+
+        // 上傳大頭照
+        function imgUpload(file)
+        {
+            var formData = new FormData();
+            formData.append("file", file.files[0]);
+            //傳遞formdata至後端api
+            $.ajax({
+                type:"POST", 
+                url:"../../api/common/c_member_imgUpload_api.php",
+                data: formData,
+                dataType: "json",
+                cache: false,
+                contentType:false,
+                processData:false,
+                async:false,
+                success:showdata_imgUpload,
+                error:function(){
+                    alert("error: c_member_imgUpload.php");
+                }
+            });
+        }
+
+        function showdata_imgUpload(data)
+        {
+            if(data.state){
+                member_photo_name = data.data.serverfilename;
+            }else{
+                alert(data.message);
+            }
+        }
+
+
+        // 取得: 確認帳號是否存在
+        function showdata_check_userName(data){
+            // alert(data.message);
+            if(data.state){
+                $("#userNameMsg_OK").text("帳號可以使用");
+                $("#modal_register_webName").removeClass("is-invalid");
+                $("#modal_register_webName").addClass("is-valid");
+                flag_registerWebName = true;
+            }else{
+                $("#userNameMsg_NG").text("此帳號已存在!");                
+                $("#modal_register_webName").removeClass("is-valid");
+                $("#modal_register_webName").addClass("is-invalid");
+                flag_registerWebName = false;
+            }
+        }
+
+        // 新增modal的圖片清空
+        function resetModalRegiter()
+        {
+          $("#modal_register_webName").val("");
+          $("#modal_register_webName").removeClass("is-invalid");
+          $("#modal_register_webName").removeClass("is-valid");
+
+          $("#modal_register_pwd").val("");
+          $("#modal_register_pwd").removeClass("is-invalid");
+          $("#modal_register_pwd").removeClass("is-valid");
+
+          $("#modal_register_email").val("");
+          $("#modal_register_fullName").val("");
+          $("#modal_register_mobile").val("");
+          $("#modal_register_ageOptions").val("");   
+
+          $("#modal_register_memberTypeOptions").val("");
+          $("#modal_register_memberTypeOptions").removeClass("is-invalid");
+          $("#modal_register_memberTypeOptions").removeClass("is-valid");
+
+          $("#modal_register_checkPwd").val("");
+          $("#modal_register_checkPwd").removeClass("is-invalid");
+          $("#modal_register_checkPwd").removeClass("is-valid");
+
+          flag_registerWebName = false;
+          flag_registerMemberType = false;
+          flag_registerPwd = false;
+          flag_registerCheckPwd = false;
+
+          $("#modal_register_photo").empty();
+          var html = '<label for="modal_register_fileUpload" class="input-group-text">大頭照</label><input type="file" class="form-control" id="modal_register_fileUpload" name="modal_register_fileUpload">';
+          $("#modal_register_photo").append(html);
+
+          $("#modal_register_prevImg").attr("src", "");
+        }
+
+
+        // 刪除圖片
+        function deletPhoto(name)
+        {          
+          var dataJSON={};
+              dataJSON["ImageName"] = name;
+
+          $.ajax({
+            type:"POST",
+            url:"../../api/common/c_member_imgDelete_api.php",
+            data: JSON.stringify(dataJSON),
+            dataType:"json",
+            success:showdata_deleteImg,
+            error:function(){
+              alert("error: c_member_imgDelete_api.php");
+            }
+          });    
+        }
+
+        function showdata_deleteImg(data)
+        {          
+          if(!data.state)
+            alert(data.message);
+        }
+
+        function pm_callback(data, startIdx){
+            $("#mybody").empty();
+            data.forEach(function(item, idx){
+              var root = $('<tr>');
+              root = root.append($('<td>').text(startIdx+idx+1));
+              // root = root.append($('<td>').text(item["ID"]));
+              root = root.append($('<td>').text(item["WebName"]));    
+              root = root.append($('<td>').text(item["FullName"]));
+              root = root.append($('<td>').text(mapMemberTypeData.get(item["MemberType_ID"])));
+              root = root.append($('<td>').text(item["Active"]=="Y"? "啟用":"停權"));
+              var btnRoot = $('<td>');
+              btnRoot = btnRoot.append($('<button>').addClass('btn btn-success me-1').text("更新").attr({
+                  "id":"btn_update", 
+                  "data-bs-toggle":"modal",
+                  "data-bs-target":"#modal_update",
+                  "data-id":item["ID"],
+                  "data-webname":item["WebName"],
+                  "data-fullname":item["FullName"],
+                  "data-mobile":item["Mobile"],
+                  "data-email":item["Email"],
+                  "data-age":item["Age_ID"],
+                  "data-photo":item["Photo"],
+                  "data-type":item["MemberType_ID"],
+                  "data-active":item["Active"],
+                  "data-createdat":item["Created_at"],
+                  "data-updatedat":item["Updated_at"]
+              }));
+              btnRoot = btnRoot.append($('<button>').addClass('btn btn-danger').text("刪除").attr({
+                  "id":"btn_delete",
+                  "data-id":item["ID"]
+              }));
+              root = root.append(btnRoot);
+              $("#mybody").append(root);
+            });
+        }
+
+        function checkCookieUser_callback(data){
+            if(data.state){
+                webName = data.data[0].WebName;
+                $("#userName").text(webName);
+            }else{
+                alert(data.message);
+                location.href = "../../f_index.html";
+            }
+        }
+      </script>
+</body>
+</html>

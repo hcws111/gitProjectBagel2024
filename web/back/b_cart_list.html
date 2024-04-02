@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>購物車管理</title>
+    <link rel="stylesheet" href="../../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../css/all.min.css">
+    <link rel="stylesheet" href="../../css/adminlte.min.css">
+</head>
+<body>
+      <!-- sidebar -->
+      <script src="../../js/addBackSidebar.js"></script>
+    
+      
+        <div class="container">
+          <div class="row d-flex justify-content-center mt-3 mx-3"> 
+              <table class="table table-bordered mb-3 text-center">
+                <thead>
+                  <tr>
+                    <th width="10%">項次</th>
+                    <th width="15%">會員名稱</th>
+                    <th>內容</th>
+
+                  </tr>
+                </thead>
+                <tbody id="mybody">
+                </tbody>
+              </table>        
+          </div>
+        </div>
+ 
+
+      
+      <!-- footer -->
+      <script src="../../js/addBackFooter.js"></script>   
+      <script src="../../js/bootstrap.bundle.min.js"></script>
+      <script src="../../js/jquery-3.7.1.min.js"></script>
+      <script src="../../js/adminlte.min.js"></script>     
+      <script>
+        $(function(){
+            // 標題
+            $("#webTitle").text("購物車管理");
+
+            // sidebar提示
+            $("#sidebar_order").addClass("menu-open");
+            $("#sidebar_order a:first").addClass("active");
+            $("#sidebar_order ul li:eq(1) a").addClass("active");
+
+            // 取得資料
+            updateData();
+
+            // 修改
+            $("body").on("click", "#mybody #btnUpdate", function(){
+              $("#updateModalName").val($(this).data("name"));
+              $("#updateModalID").val($(this).data("id"));
+            });
+
+            // 刪除
+            $("body").on("click", "#mybody #btnDelete", function () {
+                if (confirm("確認刪除?")) {
+                    var dataJSON = {};
+                    dataJSON["ID"] = $(this).data("id");
+                    $.ajax({
+                        type: "POST",
+                        url: "../../api/back/cart/b_cart_delete_api.php",
+                        data: JSON.stringify(dataJSON),
+                        dataType: "json",
+                        success: showdata_delete,
+                        error: function () {
+                            alert("error: b_cart_delete_api.php");
+                        }
+                    });
+                }
+            });
+
+            // modal:新增
+            $("#btnModalAdd").click(function(){
+              var dataJSON ={};
+              dataJSON["Name"] = $("#pname").val();
+              $.ajax({
+                type:"POST",
+                url:"../../api/back/cart/b_cart_create_api.php",
+                data:JSON.stringify(dataJSON),
+                dataType:"json",
+                success:showData_add,
+                error:function(){
+                  alert("error: b_cart_create_api.php");
+                }
+              });
+            });
+
+            // modal:修改
+            $("#btnModalUpdate").click(function(){              
+                var dataJSON ={};
+                dataJSON["ID"] = $("#updateModalID").val();
+                dataJSON["Name"] = $("#updateModalName").val();
+                // console.log(JSON.stringify(dataJSON));
+                $.ajax({
+                  type:"POST",
+                  url:"../../api/back/cart/b_cart_update_api.php",
+                  data:JSON.stringify(dataJSON),
+                  dataType:"json",
+                  success:showData_update,
+                  error:function(){
+                    alert("error: b_cart_update_api.php");
+                  }
+                });
+            });
+        });
+
+        function updateData(){          
+          $.ajax({
+            type:"GET",
+            url:"../../api/back/cart/b_cart_read_api.php",
+            dataType:"json",
+            async:false,
+            success:showData,
+            error:function(){
+              alert("error: b_cart_read_api.php");
+            }          
+          });
+        }
+
+        function showData(data){
+          //console.log(data);
+          if(data.state){
+            $("#mybody").empty();
+            data.data.forEach(function(item, idx){
+              var html = '<tr>'+
+                            '<td>'+(idx+1)+'</td>'+
+                            '<td>'+item["Member_ID"]+'</td>'+
+                            '<td>'+item["Content"]+'</td>'+
+                          '</tr>';
+              $("#mybody").append(html);
+            })
+          }else{
+            alert(data.message);
+          }
+        }
+
+        function showData_add(data){
+          // console.log(data);
+          if(data.state){
+            $("#addModal").modal("hide");
+            $("#pname").val("");
+            updateData();
+          }else{
+            alert(data.message);
+          }
+
+        }
+
+        function showData_update(data){
+          // console.log(data);
+          if(data.state){
+            $("#updateModal").modal("hide");
+            updateData();
+          }else{
+            alert(data.message);
+          }
+        }
+
+        function showdata_delete(data){
+          // console.log(data);
+          if(data.state){
+            updateData();
+          }else{
+              alert(data.message);
+          }
+        }
+
+
+      </script>
+</body>
+</html>

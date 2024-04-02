@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>銷售標題管理</title>
+    <link rel="stylesheet" href="../../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../css/all.min.css">
+    <link rel="stylesheet" href="../../css/adminlte.min.css">
+</head>
+<body>
+      <!-- sidebar -->
+      <script src="../../js/addBackSidebar.js"></script>
+    
+      <!-- <div class="content-wrapper"> -->
+        <div class="container">
+          <div class="row d-flex justify-content-center mt-3 mx-3"> 
+            <div class="card">
+              <div class="card-header">
+                <button class="btn btn-primary" id="add_btn"  data-bs-toggle="modal" data-bs-target="#addModal">新增</button>
+              </div>
+            </div>
+              <table class="table table-bordered mb-3 text-center">
+                <thead>
+                  <tr>
+                    <th width="10%">項次</th>
+                    <!-- <th style="width: 10%;">ID</th> -->
+                    <th>名稱</th>
+                    <th width="15%">功能</th>
+                  </tr>
+                </thead>
+                <tbody id="mybody">
+                </tbody>
+              </table>        
+          </div>
+        </div>
+        <!-- </div> -->
+
+        <!-- Modal: 新增 -->
+        <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header text-bg-info">
+                <h1 class="modal-title fs-5 fw-900" id="exampleModalLabel">新增銷售標題</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <div class="mb-3">
+                  <label for="pname" class="form-label">名稱</label>
+                  <input type="text" class="form-control" name="pname" id="pname">
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-success" id="btnModalAdd">確認</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Modal: 修改 -->
+        <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <input type="hidden" id="updateModalID">
+            <div class="modal-content">
+              <div class="modal-header text-bg-info">
+                <h1 class="modal-title fs-5 fw-900" id="exampleModalLabel">修改銷售標題</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <div class="mb-3">
+                  <label for="updateModalName" class="form-label">名稱</label>
+                  <input type="text" class="form-control" name="updateModalName" id="updateModalName">
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-success" id="btnModalUpdate">確認</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      
+      <!-- footer -->
+      <script src="../../js/addBackFooter.js"></script>   
+      <script src="../../js/bootstrap.bundle.min.js"></script>
+      <script src="../../js/jquery-3.7.1.min.js"></script>
+      <script src="../../js/adminlte.min.js"></script>     
+      <script>
+        $(function(){
+            // 標題
+            $("#webTitle").text("銷售標題管理");
+
+            // sidebar提示
+            $("#sidebar_product").addClass("menu-open");
+            $("#sidebar_product a:first").addClass("active");
+            $("#sidebar_product ul li:eq(2) a").addClass("active");
+
+            // 取得資料
+            updateData();
+
+            // 修改
+            $("body").on("click", "#mybody #btnUpdate", function(){
+              $("#updateModalName").val($(this).data("name"));
+              $("#updateModalID").val($(this).data("id"));
+            });
+
+            // 刪除
+            $("body").on("click", "#mybody #btnDelete", function () {
+                if (confirm("確認刪除?")) {
+                    var dataJSON = {};
+                    dataJSON["ID"] = $(this).data("id");
+                    $.ajax({
+                        type: "POST",
+                        url: "../../api/back/productSaleTitle/b_productSaleTitle_delete_api.php",
+                        data: JSON.stringify(dataJSON),
+                        dataType: "json",
+                        success: showdata_delete,
+                        error: function () {
+                            alert("error: b_productSaleTitle_delete_api.php");
+                        }
+                    });
+                }
+            });
+
+            // modal:新增
+            $("#btnModalAdd").click(function(){
+              var dataJSON ={};
+              dataJSON["Name"] = $("#pname").val();
+              $.ajax({
+                type:"POST",
+                url:"../../api/back/productSaleTitle/b_productSaleTitle_create_api.php",
+                data:JSON.stringify(dataJSON),
+                dataType:"json",
+                success:showData_add,
+                error:function(){
+                  alert("error: b_productSaleTitle_create_api.php");
+                }
+              });
+            });
+
+            // modal:修改
+            $("#btnModalUpdate").click(function(){              
+                var dataJSON ={};
+                dataJSON["ID"] = $("#updateModalID").val();
+                dataJSON["Name"] = $("#updateModalName").val();
+                // console.log(JSON.stringify(dataJSON));
+                $.ajax({
+                  type:"POST",
+                  url:"../../api/back/productSaleTitle/b_productSaleTitle_update_api.php",
+                  data:JSON.stringify(dataJSON),
+                  dataType:"json",
+                  success:showData_update,
+                  error:function(){
+                    alert("error: b_productSaleTitle_read_api.php");
+                  }
+                });
+            });
+        });
+
+        function updateData(){          
+          $.ajax({
+            type:"GET",
+            url:"../../api/back/productSaleTitle/b_productSaleTitle_read_api.php",
+            dataType:"json",
+            async:false,
+            success:showData,
+            error:function(){
+              alert("error: b_productSaleTitle_read_api.php");
+            }          
+          });
+        }
+
+        function showData(data){
+          //console.log(data);
+          if(data.state){
+            $("#mybody").empty();
+            data.data.forEach(function(item, idx){
+              var html = '<tr>'+
+                            '<td>'+(idx+1)+'</td>'+
+                            // '<td>'+item["ID"]+'</td>'+
+                            '<td>'+item["Name"]+'</td>'+
+                            '<td>'+
+                              '<button class="btn btn-success me-1" data-bs-toggle="modal" data-bs-target="#updateModal" id="btnUpdate" data-id="'+item["ID"]+'" data-name="'+item["Name"]+'" data-tag="'+item["Tag"]+'">更新</button>'+
+                              '<button class="btn btn-danger me-1" id="btnDelete" data-id="'+item["ID"]+'">刪除</button>'+
+                            '</td>'+
+                          '</tr>';
+              $("#mybody").append(html);
+            })
+          }else{
+            alert(data.message);
+          }
+        }
+
+        function showData_add(data){
+          // console.log(data);
+          if(data.state){
+            $("#addModal").modal("hide");
+            $("#pname").val("");
+            updateData();
+          }else{
+            alert(data.message);
+          }
+
+        }
+
+        function showData_update(data){
+          // console.log(data);
+          if(data.state){
+            $("#updateModal").modal("hide");
+            updateData();
+          }else{
+            alert(data.message);
+          }
+        }
+
+        function showdata_delete(data){
+          // console.log(data);
+          if(data.state){
+            updateData();
+          }else{
+              alert(data.message);
+          }
+        }
+
+
+      </script>
+</body>
+</html>

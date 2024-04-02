@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>購物清單</title>
+    <link rel="stylesheet" href="../../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../css/all.min.css">
+    <link rel="stylesheet" href="../../css/myall.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <style>
+        .iconBtnMember, .iconBtnShop{
+            color: white;
+        }
+
+        .iconBtnMember:hover{
+            color: rgb(231, 210, 117);
+        }
+
+        .iconBtnShop:hover{
+            color: rgb(231, 210, 117);
+        }
+
+        .menus,.add {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0px 10px;
+            background-color: rgb(11, 97, 11);
+            color: #fff;
+            font-size: 20px;
+        }
+
+        .menus:hover{
+            color: rgb(231, 210, 117);
+        }
+
+        .add:hover{
+            color: rgb(231, 210, 117);
+        }
+
+        .itemNum {
+            padding-top: 10px;
+            width: 50px;
+            height: 50px;
+            border: 1px solid black;
+        }
+
+        .table th, .table td {
+            text-align: center;
+            vertical-align: middle;
+        }
+
+    </style>
+</head>
+<body>
+    <!-- navbar -->
+    <script src="../../js/addFrontNavbar.js"></script>
+
+    <!-- 網頁標頭 -->
+    <div class="container">
+        <h1 class="border border-start-0 border-top-0 border-end-0 border-3 border-sencodary text-center mb-3 py-3">購物清單</h1>
+    </div>
+
+    <section class="mb-5">
+        <div class="container">
+          <div class="row">
+            <div class="col-12">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th style="width: 10%;">項次</th>
+                    <th style="width: 10%;">名稱</th>
+                    <th style="width: 15%;">圖片</th>
+                    <th style="width: 10%;">價格</th>
+                    <th style="width: 20%;">數量</th>
+                    <th>小計</th>
+                    <th>刪除</th>
+                  </tr>
+                </thead>
+                <tbody id="mylist">
+                </tbody>
+                <tbody>
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>總計</td>
+                    <td id="moneyTotal">0</td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="fw-700" id="discount_msg">升級VIP會員</td>
+                    <td class="text-danger fs-4 fw-700">打九折</td>
+                    <td></td>
+                  </tr>
+                  <tr class="d-none" id="vip_item">
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="fw-700">優惠價格</td>
+                    <td id="moneyTotalVIP"></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="row">
+            
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="container">
+            <div class="row flex-column ">
+                <div class="row mb-3">
+                    <div class="col-5 offset-1 m-3 text-center p-3 rounded-3 shadow-lg border border-2 border-dark">
+                        <div class="mb-3 text-center">
+                            <h2>購買人資訊</h2>
+                        </div>
+                        <div class="row mb-3 ps-3 input-group">
+                            <label for="order_page_payOptions" class="col-3 input-group-text">付款方式</label> 
+                            <select class="col form-select text-center" name="order_page_payOptions" id="order_page_payOptions">
+                                <option selected disabled>請選擇付款方式</option>
+                            </select>   
+                            <div class="valid-feedback">已選擇付款方式</div>              
+                            <div class="invalid-feedback">未選擇付款方式</div>        
+                        </div>
+                        <div class="row mb-3 ps-3 input-group">
+                            <label for="order_page_deliveryOptions" class="col-3 input-group-text">取件方式</label> 
+                            <select class="col form-select text-center" name="order_page_deliveryOptions" id="order_page_deliveryOptions">
+                                <option selected disabled>請選擇取件方式</option>
+                            </select>   
+                            <div class="valid-feedback">已選擇取件方式</div>              
+                            <div class="invalid-feedback">未選擇取件方式</div>  
+                                        
+                        </div>
+                        <div class="row flex-column mb-3" id="deliveryItem">
+                            <label for="member_page_addr" class="col-3 form-label">收件地址</label> 
+                            <div class="col mb-2">
+                                <div class="input-group">
+                                    <label for="order_page_cityOptions" class="col-3 input-group-text ps-3">縣市</label> 
+                                    <select class="form-select text-center" name="order_page_cityOptions" id="order_page_cityOptions">
+                                        <option selected disabled>請選擇縣市</option>
+                                    </select>  
+                                </div>   
+                            </div>  
+                            <div class="col mb-2">
+                                <div class="input-group">
+                                    <label for="order_page_townOptions" class="col-3 input-group-text ps-3">鄉鎮</label> 
+                                    <select class="form-select text-center" name="order_page_townOptions" id="order_page_townOptions">
+                                        <option selected disabled>請選擇鄉鎮區</option>
+                                    </select>  
+                                </div>   
+                            </div>  
+                            <div class="col mb-2 d-none" id="deliveryHome">
+                                <div class="input-group">
+                                    <label for="order_page_roadOptions" class="col-3 input-group-text ps-3">道路</label> 
+                                    <select class="form-select text-center" name="order_page_roadOptions" id="order_page_roadOptions">
+                                        <option selected disabled>請選擇道路名稱</option>
+                                    </select>      
+                                </div>   
+                            </div>
+                            <div class="col mb-2" id="delivery711">
+                                <div class="input-group">
+                                    <label for="order_page_storeOptions" class="col-3 input-group-text ps-3">門市</label> 
+                                    <select class="form-select text-center" name="order_page_storeOptions" id="order_page_storeOptions">
+                                        <option selected disabled>請選擇門市</option>
+                                    </select>  
+                                </div>   
+                            </div>
+                            <div class="col mb-2">
+                                <input type="text" class="form-control text-center" placeholder="地址" id="order_page_addr" readonly>
+                                <div class="valid-feedback">已填寫地址</div>              
+                                <div class="invalid-feedback">未填寫地址</div>  
+                            </div>
+                        </div>
+                        <div class="mb-3 input-group">
+                            <label for="order_page_fullName" class="col-3 input-group-text">收件人</label>
+                            <input type="text" class="form-control text-center" name="order_page_fullName" id="order_page_fullName" placeholder="姓名" maxlength="15">
+                            <div class="valid-feedback offset-2">姓名符合規則</div>              
+                            <div class="invalid-feedback offset-2">姓名不符合規則</div>                          
+                        </div>
+                        <div class="mb-3 input-group">
+                            <label for="order_page_mobile" class="col-3 input-group-text">手機</label>
+                            <input type="text" class="form-control text-center" name="order_page_mobile" id="order_page_mobile" placeholder="手機號碼字數10碼" maxlength="10">
+                            <div class="valid-feedback offset-2">手機號碼符合規則</div>              
+                            <div class="invalid-feedback offset-2">手機號碼不符合規則</div>                            
+                        </div>
+                        <div class="row justify-content-center">
+                            <button class="btn btn-primary col-3 d-none" id="btn_ok">提交</button>
+                            <button class="btn btn-info col-3 ms-2" id="btn_hint_login">會員登入</button>
+                        </div>
+    
+                    </div>
+                    <div class="col-6" style="position:relative;">
+                        <div id="map" style="position: absolute; top: 0; bottom: 0; width: 100%;"></div>
+                    </div>
+                </div>
+
+
+
+               
+            </div>
+        </div>
+      </section>
+
+    <!-- footer -->
+    <script src="../../js/addBackFooter.js"></script>   
+
+    <script src="../../js/bootstrap.bundle.min.js"></script>
+    <script src="../../js//jquery-3.7.1.min.js"></script>
+    <script src="../../js/cookieManager.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script>
+         var productImgFolder = "../../upload/images/product/";    
+         var mapCart = new Map(); // 購物車
+         var mapProduct = new Map();  
+         var mapOrderItemIdx = new Map();
+         var arrCartItem = [];
+         var arrCityData = [];
+         var idxCity = 0;    
+         var mapTown711 = new Map();
+         var arrTown711Data = [];  
+         var bIsMember = false;   
+         var webName = "";
+         var mapMemberTypeData = new Map();
+         var bIsVIP = false;
+         var flag_pay = false;
+         var flag_delivery = true;
+         var flag_fullName = false;
+         var flag_mobile = false;
+         var flag_addr = true;
+
+         var map = L.map('map').setView([24.171594, 120.609454], 17);
+            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+        $(function(){
+            // 偵測: 離開網頁
+            $(window).on("beforeunload", function(){
+                saveCartData();
+            });
+
+            $("#navItem_member").addClass("d-none");
+            $("#btn_logout").addClass("d-none");
+
+            // 取得會員分類資料
+            getMemberType();
+
+            // 讀取cookie
+            checkCookieUser("UIDMP");
+
+            updateMap(24.171594, 120.609454, "貝果專賣店");
+
+            // 取得購物車資料
+            getShopcarData();
+
+            // 取得商品資料
+            getProductData();
+
+            // 顯示購物清單
+            showShopcarItem();
+
+            // 取得全國道路資料
+            getCityData();
+
+            // 取得付款方式
+            getPayData();
+
+            // 取得交貨方式
+            getDeliveryData();
+
+        //     // 偵測: 離開網頁
+        //     $(window).bind('beforeunload', function(){
+        //         if(window.is_confirm !== false)
+        //           return "離開網頁";
+        //    });
+
+            // 監聽: 支付方式
+            $("#order_page_deliveryOptions").bind("input propertychange", function(){
+                var id = $(this).val();
+                
+                switch(id){
+                    // 711取貨
+                    case "1":{
+                        $("#deliveryItem").removeClass("d-none");
+                        $("#deliveryHome").addClass("d-none");
+                        $("#delivery711").removeClass("d-none");
+                        $("#order_page_addr").val("").attr("readonly", "readonly");
+                        $("#map").removeClass("d-none");
+                        flag_addr = true;
+                    } break;  
+                    
+                    // 宅配
+                    case "2":{
+                        $("#deliveryItem").removeClass("d-none");
+                        $("#deliveryHome").removeClass("d-none");
+                        $("#delivery711").addClass("d-none");
+                        $("#order_page_addr").val("").removeAttr("readonly");
+                        $("#map").addClass("d-none");
+                        updateMap(24.171594, 120.609454, "貝果專賣店");
+                        flag_addr = false;
+                    } break;
+
+                    // 店取
+                    case "3": {
+                        $("#deliveryItem").addClass("d-none");
+                        $("#map").addClass("d-none");
+                        updateMap(24.171594, 120.609454, "貝果專賣店");
+                        flag_addr = true;
+                    }break;
+
+                }
+            });
+
+            // 監聽: 縣市選單
+            $("#order_page_cityOptions").bind("input propertychange", function(){
+                idxCity = $(this).val();
+                $("#order_page_townOptions").empty();
+                $("#order_page_townOptions").append('<option selected disabled>請選擇鄉鎮區</option>');
+                arrCityData[idxCity].AreaList.forEach(function(item, idx){
+                    strHtml = '<option value="'+idx+'">'+item.AreaName+'</option>'
+                    $("#order_page_townOptions").append(strHtml);
+                });
+
+                // 取得縣市711資料
+                 get711Data();
+            });
+
+            // 監聽: 鄉鎮區選單
+            $("#order_page_townOptions").bind("input propertychange", function(){
+                var idxTown = $(this).val();
+                $("#order_page_roadOptions").empty();
+                $("#order_page_roadOptions").append('<option selected disabled>請選擇道路名稱</option>');
+                arrCityData[idxCity].AreaList[idxTown].RoadList.forEach(function(item, idx){
+                    strHtml = '<option value="'+idx+'">'+item.RoadName+'</option>'
+                    $("#order_page_roadOptions").append(strHtml);
+                });
+
+                // 取得鄉鎮711資料
+                var townName = $("#order_page_townOptions option:selected").text();
+                $("#order_page_storeOptions").empty();
+                $("#order_page_storeOptions").append('<option selected disabled>請選擇門市</option>');
+                arrTown711Data[mapTown711.get(townName)].forEach(function(item, idx){
+                    strHtml = '<option value="'+idx+'">'+item.POIName+'</option>'
+                    $("#order_page_storeOptions").append(strHtml);
+                })               
+            });
+
+            // 監聽: 711門市選單
+            $("#order_page_storeOptions").bind("input propertychange", function(){
+                var idx = $(this).val();
+                var townName = $("#order_page_townOptions option:selected").text();
+                var data = arrTown711Data[mapTown711.get(townName)][idx];
+                var addr = data.Address.substr(6, data.Address.length-6);
+                $("#order_page_addr").val(addr);
+                var storeName = $("#order_page_storeOptions option:selected").text();
+                updateMap(data.Y, data.X, storeName+"門市");
+            });    
+            
+            // 登出
+            $("#btn_logout").click(function(){
+                // cookie清空
+                setCookie("UIDMP", "", 7);
+
+                // 購物車清空
+                localStorage.setItem('shopcar', "");
+                $("#shopcarNum").text("");
+                $("#mylist").empty();
+                $("#moneyTotal").text("0");  
+                $("#moneyTotalVIP").text("0");  
+
+                // 隱藏會員專區
+                $("#navItem_member").addClass("d-none");
+
+                // 隱藏登出按鈕
+                $("#btn_logout").addClass("d-none");
+
+                // 清除會員登入訊息
+                $("#user_message").text("訪客 歡迎!!");
+
+                // 只有會員才有提交功能
+                $("#btn_OK").addClass("d-none");
+                $("#btn_hint_login").removeClass("d-none");
+                $("#vip_item").addClass("d-none");
+                $("#discount_msg").text("成為VIP會員");
+            });
+
+            // 監聽: 提交
+            $("#btn_ok").click(function(){
+
+                console.log("flag_pay: "+ flag_pay);
+                console.log("flag_delivery: "+ flag_delivery);
+                console.log("flag_addr: "+ flag_addr);
+                console.log("flag_fullName: "+ flag_fullName);
+                console.log("flag_mobile: "+ flag_mobile);
+
+                if(!flag_pay || !flag_delivery || !flag_addr || !flag_fullName || !flag_mobile){
+                    alert("欄位輸入有誤, 請重新確認!")
+                    return;
+                }
+
+
+                // 檢查購物車內容
+                if(mapCart.size<1){
+                    alert("購物清單沒有商品, 無法提交");
+                    return;
+                }
+
+                var city = $("#order_page_cityOptions option:selected").text();
+                if(city.includes("請選擇"))
+                    city ="";
+
+                var town = $("#order_page_townOptions option:selected").text();
+                if(town.includes("請選擇"))
+                    town ="";
+
+                var road = $("#order_page_roadOptions option:selected").text();
+                if(road.includes("請選擇"))
+                    road ="";
+
+                var addrFull = city+town+road+$("#order_page_addr").val();
+
+                var dataJSON={};
+                dataJSON["WebName"] = webName;
+                dataJSON["Pay_ID"] = $("#order_page_payOptions").val();
+                dataJSON["Delivery_ID"] = $("#order_page_deliveryOptions").val();
+                dataJSON["Receiver"] = $("#order_page_fullName").val();
+                dataJSON["Mobile"] = $("#order_page_mobile").val();
+                dataJSON["County"] = city;
+                dataJSON["Township"] = town;
+                dataJSON["Addr"] = addrFull;
+                dataJSON["Money"] = bIsVIP ? $("#moneyTotalVIP").text() : $("#moneyTotal").text();
+                // console.log(JSON.stringify(dataJSON));
+
+                // //傳遞至後端
+                $.ajax({
+                    type: "POST",
+                    url: "../../api/back/order/b_order_create_api.php",
+                    data: JSON.stringify(dataJSON),                    
+                    dataType:"json",
+                    success: showdata_orderCreate,
+                    error: function(){
+                        alert("error: b_order_create_api.php");
+                    }
+                });
+            });
+
+            // 監聽: 提示訪客登入按鈕
+            $("#btn_hint_login").click(function(){
+                location.href="../../f_index.html";
+            });
+
+     
+            $('#order_page_payOptions').bind("input propertychange", function(){
+                if($(this).val()!=""){
+                    $(this).removeClass("is-invalid");
+                    $(this).addClass("is-valid");
+                    flag_pay = true;
+                }else{
+                    $(this).removeClass("is-valid");
+                    $(this).addClass("is-invalid");
+                    flag_pay = false;
+                }
+            });
+
+            $('#order_page_deliveryOptions').bind("input propertychange", function(){
+                if($(this).val()!=""){
+                    $(this).removeClass("is-invalid");
+                    $(this).addClass("is-valid");
+                    flag_delivery = true;
+                }else{
+                    $(this).removeClass("is-valid");
+                    $(this).addClass("is-invalid");
+                    flag_delivery = false;
+                }
+            });
+
+            $('#order_page_addr').bind("input propertychange", function(){
+                if($(this).val()!=""){
+                    $(this).removeClass("is-invalid");
+                    $(this).addClass("is-valid");
+                    flag_addr = true;
+                }else{
+                    $(this).removeClass("is-valid");
+                    $(this).addClass("is-invalid");
+                    flag_addr = false;
+                }
+            });
+
+            $('#order_page_fullName').bind("input propertychange", function(){
+                if($(this).val()!=""){
+                    $(this).removeClass("is-invalid");
+                    $(this).addClass("is-valid");
+                    flag_fullName = true;
+                }else{
+                    $(this).removeClass("is-valid");
+                    $(this).addClass("is-invalid");
+                    flag_fullName = false;
+                }
+            });
+
+            $('#order_page_mobile').bind("input propertychange", function(){
+                if($(this).val()!=""){
+                    $(this).removeClass("is-invalid");
+                    $(this).addClass("is-valid");
+                    flag_mobile = true;
+                }else{
+                    $(this).removeClass("is-valid");
+                    $(this).addClass("is-invalid");
+                    flag_mobile = false;
+                }
+            });
+        });
+
+        function showShopcarItem(){
+            $("#mylist").empty();
+            arrCartItem.forEach(function(item, idx){
+                var price = mapProduct.get(item).Price;
+                var num = mapCart.get(item);
+                var total = price*num;         
+                var idNum = "num_"+item;    
+                var html = '<tr>'+
+                            '<td>'+(idx+1)+'</td>'+
+                            '<td>'+mapProduct.get(item).Name+'</td>'+
+                            '<td><img src="'+productImgFolder+mapProduct.get(item).Photo+'" class="w-50 my-3"></td>'+
+                            '<td>'+price+'</td>'+
+                            '<td>'+
+                                '<div class= "row justify-content-center">'+
+                                    '<div class="col-4 menus" onclick="menusNum(\''+item+'\')"><i class="fa-solid fa-minus"></i></div>'+
+                                    '<div class="col-4 itemNum">'+num+'</div>'+
+                                    '<div class="col-4 add" onclick="addNum(\''+item+'\')"><i class="fa-solid fa-plus"></i></div>'+
+                                '</div>'+
+                            '</td>'+
+                            '<td>'+total+'</td>'+
+                            '<td><button class="btn btn-info" onclick="deleteItem(\''+item+'\')">刪除</button></td>'+
+                        '</tr>';
+                $("#mylist").append(html);
+
+                // 紀錄訂購內容在第幾個欄位
+                if(!mapOrderItemIdx.has(item)){
+                    mapOrderItemIdx.set(item, idx);
+                }
+            });
+
+            // 全部合計
+            var total = 0;
+            mapCart.forEach(function(item, key){
+                total += mapProduct.get(key).Price * item;
+            });
+            $("#moneyTotal").text(total);  
+            $("#moneyTotalVIP").text(Math.floor(total*0.9)); 
+        }
+
+        function getShopcarData(){            
+            var getData = localStorage.getItem('shopcar');
+            if((getData==null) || (getData==""))
+                return;
+
+            var getDataArr = JSON.parse(getData);            
+            mapCart.clear();
+            getDataArr.forEach(function(item){                
+                mapCart.set(item[0], item[1]);
+                if(!arrCartItem.includes(item[0]))
+                arrCartItem.push(item[0]);
+            });  
+
+            // 排序
+            arrCartItem.sort();     
+            
+            // 購物車顯示數量
+            if(mapCart.size>0)
+                $("#shopcarNum").text("+" + mapCart.size.toString());
+            else
+                $("#shopcarNum").text("");
+        }
+
+        // 取得產品資料
+        function getProductData(){
+            $.ajax({
+                type:"GET",
+                url:"../../api/front/product/f_product_read_api.php",
+                // url:"../../js/product.json",
+                dataType:"json",
+                async:false,
+                success: showdata_product,
+                error: function(){
+                    alert("error: f_product_read_api.php");
+                }
+            })
+        }
+
+        function showdata_product(data){   
+            data.data.forEach(function(item){     
+                
+                // 下架商品
+                if(item.Active=="N")
+                    return;
+
+                mapProduct.set(item.PNO, item);
+            })
+
+        }
+
+        function menusNum(pno){
+            var num = mapCart.get(pno);
+            if(num==1)
+                return;
+
+            num -=1;
+            setShopCarNum(pno, num);
+            dispShopcarItme(pno, num);
+        }
+
+        function addNum(pno){
+            var num = mapCart.get(pno);
+            num += 1;
+            setShopCarNum(pno, num);
+            dispShopcarItme(pno, num);
+        }
+
+        function setShopCarNum(pno, num){
+
+            mapCart.set(pno, num);                      
+            
+            // 設定localStorage
+            const myMapArray = Array.from(mapCart);
+            const myMapString = JSON.stringify(myMapArray);
+            localStorage.setItem('shopcar', myMapString);
+        }
+
+        function dispShopcarItme(pno, num){
+            var idx = mapOrderItemIdx.get(pno);
+
+            // 單品數量
+             var numPos = "#mylist tr:eq("+idx+") td:eq(4) .row .itemNum";            
+            $(numPos).text(num);
+
+            // 單品總價
+            var pricePos = "#mylist tr:eq("+idx+") td:eq(5)";
+            $(pricePos).text(num*mapProduct.get(pno).Price);
+
+            // 全部合計
+            var total = 0;
+            mapCart.forEach(function(item, key){
+                total += mapProduct.get(key).Price * item;
+            });
+            $("#moneyTotal").text(total);   
+            $("#moneyTotalVIP").text(Math.floor(total*0.9)); 
+        }
+
+        function deleteItem(pno){
+            mapCart.delete(pno);
+
+            // 設定localStorage
+            const myMapArray = Array.from(mapCart);
+            const myMapString = JSON.stringify(myMapArray);
+            localStorage.setItem('shopcar', myMapString);
+
+            // 重置購物清單
+            arrCartItem.length = 0;
+            mapCart.forEach(function(item, key){            
+                arrCartItem.push(key);
+            }); 
+            arrCartItem.sort();
+
+            // 購物車顯示數量
+            if(mapCart.size>0)
+                $("#shopcarNum").text("+" + mapCart.size.toString());
+            else
+                $("#shopcarNum").text("");
+
+            // 顯示購物清單
+            mapOrderItemIdx.clear();
+            showShopcarItem();
+        }
+
+        function updateMap(posX, posY, msg)
+        {   
+            removeMarker();
+            map.panTo([posX, posY]);            
+            L.marker([posX, posY]).addTo(map)
+                .bindPopup('<h3 class="text-danger">'+msg+'<h3>')
+                .openPopup();
+        }
+
+        function removeMarker(){
+            map.eachLayer(function(layer){
+                if(layer instanceof L.Marker){
+                    map.removeLayer(layer);
+                }
+            });
+        }
+
+        function getCityData(){
+            $.ajax({
+                type:"GET",
+                url:"../../js/cityAllData.json",
+                dataType:"json",
+                success: showdata_city,
+                error:function(){
+                    alert("error: cityAllData.json");
+                },
+            });
+        }
+
+        function showdata_city(data){
+            arrCityData = data;            
+            data.forEach(function(item, key){
+                // 縣市
+                var htmlCity = '<option value="'+key+'">'+item.CityName+'</option>';
+                $("#order_page_cityOptions").append(htmlCity);
+            }); 
+        }
+
+        function get711Data(){
+            var fileName = arrCityData[idxCity].CityName + ".json";            
+            $.ajax({
+                type:"GET",
+                url:"../../js/711/"+fileName,
+                dataType:"json",
+                success: showdata_711,
+                error:function(){
+                    alert("error: cityAllData.json");
+                },
+            });
+        }
+
+        function showdata_711(data){            
+            mapTown711.clear();
+            arrTown711Data.length = 0;
+            data.stores.forEach(function(item){                
+                var town = item.Address.substr(3, 3);                
+                if(!mapTown711.has(town)){
+                    mapTown711.set(town, arrTown711Data.length);
+                    arrTown711Data.push(new Array);
+                }
+                arrTown711Data[mapTown711.get(town)].push(item);
+            });
+        }
+
+        function getPayData(){
+            $.ajax({
+                type:"GET",
+                url:"../../api/back/pay/b_pay_read_api.php",
+                dataType:"json",
+                success: showdata_pay,
+                error:function(){
+                    alert("error: cityAllData.json");
+                },
+            });
+        }
+
+        function showdata_pay(data){
+            data.data.forEach(function(item){
+                var html = '<option value="'+item.ID+'">'+item.Name+'</option>'
+                $("#order_page_payOptions").append(html);
+            })            
+        }
+
+        function getDeliveryData(){
+            $.ajax({
+                type:"GET",
+                url:"../../api/back/delivery/b_delivery_read_api.php",
+                dataType:"json",
+                success: showdata_delivery,
+                error:function(){
+                    alert("error: cityAllData.json");
+                },
+            });
+        }
+
+        function showdata_delivery(data){
+            data.data.forEach(function(item){
+                var sel = (item.ID==1) ? "selected" : ""; 
+                var html = '<option value="'+item.ID+'" '+sel+'>'+item.Name+'</option>'
+                $("#order_page_deliveryOptions").append(html);
+            })   
+        }
+
+        function checkCookieUser_callback(data){            
+            if(data.state){
+                memberData = data.data[0];
+                bIsMember = true;
+                webName = data.data[0].WebName;   
+                $("#user_message").text(webName + " 歡迎!");    
+                $("#navItem_member").removeClass("d-none");
+                $("#btn_ok").removeClass("d-none");
+                $("#btn_logout").removeClass("d-none");
+                $("#btn_hint_login").addClass("d-none");
+                var mType = mapMemberTypeData.get(data.data[0].MemberType_ID);
+                // console.log("member type: "+mType);
+                bIsVIP = mapMemberTypeData.get(data.data[0].MemberType_ID).includes("VIP") ? true : false;
+                if(bIsVIP){
+                    $("#vip_item").removeClass("d-none");
+                    $("#discount_msg").text("VIP會員");
+                }
+
+            }
+        }
+
+        function saveCartData()
+        {
+            if(!bIsMember)
+                return;
+            createCartData(memberData.WebName);
+        }
+
+        function createCartData(WebName){
+            const myMapArray = Array.from(mapCart);
+            const myMapString = JSON.stringify(myMapArray);
+
+            var dataJSON={};
+                dataJSON["WebName"] = WebName;
+                dataJSON["Content"] = myMapString;
+            //  localStorage.setItem('msg', JSON.stringify(dataJSON));
+          
+            $.ajax({
+                type:"POST",
+                url:"../../api/back/cart/b_cart_create_update_api.php",
+                data: JSON.stringify(dataJSON),   
+                dataType:"json",             
+                success:function(data){
+                    localStorage.setItem('msg', data.message);
+                },
+                error:function(){
+                    alert("error: b_cart_create_api.php");
+                }
+            }); 
+        }
+
+        function showdata_orderCreate(data){
+            // console.log(data);
+            if(data.state){
+                var PoNo = data.data.PoNo;
+                addOrderItem(PoNo);
+                // removeCartData();
+
+                // 購物車清空
+                localStorage.setItem('shopcar', "");
+                mapCart.clear();
+                createCartData(webName);
+
+                // 設定會員專區連接到的內容
+                localStorage.setItem("WebMember", "order");
+
+                // 移到會員專區
+                location.href ="f_member_info.html";
+            }else{
+                alert(data.message);
+            }
+        }
+
+        function addOrderItem(PoNo){
+            mapCart.forEach(function(item, key){
+                var product = mapProduct.get(key);
+                var dataJSON={};
+                dataJSON["PoNo"] = PoNo;
+                dataJSON["PNO"] = product.PNO;
+                dataJSON["Price"] = product.Price;
+                dataJSON["Num"] = item;
+            //    console.log(JSON.stringify(dataJSON));
+          
+                $.ajax({
+                    type:"POST",
+                    url:"../../api/back/orderItem/b_orderItem_create_api.php",
+                    data: JSON.stringify(dataJSON),   
+                    dataType:"json",   
+                    async:false,        
+                    success:function(data){
+                        if(!data.state){
+                            console.log(data.message);
+                        }                            
+                    },
+                    error:function(){
+                        alert("error: b_orderItem_create_api.php");
+                    }
+                }); 
+            })
+        }
+
+        // 取得分類資料
+        function getMemberType(){
+          $.ajax({
+            type:"GET",
+            url:"../../api/common/c_memberType_read_api.php",
+            dataType:"json",
+            async:false,
+            success:function(data){
+                // console.log(data);
+                if(data.state){
+                    data.data.forEach(function(item){
+                        mapMemberTypeData.set(item.ID, item.Name);
+                    });
+                    // console.log(mapMemberTypeData);
+                }else{
+                    alert(data.message);
+                }
+            },
+            error:function(){
+              alert("error: c_age_read_api.php");
+            }          
+          });
+        };
+
+    </script>
+</body>
+</html>
