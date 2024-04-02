@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>貝果專賣店</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/all.min.css">
+    <link rel="stylesheet" href="css/myall.css">
+    <style>
+
+        /* .s02 .navbar{
+            position: relative;
+        } */
+
+        /* .s02 .navbar .navbar-nav{
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        } */
+
+        /* .s02 .navbar .iconNavBar{
+            position: absolute;
+            top: 22%;
+            left: 34%;
+        } */
+
+        /* .s02 .iconBtnMember{
+            position: absolute;
+            right: 20%;
+        } */
+
+        /* .s02 .iconBtnShop{
+            position: absolute;
+            right: 16%;
+        }  */
+
+        .iconBtnMember, .iconBtnShop{
+            color: white;
+        }
+
+        .iconBtnMember:hover{
+            color: rgb(231, 210, 117);
+        }
+
+        .iconBtnShop:hover{
+            color: rgb(231, 210, 117);
+        }
+
+        .modal{
+            margin-top: 2%;
+        }
+
+        .timeline-section {
+            position: relative;
+        }
+
+        .timeline-section::before {
+            position: absolute;
+            content: "";
+            top: 10px;
+            bottom: 0;
+            width: 5px;
+            /* background-color: var(--mycolor04);    */
+            background-image: linear-gradient(45deg, rgba(229, 164, 14, 0.1), rgba(204, 228, 21, 0.616));
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .timeline-pointer {
+            position: relative;
+        }
+
+        .timeline-pointer::before {
+            position: absolute;
+            content: "";
+            top: 15px;
+            width: 20px;
+            height: 20px;
+            background-color: white;
+            border-radius: 50%;
+            border: 6px solid rgb(188, 210, 44);
+        }
+
+        .timeline-pointer:hover::before {
+            width: 25px;
+            height: 25px;
+            border: 10px solid rgb(237, 97, 11);
+        }
+
+        .img01 {
+        height: 280px;
+        background-image: url(images/front/009.jpg);
+        }
+
+        .img02 {
+        height: 280px;
+        background-image: url(images/front/011.jpg);
+        }
+
+        .img03 {
+        height: 280px;
+        background-image: url(images/front/012.jpg);
+        }
+
+        .img04 {
+        height: 280px;
+        background-image: url(images/front/013.jpg);
+        }
+
+        .tab-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .tab {
+            background-color: #ddd;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .active-tab {
+            background-color: rgba(109, 120, 109, 0.605);
+        }
+
+        .active-content {
+            display: block;
+        }
+
+
+    </style>
+</head>
+<body>
+    <!-- section 01 -->
+    <section style="background-color: var(--mycolor01);">
+        <div class="container">
+            <div class="text-end" style="height: 40px;">
+                <span class="text-primary h3" id="user_message"></span>
+                <!-- fa-nx, n:1~10, icon放大倍率 -->
+                <!-- <a href="#"><i class="fa-brands fa-square-facebook fa-2x"></i></a> -->
+            </div>
+        </div>
+    </section>
+
+      <!-- section 02 -->
+  <section class="s02">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary bg-dark navbar-dark" style="height: 100px;">
+      <div class="container"> 
+        <a class="navbar-brand offset-2" href="#">
+            <!-- TODO: 放置icon -->  
+            <img src="images/front/bagel.png" width="60" alt="" class="iconNavBar"> 
+        </a> 
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">     
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item"><a class="nav-link" aria-current="page" href="#s03">關於我們</a></li>
+                <li class="nav-item"><a class="nav-link" aria-current="page" href="#s07">最新消息</a></li>                
+                <li class="nav-item"><a class="nav-link" aria-current="page" href="#s08">門市資訊</a></li>
+                <li class="nav-item"><a class="nav-link" aria-current="page" href="#s09">徵才</a></li>
+                <li class="nav-item"><a class="nav-link" aria-current="page" href="web/front/f_product_info.html">商品選購</a></li>
+                <li class="nav-item d-none" id="s02_member">
+                    <a class="nav-link" aria-current="page" href="web/front/f_member_info.html">會員專區</a>
+                </li>
+            </ul>    
+            <div class="row flex-column text-center iconBtnMember me-3" id="btn_login" data-bs-toggle="modal" data-bs-target="#modal_login">
+                <div class="col mt-3 ">
+                    <i class="fa-solid fa-user fa-2x"></i>
+                </div>
+                <div class="col">
+                    <p>會員登入</p>
+                </div>
+            </div>  
+            <div class="row flex-column text-center iconBtnMember me-3 d-none" id="btn_logout">
+                <div class="col mt-3 ">
+                    <i class="fa-solid fa-right-from-bracket fa-2x"></i>
+                </div>
+                <div class="col">
+                    <p>會員登出</p>
+                </div>
+            </div>  
+            <div class="row flex-column text-center iconBtnShop" id="btn_shopcar">
+                <!-- <div class="col mt-3 ">
+                    <i class="fa-solid fa-cart-shopping fa-2x"></i>
+                </div>
+                <div class="col">
+                    <p>購物車</p>
+                </div> -->
+                <a href="web/front/f_cart_info.html" style="text-decoration:none;">
+                    <div class="row flex-column text-center iconBtnShop" id="btn_shopcar" style="position: relative;">
+                        <div class="col mt-3 ">
+                            <i class="fa-solid fa-cart-shopping fa-2x"></i>
+                        </div>
+                        <div class="col">
+                            <p>購物車</p>
+                        </div>
+                        <div class="row" style="position: absolute; top: 20px; left: 40px; z-index: 20;">
+                            <span class="bg-danger rounded-pill badge" id="shopcarNum" style="width: 40px"></span>
+                        </div>
+                    </div>
+                </a>
+            </div>        
+      </div>
+    </div>
+    </nav>
+  </section>
+
+    <!-- section 02 loginModal -->
+    <div class="modal fade" id="modal_login" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header text-bg-success">
+              <h1 class="modal-title fs-5 fw-900" id="exampleModalLabel">會員登入</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="mb-3 px-3 input-group ">
+                <label for="modal_login_name" class="input-group-text">帳號</label>
+                <input type="text" class="form-control" name="modal_login_name" id="modal_login_name" maxlength="10">
+              </div>
+              <div class="mb-3 px-3 input-group ">
+                <label for="modal_login_pwd" class="input-group-text">密碼</label>
+                <input type="password" class="form-control" name="modal_login_pwd" id="modal_login_pwd" maxlength="50">
+              </div>
+              <div class="mb-3">
+                <div class="row justify-content-center mx-3  p-3">
+                    <div class="btn btn-primary" id="modal_member_login">登入</div>
+                </div>
+                <div class="text-center mt-3">
+                    <span>尚未註冊為會員?</span>
+                </div>
+                <div class="row justify-content-center mx-3  p-3">
+                    <div class="btn btn-warning" id="modal_login_register">立即註冊</div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+            </div>
+          </div>
+        </div>
+    </div>
+    <!-- section 02 registerModal -->
+    <div class="modal fade" id="modal_register" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header text-bg-success">
+            <h1 class="modal-title fs-5 fw-900" id="exampleModalLabel">會員註冊</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body ">
+            <div class="row">
+                <div class="col-4">
+                <h2 class="fw-500 text-center">會員守則</h2>
+                <ol>
+                    <li>
+                    <p>尊重他人</p>
+                    <p>會員應該相互尊重，避免使用冒犯性語言或參與具有攻擊性的行為。這包括尊重不同的觀點、文化和價值觀。</p>
+                    </li>
+                    <li>
+                    <p>保護隱私</p>
+                    <p>會員應該尊重其他人的隱私權。不應該未經允許地公開或分享他人的個人信息，並應該遵守相關的隱私法規。</p>
+                    </li>
+                    <li>
+                    <p>合法合規</p>
+                    <p>會員應該遵守組織或網站的使用條款和相關法規。這包括不參與非法活動、不發布侵犯版權的內容，並遵守所有社群守則。</p>
+                    </li>
+                    <li>
+                    <p>積極參與</p>
+                    <p>會員應該以積極和建設性的態度參與社群或組織的活動。這包括分享知識、提供幫助和參與討論，以促進共同的學習和交流。</p>
+                    </li>
+                    <li>
+                    <p>不濫用權利</p>
+                    <p>會員應該謹慎使用其在組織或網站中的權利。這包括不濫用管理權限、不進行惡意行為，並遵守所有相關的規定。</p>
+                    </li>
+                </ol>
+                <div class="form-check">
+                    <input class="form-check-input is-valid" type="checkbox" value="" id="chkMemberRule" checked>
+                    <label class="form-check-label" for="chkMemberRule">同意</label>                
+                    <div class="invalid-feedback">未勾選同意</div> 
+                </div>
+                </div>
+                <div class="col-4">            
+                    <div class="m-3 pe-5 input-group">
+                        <label for="modal_register_webName" class="col-3 input-group-text">帳號</label>
+                        <input type="text" class="form-control" id="modal_register_webName" name="modal_register_webName" placeholder="帳號字數4-8" maxlength="8">                  
+                        <div class="valid-feedback offset-2" id="userNameMsg_OK">帳號符合規則</div>              
+                        <div class="invalid-feedback offset-2" id="userNameMsg_NG">帳號不符合規則</div>                      
+                    </div>
+                    <div class="m-3 pe-5 input-group">
+                        <label for="modal_register_pwd" class="col-3 input-group-text">密碼</label>
+                        <input type="password" class="form-control" id="modal_register_pwd" name="modal_register_pwd" placeholder="密碼字數6-10" maxlength="10">
+                        <div class="valid-feedback offset-2">密碼符合規則</div>              
+                        <div class="invalid-feedback offset-2">密碼不符合規則</div> 
+                    </div>
+                    <div class="m-3 pe-5 input-group">
+                        <label for="modal_register_checkPwd" class="col-3 input-group-text">確認密碼</label>
+                        <input type="password" class="form-control" placeholder="確認密碼" id="modal_register_checkPwd" name="modal_register_checkPwd">
+                        <div class="valid-feedback offset-2">密碼一致</div>              
+                        <div class="invalid-feedback offset-2">密碼不一致</div> 
+                    </div>
+                    <div class="m-3 pe-5 input-group">
+                        <label for="modal_register_email" class="col-3 input-group-text">Email</label>
+                        <input type="email" class="form-control" id="modal_register_email" name="modal_register_email" placeholder="email須包含@符號" maxlength="50">
+                        <div class="valid-feedback offset-2">email符合規則</div>              
+                        <div class="invalid-feedback offset-2">email不符合規則</div> 
+                    </div>                  
+                    <div class="m-3 pe-5 input-group">
+                        <label for="modal_register_fullName" class="col-3 input-group-text">姓名</label>
+                        <input type="text" class="form-control" name="modal_register_fullName" id="modal_register_fullName" placeholder="姓名字數15碼以內" maxlength="15">
+                        <div class="valid-feedback offset-2">姓名符合規則</div>              
+                        <div class="invalid-feedback offset-2">姓名不符合規則</div> 
+                    </div>
+                    <div class="m-3 pe-5 input-group">
+                        <label for="modal_register_mobile" class="col-3 input-group-text">手機</label>
+                        <input type="text" class="form-control" name="modal_register_mobile" id="modal_register_mobile" placeholder="手機號碼字數10碼" maxlength="10">
+                        <div class="valid-feedback offset-2">手機號碼符合規則</div>              
+                        <div class="invalid-feedback offset-2">手機號碼不符合規則</div> 
+                    </div>
+                    <div class="m-3 pe-5 input-group">
+                        <label for="modal_register_ageOptions" class="col-3 input-group-text">年齡層</label> 
+                        <select class="col-9 form-select" name="modal_register_ageOptions" id="modal_register_ageOptions">
+                            <option selected disabled>請選擇年齡層</option>
+                        </select>   
+                        <div class="valid-feedback">已選擇年齡層</div>              
+                        <div class="invalid-feedback">未選擇年齡層</div>               
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="mb-3 input-group">
+                        <label for="modal_register_fileUpload" class="input-group-text">大頭照</label> 
+                        <input type="file" class="form-control" id="modal_register_fileUpload" name="modal_register_fileUpload">                     
+                    </div> 
+                    <div class="text-center">
+                        <img src="#" id="modal_register_prevImg" alt="" class="w-50 my-3">
+                    </div>
+                </div>
+            </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="modal_register_ok">註冊</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <!-- section 03 -->
+    <section id="s03">
+        <div class="container">
+            <div class="row m-3">
+                <div class="col-4 offset-2">
+                    <div class="row column-flex">
+                        <h2 class="fw-900 text-center">關於我們</h2>
+                        <div class="col-12 m-3">
+                            <p>我們的美味貝果以健康為訴求</p>
+                            <P>選用優質食材，精心烘焙而成</P>
+                            <P>每一口都充滿著麵包的香氣和濃郁的口感</P>
+                            <P>讓您能夠享受到健康與美味的完美結合</P>
+                            <P>無論是早餐、下午茶還是小吃時間，都能成為您的最愛</P>
+                        </div>
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-4">
+                                    <a href="#">
+                                        <span style="font-size: 3em; color: Tomato;">
+                                            <i class="fa-brands fa-square-youtube fa-2x"></i>
+                                        </span>
+                                    </a>
+                                </div>
+                                <div class="col-4">
+                                    <a href="#">
+                                    <span style="font-size: 3em; color: rgb(71, 60, 229);">
+                                        <i class="fa-brands fa-facebook fa-2x"></i>
+                                    </span>   
+                                    </a>                                
+                                </div>
+                                <div class="col-4">
+                                    <a href="#">
+                                        <span style="font-size: 3em; color: rgb(208, 33, 220);">
+                                            <i class="fa-brands fa-instagram fa-2x"></i>
+                                        </span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-5 ms-2">
+                    <img src="images/front/002.jpg" class="img-fluid" alt="">
+                </div>
+                <!-- <div class="col-7 bg-cover"  style="background-image: url(images/front/001.jpg); height: 50vh;">
+                </div> -->
+            </div>
+        </div>
+    </section>
+
+    <!-- section 05 -->
+  <section id="s05" class=".s05_img" style="background-image: url(images/front/006.jpg);  height: 1300PX; background-attachment: fixed; background-size: cover; background-position: 0 center;">
+  <div class="container pt-3">
+    <div class="row align-items-center">
+      <div class="col-md-8 py-5">
+        <div class="row mt-4 wow animate__fadeInDown" data-wow-duration="3s" data-wow-delay="1s"
+          data-wow-iteration="1">
+          <div class="timeline-section">
+            <div class="row mt-3 justify-content-center align-items-center timeline-pointer">
+              <div class="s05_text01 col-md-5">
+                <h2 class="fw-900">乳酪</h2>
+                <div style="background-color: rgba(243, 229, 229, 0.5);">
+                    <p>President是法國知名的乳製品品牌</p>
+                    <p>提供各種高品質的乳酪和乳製品</p>
+                    <p>以豐富的口味和精緻的包裝聞名於世</p>
+                </div>
+              </div>
+              <div class="col-md-5">
+                <div class="img01 bg-cover"></div>
+              </div>
+            </div>
+            <div class="row mt-3 justify-content-center align-items-center flex-row-reverse timeline-pointer">
+              <div class="s05_text01 col-md-5">
+                <h2 class="fw-900">莓果乾</h2>
+                <div style="background-color: rgba(243, 229, 229, 0.5);">
+                    <p>新鮮莓果果乾是由新鮮採摘的莓果經過精心處理製作而成的健康零食</p>
+                    <p>精選最優質的新鮮莓果，經過嚴格的洗淨和處理，去除多餘的水分，然後以特殊工藝製成果乾，保留了莓果的天然甜味和豐富營養</p>
+                </div>
+              </div>
+              <div class="col-md-5">
+                <div class="img02 bg-cover"></div>
+              </div>
+            </div>
+            <div class="row mt-3 justify-content-center align-items-center timeline-pointer">
+              <div class="s05_text01 col-md-5">
+                <h2 class="fw-900">台農57號地瓜</h2>
+                <div style="background-color: rgba(243, 229, 229, 0.5);">
+                    <p>具有外表光滑、色澤紅橙、肉質細膩且味道甜美的特點。它的糖度高，口感極佳</p>
+                </div>
+              </div>
+              <div class="col-md-5">
+                <div class="img03 bg-cover"></div>
+              </div>
+            </div>
+            <div class="row mt-3 justify-content-center align-items-center flex-row-reverse timeline-pointer">
+              <div class="s05_text01 col-md-5">
+                <h2 class="fw-900">台農17號金鑽鳳梨</h2>
+                <div style="background-color: rgba(243, 229, 229, 0.5);">
+                    <p>果皮呈金黃色，果肉呈淡黃色，質地軟嫩、多汁，具有極佳的甜度和香氣 口感豐富而爽口</p>
+                </div>
+              </div>
+              <div class="col-md-5">
+                <div class="img04 bg-cover"></div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="col-10 col-md-3 offset-1">
+        <div class="s05_text01">
+          <!-- <h2 class="fw-900">專業團隊<small class="fw-500 text-danger">R&D Team</small></h2>
+          <p>集合光學、機構、電控、檢測軟體四大專業領域人才，提供給客戶高精度、高品質的自動光學檢測量測設備以及其工廠生產線上的缺陷檢出及良率監控完整解決方案</p> -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+  <!-- section 06 -->
+  <section id="s06">
+    <div class="container-fluid">
+      <div class="row align-items-center text-center" 
+        style="background: linear-gradient(180deg, rgba(0,0,0,0.2),rgba(229, 142, 60, 0.5));">
+        <div class="col-md-3"
+          style="background-image: url(images/front/014.jpg); height: 600px; background-attachment: fixed; background-size: contain; background-position: center center;">
+        </div>
+        <div class="col-md-7 p-5">
+          <div class="row wow animate__zoomIn" data-wow-duration="2s" data-wow-delay="0s" data-wow-iteration="1">
+            <h1 class="mb-4">西元2003年<span class="text-success fw-700">全國第一家</span></h1>
+            <h1 class="mb-4">在地食材 貝果專賣店</h1>
+            <p class="mb-4">我們的貝果均採用當地農場種植的新鮮原料，每一口都能品嚐到土地的味道和鮮活的風味</p>
+            <p class="mb-4">提供多種口味的貝果，包括經典原味、葡萄乾核桃、芝士培根等，滿足不同顧客的口味需求</p>
+            <p class="mb-4">不含防腐劑和人工添加劑，以天然食材製作，健康又營養</p>
+          </div>
+          <div class="row">
+            <div class="col-md-4">
+              <h3>獲獎數目</h3>
+              <h2 class="fw-900 counter01">10/項</h2>
+            </div>
+            <div class="col-md-4">
+              <h3>顧客推薦文</h3>
+              <h2 class="fw-900 counter02">50/篇</h2>
+            </div>
+            <div class="col-md-4">
+              <h3>回購率</h3>
+              <h2 class="fw-900 counter03">90%</h2>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+   <!-- section 07 -->
+  <section id="s07">
+    <div style="background-color: var(--mycolor01); height: 300px;">
+    <div class="container">
+        <div class="row pt-3 mb-3">
+            <div class="col-lg-2 col-12 text-center">
+                <p class="fs-4">最新消息</p>
+            </div>
+            <div class="col-lg-10 d-lg-block d-none pt-4">
+                <div class="card py-3 bg-cover" style="background-color: rgba(255, 255, 255, 0.4);">
+                    <div class="row p-3">
+                        <div class="col-2 ps-4">2024 / 3 / 12</div>
+                        <div class="col-10 news-index my-1">
+                            <!-- <span class="bg-light text-dark p-1 rounded-1">宅配</span> -->
+                            外縣市宅配週日一二不到貨，週一門市公休
+                        </div>
+                    </div>
+                    <div class="container">
+                        <hr>
+                    </div>
+                    <div class="row p-3">
+                        <div class="col-2 ps-4">2024 / 3 / 5</div>
+                        <div class="col-10 news-index my-1">
+                            <!-- <span class="bg-light text-dark p-1 rounded-1">其他</span> -->
+                            本店開立免統一發票收據，不主動提供，如需要請訂購時告知
+                        </div>
+                    </div> 
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+  </section>
+
+   <!-- section 08 -->
+    <section id="s08">
+        <div class="container">
+        <div class="col-12">
+            <p class="fs-4">門市資訊</p>
+        </div>
+          <div class="row my-3">
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-1"><i class="fa-solid fa-location-dot"></i></div>
+                    <div class="col-11">台中市西屯區工業區一路100號</div>
+                </div>
+                <div class="row">
+                    <div class="col-1"><i class="fa-solid fa-phone"></i></div>
+                    <div class="col-11">電話: (04)2359-2181</div>
+                </div>
+                <div class="row">
+                    <div class="col-1"><i class="fa-solid fa-clock"></i></div>
+                    <div class="col-11">營業時間: 11:00~20:00 周一公休</div>
+                </div>
+            </div>
+            <div class="col-md-6">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3640.0342014645657!2d120.60754807634603!3d24.170533278386056!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x34693e048d342aa9%3A0x2b6f18a6783fa3b!2z5Yue5YuV6YOo5Yue5YuV5Yqb55m85bGV572y5Lit5b2w5oqV5YiG572y77yI6Ie65Lit6IG36KiT5bGA77yJ!5e0!3m2!1szh-TW!2stw!4v1704328858776!5m2!1szh-TW!2stw"
+                width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+       <!-- section 09 -->
+      <section id="s09">
+        <div class="container-fluid mt-3">
+          <div class="row wow animate__lightSpeedInRight" data-wow-duration="2s" data-wow-delay="0s" data-wow-iteration="1">
+            <div class="col-md-6 py-5 bg-cover" style="background-image: url(images/front/020.jpg);">
+              <div class="row">
+                <div class="col-10 col-md-8 p-3 ms-5 rounded-4" style="background-color: rgba(0,0,0,0.5);">
+                  <small class="text-bg-warning fw-300 badge mb-2">加入我們</small>
+                  <h2 class="fw-900 text-white">徵才-學徒</h2>
+                  <div class="fw-300 text-white">
+                    <ul>
+                        <li>對烘焙工藝充滿熱情，願意學習並提升技能</li>
+                        <li>有基本的烘焙知識和經驗者優先考慮，但無經驗者也歡迎應徵</li>
+                        <li>具有團隊合作精神，能夠在繁忙的工作環境中保持高效率</li>
+                        <li>具備良好的溝通能力和解決問題的能力</li>
+                        <li>對食品安全和衛生標準有一定的認識和遵守</li>
+                    </ul>
+                </div>
+                  <a href="#" class="btn btn-outline-info">詳細資料</a>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 py-5 bg-cover" style="background-image: url(images/front/022.jpg);">
+              <div class="row">
+                <div class="col-10 col-md-8 p-3 ms-5 rounded-4" style="background-color: rgba(0,0,0,0.5);">
+                  <small class="text-bg-success fw-300 badge mb-2">加入我們</small>
+                  <h2 class="fw-900 text-white">徵才-門市人員</h2>
+                  <div class="fw-300 text-white">
+                    <ul>
+                        <li>熱愛麵包和糕點，對於烘焙工藝和食材有一定的了解</li>
+                        <li>具有良好的溝通能力，能夠與客戶建立良好的關係</li>
+                        <li>積極主動，有責任心和耐心，能夠處理客戶的問題和需求</li>
+                        <li>具備良好的溝通能力和解決問題的能力</li>
+                        <li>具備基本的收銀和結帳能力，並能夠保持收銀台的整潔和準確性</li>
+                    </ul>
+                </div>
+                  <a href="#" class="btn btn-outline-success">詳細資料</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- section 10 -->
+      <section id="s10" class="p-3 s901_text" style="background-color: gainsboro">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-4 wow animate__fadeInUp mb-3" data-wow-delay="0s" data-wow-duration="1s">
+                    <p class="fs-4">聯絡我們</p>
+                    <div class="row">
+                        <div class="col-3"></div>
+                        <div class="col-9 fw200">台中市西屯區工業區一路100號</div>
+                        <div class="col-3"></div>
+                        <div class="col-9 fw200">04-22221234</div>
+                    </div>
+                </div>
+                <div class="col-lg-4 wow animate__fadeInUp my-3" data-wow-delay="0s" data-wow-duration="2s">
+                    <div class="row">
+                        <div class="col border-secondary  border-end text-center pb-3 index-footer"><a
+                                href="about.html">關於我們</a></div>
+                        <div class="col border-secondary border-end text-center pb-3 index-footer"><a href="#">最新消息</a>
+                        </div>
+                        <div class="col border-secondary text-center pb-3 index-footer"><a href="flour.html">產品資訊</a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col border-secondary border-end text-center pb-3 index-footer"><a
+                                href="about.html">企業精神</a></div>
+                        <div class="col border-secondary border-end text-center pb-3 index-footer"><a href="#">服務條款</a>
+                        </div>
+                        <div class="col border-secondary text-center pb-3 index-footer"><a href="#">企業徵才</a></div>
+                    </div>
+                    <div class="row">
+                        <div class="col border-secondary border-end text-center pb-3 index-footer"><a href="#">服務內容</a>
+                        </div>
+                        <div class="col border-secondary border-end text-center pb-3 index-footer"><a href="#">合作廠商</a>
+                        </div>
+                        <div class="col border-secondary text-center pb-3 index-footer"><a href="contact.html">聯絡我們</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </section>
+
+    <!-- footer -->
+    <script src="js/addBackFooter.js"></script>   
+
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/jquery-3.7.1.min.js"></script>
+    <script src="js/cookieManager.js"></script>
+    <script src="https://unpkg.com/counterup2@2.0.2/dist/index.js">	</script>
+    <script src="js/wow.min.js"></script>
+    <script>
+        var flag_chkMemberRule = true;          // 會員規則
+        var flag_registerWebName = false;       // 建立帳號
+        var flag_registerPwd = false;           // 建立密碼
+        var flag_registerCheckPwd = false;      // 確認密碼
+        var flag_registerEmail = false;         // 建立信箱
+        var flag_registerFullName = false;      // 輸入姓名
+        var flag_registerMobile = false;        // 輸入手機
+        var flag_registerAge = false;           // 年齡層選擇
+        var register_photo_name ="";
+        var productImgFolder = "upload/images/product/";        
+        var mapAgeData = new Map();
+
+        const counterUp = window.counterUp.default
+        const callback = entries => {
+        entries.forEach(entry => {
+            const el = entry.target
+                if (entry.isIntersecting && !el.classList.contains('is-visible')) {
+                counterUp(el, {
+                    duration: 2000,
+                    delay: 16,
+                })
+                el.classList.add('is-visible')
+                }
+            })
+        }
+
+        const IO = new IntersectionObserver(callback, { threshold: 1 })
+        const el01 = document.querySelector('.counter01')
+        IO.observe(el01)
+        const el02 = document.querySelector('.counter02')
+        IO.observe(el02)
+        const el03 = document.querySelector('.counter03')
+        IO.observe(el03)
+
+        $(function(){
+            $("#user_message").text("訪客 歡迎!");
+
+            // 取得年齡層資料
+            getAgeData();
+
+            // 取得購物車，for訪客
+            getShopcarDataDefault();
+
+            // 讀取cookie
+            checkCookieUser("UIDMP");
+
+            // 會員登入
+            $("#modal_member_login").click(function(){
+                var dataJSON = {};
+                dataJSON["WebName"] = $("#modal_login_name").val();
+                dataJSON["Pwd"] = $("#modal_login_pwd").val();
+
+                $.ajax({
+                    type: "POST",
+                    url: "api/front/member/f_member_login_api.php",
+                    data: JSON.stringify(dataJSON),              
+                    dataType:"json",
+                    success: showdata_login,
+                    error: function(){
+                        alert("error-member-login-api.php");
+                    }
+                });
+            });
+
+            // 註冊帳號
+            $("#modal_register_ok").click(function(){
+
+                imgUpload();
+                if(!flag_chkMemberRule || !flag_registerWebName || !flag_registerPwd || !flag_registerCheckPwd || !flag_registerEmail  || !flag_registerFullName || !flag_registerMobile || !flag_registerAge){
+                    alert("欄位輸入有誤, 請重新確認!")
+                    return;
+                }
+
+                var dataJSON={};
+                dataJSON["WebName"] = $("#modal_register_webName").val();
+                dataJSON["Pwd"] = $("#modal_register_pwd").val();
+                dataJSON["Email"] = $("#modal_register_email").val();
+                dataJSON["FullName"] = $("#modal_register_fullName").val();
+                dataJSON["Mobile"] = $("#modal_register_mobile").val();
+                dataJSON["Age_ID"] = $("#modal_register_ageOptions").val();     
+                dataJSON["Photo"] = register_photo_name; 
+                
+                //傳遞至後端
+                $.ajax({
+                    type: "POST",
+                    url: "api/front/member/f_member_create_api.php",
+                    data: JSON.stringify(dataJSON),                    
+                    dataType:"json",
+                    success: showdata_createMember,
+                    error: function(){
+                        alert("error-member-Create-api.php");
+                    }
+                });
+            });
+
+            // 登出
+            $("#btn_logout").click(function(){
+                // cookie清空
+                setCookie("UIDMP", "", 7);
+
+                // 清空購物車
+                localStorage.setItem("shopcar", "");
+                $("#shopcarNum").text("");
+
+                // 顯示登入按鈕
+                $("#btn_login").removeClass("d-none");
+
+                // 隱藏登出按鈕
+                $("#btn_logout").addClass("d-none");
+
+                // 隱藏會員專區
+                $("#s02_member").addClass("d-none");
+
+                // 清除會員登入訊息
+                $("#user_message").text("訪客 歡迎!");
+            });
+
+            // 登入註冊
+            $("#modal_login_register").click(function(){
+                $("#modal_login").modal("hide");
+                $("#modal_register").modal("show");
+            })
+
+            // 監聽: 勾選會員守則
+            $("#chkMemberRule").change(function(){
+                if($(this).is(':checked')){
+                    $(this).removeClass("is-invalid");
+                    $(this).addClass("is-valid");
+                    flag_chkMemberRule = true;
+                }else{
+                    $(this).removeClass("is-valid");
+                    $(this).addClass("is-invalid");
+                    flag_chkMemberRule = false;                 
+                }
+            });
+
+            // 監聽: 帳號建立規則
+            $("#modal_register_webName").bind("input propertychange", function(){
+                var num = $(this).val().length;
+                var name = $(this).val();
+                if(num>4 && num<9){           
+                    var dataJSON={};
+                    dataJSON["WebName"] = name;
+
+                    $.ajax({
+                        type:"POST",
+                        url:"api/front/member/f_member_check_name_api.php",
+                        data: JSON.stringify(dataJSON),
+                        dataType:"json",                
+                        success:showdata_check_userName,
+                        error:function(){
+                            alert("error-f_member_check_name_api.php");
+                        }
+                    });
+                }else{
+                    // 字數不符合規定
+                    $("#userNameMsg_NG").text("帳號不符合規則!");
+                    $(this).removeClass("is-valid");
+                    $(this).addClass("is-invalid");
+                    flag_registerWebName = false;
+                    $(this).next().html("");
+                }
+            });
+
+            // 監聽: 密碼建立規則
+            $("#modal_register_pwd").bind("input propertychange", function(){
+                var num = $(this).val().length;
+
+                if(num>5 && num<11){
+                    // 字數符合規定
+                    $(this).removeClass("is-invalid");
+                    $(this).addClass("is-valid");
+                    flag_registerPwd = true;
+                }else{
+                    // 字數不符合規定
+                    $(this).removeClass("is-valid");
+                    $(this).addClass("is-invalid");
+                    flag_registerPwd = false;
+                }
+            });
+
+            // 監聽: 密碼重複輸入確認
+            $("#modal_register_checkPwd").bind("input propertychange", function(){
+                if($(this).val() ==  $("#modal_register_pwd").val()){
+                    // 字數符合規定
+                    $(this).removeClass("is-invalid");
+                    $(this).addClass("is-valid");
+                    flag_registerCheckPwd = true;
+                }else{
+                    // 字數不符合規定
+                    $(this).removeClass("is-valid");
+                    $(this).addClass("is-invalid");
+                    flag_registerCheckPwd = false;
+                }
+            });
+
+             // 監聽: Email建立規則
+            $("#modal_register_email").bind("input propertychange", function(){
+                if($(this).val().includes("@")){
+                    // 字數符合規定
+                    $(this).removeClass("is-invalid");
+                    $(this).addClass("is-valid");
+                    flag_registerEmail = true;
+                }else{
+                    // 字數不符合規定
+                    $(this).removeClass("is-valid");
+                    $(this).addClass("is-invalid");
+                    flag_registerEmail = false;
+                }
+            });
+
+            // 監聽: 姓名輸入規則
+            $("#modal_register_fullName").bind("input propertychange", function(){
+                var num = $(this).val().length;
+
+                if(num>1 && num<16){
+                    // 字數符合規定
+                    $(this).removeClass("is-invalid");
+                    $(this).addClass("is-valid");
+                    flag_registerFullName = true;
+                }else{
+                    // 字數不符合規定
+                    $(this).removeClass("is-valid");
+                    $(this).addClass("is-invalid");
+                    flag_registerFullName = false;
+                }
+            });
+
+            // 監聽: 手機輸入規則
+            $("#modal_register_mobile").bind("input propertychange", function(){
+                var num = $(this).val().length;
+                if(num==10){
+                    // 字數符合規定
+                    $(this).removeClass("is-invalid");
+                    $(this).addClass("is-valid");
+                    flag_registerMobile = true;
+                }else{
+                    // 字數不符合規定
+                    $(this).removeClass("is-valid");
+                    $(this).addClass("is-invalid");
+                    flag_registerMobile = false;
+                }
+            });
+
+            // 監聽: 年齡層
+            $('#modal_register_ageOptions').bind("input propertychange", function(){
+                if($(this).val()!=""){
+                    $(this).removeClass("is-invalid");
+                    $(this).addClass("is-valid");
+                    flag_registerAge = true;
+                }else{
+                    $(this).removeClass("is-valid");
+                    $(this).addClass("is-invalid");
+                    flag_registerAge = false;
+                }
+            });
+
+            // 監聽modal修改大頭照
+            $("#modal_register_fileUpload").change(function(){
+                var type = modal_register_fileUpload.files[0].type;
+                var fileArray = modal_register_fileUpload.files[0].name.split(".");                
+                var fileName = fileArray[1];
+                if(type == "image/jpeg" || type=="image/png"){
+                    var path = URL.createObjectURL(modal_register_fileUpload.files[0]);
+                    $("#modal_register_prevImg").attr("src", path);
+                }else{        
+                    $("#modal_register_prevImg").addClass("d-none");
+                }
+            });
+        });
+
+        // 取得年齡層資料
+        function getAgeData(){
+          $.ajax({
+            type:"GET",
+            url:"api/common/c_age_read_api.php",
+            dataType:"json",
+            async:false,
+            success:showData_age,
+            error:function(){
+              alert("error: b_age_read_api.php");
+            }          
+          });
+        }
+
+        function showData_age(data){
+          if(data.state){
+            data.data.forEach(function(item){
+              mapAgeData.set(item["ID"], item["Name"]);              
+              var html = '<option value="'+item["ID"]+'">'+item["Name"]+'</option>';
+                $("#modal_register_ageOptions").append(html);
+            });
+          }else{
+            alert(data.message);
+          }
+        }
+
+        function login(webName, pwd){
+            var dataJSON={};
+            dataJSON["WebName"] = webName;
+            dataJSON["Pwd"] = pwd;
+            $.ajax({
+                type:"POST",
+                url:"api/front/member/f_member_login_api.php",
+                data: JSON.stringify(dataJSON),
+                dataType:"json",                
+                success:showdata_login,
+                error:function(){
+                    alert("error:f_member_login_api.php");
+                }
+            });
+        }
+
+
+        function showdata_login(data){
+            
+            if(data.state)
+            {
+                // 20240314, 判斷是否停權
+                if(data.data[0].Active=="N"){
+                    setCookie("UIDMP", "", 7);
+                    // 隱藏登入modal
+                    $("#modal_login").modal("hide");
+                    alert("已停權, 請洽管理者, 謝謝");
+                    return;
+                }
+
+
+                // 建立cookie        
+                setCookie("UIDMP", data.data[0].UIDMP, 7);
+
+                // 取得購物車資訊
+                getCartData(data.data[0].WebName);
+
+                // 隱藏登入modal
+                $("#modal_login").modal("hide");
+
+                // 隱藏登入按鈕
+                $("#btn_login").addClass("d-none");
+
+                // 顯示登出按鈕
+                $("#btn_logout").removeClass("d-none");
+
+                // 顯示會員專區
+                $("#s02_member").removeClass("d-none");
+
+                // 顯示當前使用者
+                $("#user_message").text(data.data[0].WebName + " 歡迎!");
+
+            }else{
+                alert(data.message);
+            }
+        }
+
+
+        // 取得: 確認帳號是否存在
+        function showdata_check_userName(data){
+            // alert(data.message);
+            if(data.state){
+                $("#userNameMsg_OK").text("帳號可以使用");
+                $("#modal_register_webName").removeClass("is-invalid");
+                $("#modal_register_webName").addClass("is-valid");
+                flag_registerWebName = true;
+            }else{
+                $("#userNameMsg_NG").text("此帳號已存在!");                
+                $("#modal_register_webName").removeClass("is-valid");
+                $("#modal_register_webName").addClass("is-invalid");
+                flag_registerWebName = false;
+            }
+        }
+
+        // 取得: 註冊帳號的結果
+        function showdata_createMember(data){ 
+            alert(data.message);
+            if(data.state){
+                $("#modal_register").modal("hide");
+                var webName = $("#modal_register_webName").val();
+                var pwd = $("#modal_register_pwd").val();
+                login(webName, pwd);
+            }
+        }
+
+        // 上傳大頭照
+        function imgUpload()
+        {
+            var formData = new FormData();
+            formData.append("file", modal_register_fileUpload.files[0]);
+            
+            //傳遞formdata至後端api
+            $.ajax({
+                type:"POST", 
+                url:"api/common/c_member_imgUpload_api.php",
+                data: formData,
+                dataType: "json",
+                cache: false,
+                contentType:false,
+                processData:false,
+                async:false,
+                success:showdata_imgUpload,
+                error:function(){
+                    alert("error: c_member_imgUpload_api.php");
+                }
+            });
+        }
+
+        function showdata_imgUpload(data)
+        {
+            if(data.state){
+                register_photo_name = data.data.serverfilename;
+            }else{
+                alert(data.message);
+            }
+        }
+
+        function checkCookieUser_callback(data)
+        {
+            // 隱藏登入modal
+            $("#modal_login").modal("hide");
+
+            // 隱藏登入按鈕
+            $("#btn_login").addClass("d-none");
+
+            // 顯示登出按鈕
+            $("#btn_logout").removeClass("d-none");
+
+            // 顯示會員專區
+            $("#s02_member").removeClass("d-none");
+
+            // 顯示當前使用者
+            $("#user_message").text(data.data[0].WebName + " 歡迎!");
+
+            // 取得購物車
+            getCartData(data.data[0].WebName);
+
+            // 設定會員專區連接到的內容
+            localStorage.setItem("WebMember", "member");
+        }
+       
+        function getShopcarDataDefault(){            
+            var getData = localStorage.getItem('shopcar');
+            if((getData==null) || getData==(""))
+                return;
+                    
+            var getDataArr = JSON.parse(getData);            
+            if(getDataArr.length>0)   
+                $("#shopcarNum").text("+" + getDataArr.length.toString());            
+        }
+
+        function getCartData(WebName){
+            var dataJSON={};
+            dataJSON["WebName"] = WebName;
+            $.ajax({
+                type:"POST",
+                url:"api/back/cart/b_cart_read_api_single.php",
+                data: JSON.stringify(dataJSON),   
+                dataType:"json",             
+                success:function(data){
+                    if(data.state){                        
+                        var content = data.data[0].Content;
+                        if((content !="") && (content.length>2)){                        
+                            // 有找到會員的購物清單
+                            localStorage.setItem('shopcar', content);
+                            var getDataArr = JSON.parse(content);            
+                            if(getDataArr.length>0)   
+                                $("#shopcarNum").text("+" + getDataArr.length.toString());
+                        }else{
+                            localStorage.setItem('shopcar', "");
+                            $("#shopcarNum").text("");
+                        }
+                    }else{
+                        createCartData(WebName);
+                    }
+                },
+                error:function(){
+                    alert("error: b_cart_read_api_single.php");
+                }
+            }); 
+        }
+
+        function createCartData(WebName){
+            var dataJSON={};
+                dataJSON["WebName"] = WebName;
+                dataJSON["Content"] = localStorage.getItem('shopcar');;
+          
+            $.ajax({
+                type:"POST",
+                url:"api/back/cart/b_cart_create_update_api.php",
+                data: JSON.stringify(dataJSON),   
+                dataType:"json",             
+                success:function(data){
+                },
+                error:function(){
+                    alert("error: b_cart_create_api.php");
+                }
+            }); 
+        }
+
+    </script>
+</body>
+</html>

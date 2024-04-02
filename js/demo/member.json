@@ -1,0 +1,52 @@
+{
+  "state": true,
+  "dataAge": [
+    {
+      "Age_ID": "1",
+      "Num": "4"
+    },
+    {
+      "Age_ID": "2",
+      "Num": "9"
+    },
+    {
+      "Age_ID": "7",
+      "Num": "10"
+    },
+    {
+      "Age_ID": "8",
+      "Num": "7"
+    },
+    {
+      "Age_ID": "9",
+      "Num": "3"
+    },
+    {
+      "Age_ID": "11",
+      "Num": "2"
+    }
+  ],
+  "dataType": [
+    {
+      "MemberType_ID": "1",
+      "Num": "1"
+    },
+    {
+      "MemberType_ID": "2",
+      "Num": "2"
+    },
+    {
+      "MemberType_ID": "3",
+      "Num": "2"
+    },
+    {
+      "MemberType_ID": "5",
+      "Num": "10"
+    },
+    {
+      "MemberType_ID": "6",
+      "Num": "20"
+    }
+  ],
+  "message": "查詢分析資料成功!"
+}

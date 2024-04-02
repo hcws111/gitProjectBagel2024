@@ -1,0 +1,82 @@
+{
+  "state": true,
+  "dataCityMoney": [
+    {
+      "County": "",
+      "cityNum": "5",
+      "cityMoney": "2360"
+    },
+    {
+      "County": "彰化縣",
+      "cityNum": "2",
+      "cityMoney": "1175"
+    },
+    {
+      "County": "臺中市",
+      "cityNum": "3",
+      "cityMoney": "1940"
+    },
+    {
+      "County": "臺北市",
+      "cityNum": "1",
+      "cityMoney": "460"
+    },
+    {
+      "County": "臺南市",
+      "cityNum": "1",
+      "cityMoney": "765"
+    },
+    {
+      "County": "南投縣",
+      "cityNum": "1",
+      "cityMoney": "125"
+    }
+  ],
+  "dataPay": [
+    {
+      "Pay_ID": "1",
+      "Num": "6"
+    },
+    {
+      "Pay_ID": "2",
+      "Num": "5"
+    },
+    {
+      "Pay_ID": "3",
+      "Num": "2"
+    }
+  ],
+  "dataDelivery": [
+    {
+      "Delivery_ID": "3",
+      "Num": "5"
+    },
+    {
+      "Delivery_ID": "1",
+      "Num": "5"
+    },
+    {
+      "Delivery_ID": "2",
+      "Num": "3"
+    }
+  ],
+    "dataState": [
+    {
+      "OrderState": "C",
+      "Num": "2"
+    },
+    {
+      "OrderState": "P",
+      "Num": "8"
+    },
+    {
+      "OrderState": "F",
+      "Num": "2"
+    },
+    {
+      "OrderState": "D",
+      "Num": "1"
+    }
+  ],
+  "message": "查詢分析資料成功!"
+}
