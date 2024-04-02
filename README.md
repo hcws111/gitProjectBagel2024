@@ -19,6 +19,9 @@
 
 - Bootstrap v5.2.3
 - jQuery v3.7.1
+- jQuery UI - v1.13.2
+- Chart.js v4.4.2
+- AdminLTE v3.2.0
 
 ## 使用簡介
 1. 註冊或登入會員
