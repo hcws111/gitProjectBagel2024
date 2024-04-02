@@ -15,6 +15,11 @@
 ![image](https://github.com/hcws111/gitProjectBagel2024/assets/160553666/8fe318ae-d17c-425f-adde-9e52b8a11a08)
 
 
+後台管理系統
+
+![image](https://github.com/hcws111/gitProjectBagel2024/assets/160553666/e5cefbb4-4b24-4f03-baa4-ca6d0611a677)
+
+
 ## 專案技術
 
 - Bootstrap v5.2.3
