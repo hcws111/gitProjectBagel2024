@@ -403,11 +403,11 @@
             // 監聽: 提交
             $("#btn_ok").click(function(){
 
-                console.log("flag_pay: "+ flag_pay);
-                console.log("flag_delivery: "+ flag_delivery);
-                console.log("flag_addr: "+ flag_addr);
-                console.log("flag_fullName: "+ flag_fullName);
-                console.log("flag_mobile: "+ flag_mobile);
+                // console.log("flag_pay: "+ flag_pay);
+                // console.log("flag_delivery: "+ flag_delivery);
+                // console.log("flag_addr: "+ flag_addr);
+                // console.log("flag_fullName: "+ flag_fullName);
+                // console.log("flag_mobile: "+ flag_mobile);
 
                 if(!flag_pay || !flag_delivery || !flag_addr || !flag_fullName || !flag_mobile){
                     alert("欄位輸入有誤, 請重新確認!")
@@ -445,7 +445,7 @@
                 dataJSON["Township"] = town;
                 dataJSON["Addr"] = addrFull;
                 dataJSON["Money"] = bIsVIP ? $("#moneyTotalVIP").text() : $("#moneyTotal").text();
-                // console.log(JSON.stringify(dataJSON));
+                console.log(JSON.stringify(dataJSON));
 
                 // //傳遞至後端
                 $.ajax({
