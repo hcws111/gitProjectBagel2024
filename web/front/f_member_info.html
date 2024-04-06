@@ -291,7 +291,7 @@
                 if(getCookie("UIDMP")!=""){
                     checkCookieUser("UIDMP");
                 }else{
-                    // location.href = "../../f_index.html";
+                     location.href = "../../index.html";
                 }
 
                 // 顯示資訊
@@ -481,7 +481,7 @@
                 $("#btn_logout").click(function(){
                     // cookie清空
                     setCookie("UIDMP", "", 7);
-                    location.href ="../../f_index.html";
+                    location.href ="../../index.html";
                 });
 
                 $("#btn_backManager").click(function(){
@@ -554,7 +554,7 @@
                     
                 }else{
                     alert(data.message);
-                    location.href = "../../f_index.html";
+                    location.href = "../../index.html";
                 }
             }
 
