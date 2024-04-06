@@ -108,6 +108,7 @@
     <script src="../../js/jquery-3.7.1.min.js"></script>
     <script src="../../js/adminlte.min.js"></script>   
     <script src="../../js/chart.js"></script>  
+    <script src="../../js/path.js"></script> 
     <script>
       var mapAgeData = new Map();
       var mapMemberTypeData = new Map();
@@ -331,7 +332,7 @@
         function getAgeData(){
           $.ajax({
             type:"GET",
-            url:"../../api/back/age/b_age_read_api.php",
+            url:serverSrc+"api/back/age/b_age_read_api.php",
             dataType:"json",
             async:false,
             success:function(data){
@@ -355,7 +356,7 @@
         function getMemberType(){
           $.ajax({
             type:"GET",
-            url:"../../api/back/memberType/b_memberType_read_api.php",
+            url:serverSrc+"api/back/memberType/b_memberType_read_api.php",
             dataType:"json",
             async:false,
             success:function(data){
@@ -376,7 +377,7 @@
         function getMemberData(){
           $.ajax({
             type:"GET",
-            url:"../../api/back/analysis/b_analysis_member_api.php",
+            url:serverSrc+"api/back/analysis/b_analysis_member_api.php",
             dataType:"json",
             async:false,
             success:showdata_member,
@@ -426,7 +427,7 @@
         function getDeliveryData(){
           $.ajax({
             type:"GET",
-            url:"../../api/back/delivery/b_delivery_read_api.php",
+            url:serverSrc+"api/back/delivery/b_delivery_read_api.php",
             dataType:"json",
             async:false,
             success:function(data){
@@ -447,7 +448,7 @@
         function getOrderData(){
           $.ajax({
             type:"GET",
-            url:"../../api/back/analysis/b_analysis_order_api.php",
+            url:serverSrc+"api/back/analysis/b_analysis_order_api.php",
             dataType:"json",
             async:false,
             success:showdata_order,
@@ -508,7 +509,7 @@
         function getProductData(){
           $.ajax({
             type:"GET",
-            url:"../../api/back/product/b_product_read_api.php",
+            url:serverSrc+"api/back/product/b_product_read_api.php",
             dataType:"json",
             async:false,
             success:function(data){
@@ -529,7 +530,7 @@
         function getOrderItemData(){
           $.ajax({
             type:"GET",
-            url:"../../api/back/analysis/b_analysis_orderItem_api.php",
+            url:serverSrc+"api/back/analysis/b_analysis_orderItem_api.php",
             dataType:"json",
             async:false,
             success:showdata_orderItem,

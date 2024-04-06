@@ -331,6 +331,7 @@
       <script src="../../js/adminlte.min.js"></script>    
       <script src="../../js/paginationManagerSingle.js"></script> 
       <script src="../../js/jquery-ui_v1.13.2.js"></script>
+      <script src="../../js/path.js"></script> 
       <script>
         
         var updateImgFolder = "../../upload/images/product/";
@@ -424,7 +425,7 @@
                     dataJSON["PoNo"] = $(this).data("pono");
                     $.ajax({
                         type: "POST",
-                        url: "../../api/back/order/b_order_delete_api.php",
+                        url: serverSrc+"api/back/order/b_order_delete_api.php",
                         data: JSON.stringify(dataJSON),
                         dataType: "json",
                         success: function(data){
@@ -457,7 +458,7 @@
 
               // $.ajax({
               //   type:"POST",
-              //   url:"../../api/back/product/b_product_create_api.php",
+              //   url:serverSrc+"api/back/product/b_product_create_api.php",
               //   data:JSON.stringify(dataJSON),
               //   dataType:"json",
               //   success:showData_add,
@@ -476,7 +477,7 @@
                
                 $.ajax({
                   type:"POST",
-                  url:"../../api/back/order/b_order_update_api.php",
+                  url:serverSrc+"api/back/order/b_order_update_api.php",
                   data:JSON.stringify(dataJSON),
                   dataType:"json",
                   success:function(data){
@@ -594,7 +595,7 @@
         function updateData(){      
           $.ajax({
             type:"GET",
-            url:"../../api/back/order/b_order_read_api.php",
+            url:serverSrc+"api/back/order/b_order_read_api.php",
             dataType:"json",
             async:false,
             success:showData,
@@ -628,7 +629,7 @@
         function getPayData(){
             $.ajax({
                 type:"GET",
-                url:"../../api/back/pay/b_pay_read_api.php",
+                url:serverSrc+"api/back/pay/b_pay_read_api.php",
                 dataType:"json",
                 success: function(data){
                     data.data.forEach(function(item){
@@ -644,7 +645,7 @@
         function getDeliveryData(){
             $.ajax({
                 type:"GET",
-                url:"../../api/back/delivery/b_delivery_read_api.php",
+                url:serverSrc+"api/back/delivery/b_delivery_read_api.php",
                 dataType:"json",
                 success: function(data){
                     data.data.forEach(function(item){
@@ -660,7 +661,7 @@
         function getOrderState(){
             $.ajax({
                 type:"GET",
-                url:"../../api/back/orderState/b_orderState_read_api.php",
+                url:serverSrc+"api/back/orderState/b_orderState_read_api.php",
                 dataType:"json",
                 async:false,
                 success:function(data){
@@ -679,7 +680,7 @@
         function getProductData(){
             $.ajax({
                 type:"GET",
-                url:"../../api/front/product/f_product_read_api.php",
+                url:serverSrc+"api/front/product/f_product_read_api.php",
                 dataType:"json",
                 async:false,
                 success: function(data){
@@ -702,7 +703,7 @@
             dataJSON["PoNo"] = poNo;
             $.ajax({
                 type:"POST",
-                url:"../../api/back/orderItem/b_orderItem_read_api_single.php",
+                url:serverSrc+"api/back/orderItem/b_orderItem_read_api_single.php",
                 data: JSON.stringify(dataJSON),   
                 dataType:"json",   
                 async:false,          

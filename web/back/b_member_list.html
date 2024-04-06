@@ -228,6 +228,7 @@
       <script src="../../js/adminlte.min.js"></script>    
       <script src="../../js/paginationManagerSingle.js"></script> 
       <script src="../../js/cookieManager.js"></script>
+      <script src="../../js/path.js"></script>  
       <script>
         var mapAgeData = new Map();
         var mapMemberTypeData = new Map();
@@ -314,7 +315,7 @@
                     dataJSON["ID"] = $(this).data("id");
                     $.ajax({
                         type: "POST",
-                        url: "../../api/back/member/b_member_delete_api.php",
+                        url: serverSrc+"api/back/member/b_member_delete_api.php",
                         data: JSON.stringify(dataJSON),
                         dataType: "json",
                         success: showdata_delete,
@@ -350,7 +351,7 @@
 
               $.ajax({
                 type:"POST",
-                url:"../../api/back/member/b_member_create_api.php",
+                url:serverSrc+"api/back/member/b_member_create_api.php",
                 data:JSON.stringify(dataJSON),
                 dataType:"json",
                 success:showData_add,
@@ -387,7 +388,7 @@
 
                 $.ajax({
                   type:"POST",
-                  url:"../../api/back/member/b_member_update_api.php",
+                  url:serverSrc+"api/back/member/b_member_update_api.php",
                   data:JSON.stringify(dataJSON),
                   dataType:"json",
                   success:showData_update,
@@ -424,7 +425,7 @@
 
               $.ajax({
                   type:"POST",
-                  url:"../../api/common/c_member_check_name_api.php",
+                  url:serverSrc+"api/common/c_member_check_name_api.php",
                   data: JSON.stringify(dataJSON),
                   dataType:"json",                
                   success:showdata_check_userName,
@@ -501,7 +502,7 @@
         function updateData(){          
           $.ajax({
             type:"GET",
-            url:"../../api/back/member/b_member_read_api.php",
+            url:serverSrc+"api/back/member/b_member_read_api.php",
             dataType:"json",
             async:false,
             success:showData,
@@ -515,7 +516,7 @@
         function getAgeData(){
           $.ajax({
             type:"GET",
-            url:"../../api/back/age/b_age_read_api.php",
+            url:serverSrc+"api/back/age/b_age_read_api.php",
             dataType:"json",
             async:false,
             success:showData_age,
@@ -529,7 +530,7 @@
         function getMemberType(){
           $.ajax({
             type:"GET",
-            url:"../../api/back/memberType/b_memberType_read_api.php",
+            url:serverSrc+"api/back/memberType/b_memberType_read_api.php",
             dataType:"json",
             async:false,
             success:showData_memberType,
@@ -631,7 +632,7 @@
             //傳遞formdata至後端api
             $.ajax({
                 type:"POST", 
-                url:"../../api/common/c_member_imgUpload_api.php",
+                url:serverSrc+"api/common/c_member_imgUpload_api.php",
                 data: formData,
                 dataType: "json",
                 cache: false,
@@ -716,7 +717,7 @@
 
           $.ajax({
             type:"POST",
-            url:"../../api/common/c_member_imgDelete_api.php",
+            url:serverSrc+"api/common/c_member_imgDelete_api.php",
             data: JSON.stringify(dataJSON),
             dataType:"json",
             success:showdata_deleteImg,
