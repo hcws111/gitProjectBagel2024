@@ -242,8 +242,9 @@
         <script src="../../js//jquery-3.7.1.min.js"></script>
         <script src="../../js/cookieManager.js"></script>
         <script src="../../js/paginationManagerSingle.js"></script>
+        <script src="js/path.js"></script>
         <script>
-            var updateImgFolder = "../../upload/images/member/";
+            var updateImgFolder = serverSrc+"upload/images/member/";
             var mapAgeData = new Map();
             var mapMemberTypeData = new Map();
             var mapPayData = new Map();
@@ -352,7 +353,7 @@
                     //傳遞至後端
                     $.ajax({
                         type: "POST",
-                        url: "../../api/front/member/f_member_update_api.php",
+                        url: serverSrc+"api/front/member/f_member_update_api.php",
                         data: JSON.stringify(dataJSON),                    
                         dataType:"json",
                         success: showdata_updateMember,
@@ -502,7 +503,7 @@
                     // console.log(JSON.stringify(dataJSON));
                     $.ajax({
                         type:"POST",
-                        url:"../../api/back/order/b_order_update_api.php",
+                        url:serverSrc+"api/back/order/b_order_update_api.php",
                         data: JSON.stringify(dataJSON),   
                         dataType:"json",             
                         success:function(data){
@@ -561,7 +562,7 @@
         function getAgeData(){
           $.ajax({
             type:"GET",
-            url:"../../api/common/c_age_read_api.php",
+            url:serverSrc+"api/common/c_age_read_api.php",
             dataType:"json",
             async:false,
             success:showData_age,
@@ -586,7 +587,7 @@
         function getMemberType(){
           $.ajax({
             type:"GET",
-            url:"../../api/common/c_memberType_read_api.php",
+            url:serverSrc+"api/common/c_memberType_read_api.php",
             dataType:"json",
             async:false,
             success:showData_memberType,
@@ -682,7 +683,7 @@
             //傳遞formdata至後端api
             $.ajax({
                 type:"POST", 
-                url:"../../api/common/c_member_imgUpload_api.php",
+                url:serverSrc+"api/common/c_member_imgUpload_api.php",
                 data: formData,
                 dataType: "json",
                 cache: false,
@@ -718,7 +719,7 @@
         function getOrderState(){
             $.ajax({
                 type:"GET",
-                url:"../../api/back/orderState/b_orderState_read_api.php",
+                url:serverSrc+"api/back/orderState/b_orderState_read_api.php",
                 dataType:"json",
                 async:false,
                 success:function(data){
@@ -742,7 +743,7 @@
 
             $.ajax({
                 type:"POST",
-                url:"../../api/back/order/b_order_read_api_single.php",
+                url:serverSrc+"api/back/order/b_order_read_api_single.php",
                 data: JSON.stringify(dataJSON),   
                 dataType:"json",             
                 success:showdata_orderData,
@@ -795,7 +796,7 @@
         function getPayData(){
             $.ajax({
                 type:"GET",
-                url:"../../api/back/pay/b_pay_read_api.php",
+                url:serverSrc+"api/back/pay/b_pay_read_api.php",
                 dataType:"json",
                 success: function(data){
                     data.data.forEach(function(item){
@@ -811,7 +812,7 @@
         function getDeliveryData(){
             $.ajax({
                 type:"GET",
-                url:"../../api/back/delivery/b_delivery_read_api.php",
+                url:serverSrc+"api/back/delivery/b_delivery_read_api.php",
                 dataType:"json",
                 success: function(data){
                     data.data.forEach(function(item){
@@ -829,7 +830,7 @@
             dataJSON["PoNo"] = poNo;
             $.ajax({
                 type:"POST",
-                url:"../../api/back/orderItem/b_orderItem_read_api_single.php",
+                url:serverSrc+"api/back/orderItem/b_orderItem_read_api_single.php",
                 data: JSON.stringify(dataJSON),   
                 dataType:"json",   
                 async:false,          
@@ -845,7 +846,7 @@
         function getProductData(){
             $.ajax({
                 type:"GET",
-                url:"../../api/front/product/f_product_read_api.php",
+                url:serverSrc+"api/front/product/f_product_read_api.php",
                 dataType:"json",
                 async:false,
                 success: function(data){

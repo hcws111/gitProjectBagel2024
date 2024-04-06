@@ -223,8 +223,9 @@
     <script src="../../js//jquery-3.7.1.min.js"></script>
     <script src="../../js/cookieManager.js"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="js/path.js"></script>
     <script>
-         var productImgFolder = "../../upload/images/product/";    
+         var productImgFolder = serverSrc+"upload/images/product/";    
          var mapCart = new Map(); // 購物車
          var mapProduct = new Map();  
          var mapOrderItemIdx = new Map();
@@ -449,7 +450,7 @@
                 // //傳遞至後端
                 $.ajax({
                     type: "POST",
-                    url: "../../api/back/order/b_order_create_api.php",
+                    url: serverSrc+"api/back/order/b_order_create_api.php",
                     data: JSON.stringify(dataJSON),                    
                     dataType:"json",
                     success: showdata_orderCreate,
@@ -592,7 +593,7 @@
         function getProductData(){
             $.ajax({
                 type:"GET",
-                url:"../../api/front/product/f_product_read_api.php",
+                url:serverSrc+"api/front/product/f_product_read_api.php",
                 // url:"../../js/product.json",
                 dataType:"json",
                 async:false,
@@ -755,7 +756,7 @@
         function getPayData(){
             $.ajax({
                 type:"GET",
-                url:"../../api/back/pay/b_pay_read_api.php",
+                url:serverSrc+"api/back/pay/b_pay_read_api.php",
                 dataType:"json",
                 success: showdata_pay,
                 error:function(){
@@ -774,7 +775,7 @@
         function getDeliveryData(){
             $.ajax({
                 type:"GET",
-                url:"../../api/back/delivery/b_delivery_read_api.php",
+                url:serverSrc+"api/back/delivery/b_delivery_read_api.php",
                 dataType:"json",
                 success: showdata_delivery,
                 error:function(){
@@ -830,7 +831,7 @@
           
             $.ajax({
                 type:"POST",
-                url:"../../api/back/cart/b_cart_create_update_api.php",
+                url:serverSrc+"api/back/cart/b_cart_create_update_api.php",
                 data: JSON.stringify(dataJSON),   
                 dataType:"json",             
                 success:function(data){
@@ -876,7 +877,7 @@
           
                 $.ajax({
                     type:"POST",
-                    url:"../../api/back/orderItem/b_orderItem_create_api.php",
+                    url:serverSrc+"api/back/orderItem/b_orderItem_create_api.php",
                     data: JSON.stringify(dataJSON),   
                     dataType:"json",   
                     async:false,        
@@ -896,7 +897,7 @@
         function getMemberType(){
           $.ajax({
             type:"GET",
-            url:"../../api/common/c_memberType_read_api.php",
+            url:serverSrc+"api/common/c_memberType_read_api.php",
             dataType:"json",
             async:false,
             success:function(data){
