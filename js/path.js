@@ -1,1 +1,1 @@
-var apiFolder = "https://hcws111.000webhostapp.com/";
+var serverSrc = "https://hcws111.000webhostapp.com/";

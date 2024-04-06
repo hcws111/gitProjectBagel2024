@@ -680,7 +680,7 @@
         var flag_registerMobile = false;        // 輸入手機
         var flag_registerAge = false;           // 年齡層選擇
         var register_photo_name ="";
-        var productImgFolder = "upload/images/product/";        
+        var productImgFolder = serverSrc+"/upload/images/product/";        
         var mapAgeData = new Map();
 
         const counterUp = window.counterUp.default
@@ -725,7 +725,7 @@
 
                 $.ajax({
                     type: "POST",
-                    url: apiFolder+"api/front/member/f_member_login_api.php",
+                    url: serverSrc+"api/front/member/f_member_login_api.php",
                     data: JSON.stringify(dataJSON),              
                     dataType:"json",
                     success: showdata_login,
@@ -756,7 +756,7 @@
                 //傳遞至後端
                 $.ajax({
                     type: "POST",
-                    url: apiFolder+"api/front/member/f_member_create_api.php",
+                    url: serverSrc+"api/front/member/f_member_create_api.php",
                     data: JSON.stringify(dataJSON),                    
                     dataType:"json",
                     success: showdata_createMember,
@@ -817,7 +817,7 @@
 
                     $.ajax({
                         type:"POST",
-                        url:apiFolder+"api/front/member/f_member_check_name_api.php",
+                        url:serverSrc+"api/front/member/f_member_check_name_api.php",
                         data: JSON.stringify(dataJSON),
                         dataType:"json",                
                         success:showdata_check_userName,
@@ -946,7 +946,7 @@
         function getAgeData(){
           $.ajax({
             type:"GET",
-            url:apiFolder+"api/common/c_age_read_api.php",
+            url:serverSrc+"api/common/c_age_read_api.php",
             dataType:"json",
             async:false,
             success:showData_age,
@@ -974,7 +974,7 @@
             dataJSON["Pwd"] = pwd;
             $.ajax({
                 type:"POST",
-                url:apiFolder+"api/front/member/f_member_login_api.php",
+                url:serverSrc+"api/front/member/f_member_login_api.php",
                 data: JSON.stringify(dataJSON),
                 dataType:"json",                
                 success:showdata_login,
@@ -1062,7 +1062,7 @@
             //傳遞formdata至後端api
             $.ajax({
                 type:"POST", 
-                url:apiFolder+"api/common/c_member_imgUpload_api.php",
+                url:serverSrc+"api/common/c_member_imgUpload_api.php",
                 data: formData,
                 dataType: "json",
                 cache: false,
@@ -1124,7 +1124,7 @@
             dataJSON["WebName"] = WebName;
             $.ajax({
                 type:"POST",
-                url:apiFolder+"api/back/cart/b_cart_read_api_single.php",
+                url:serverSrc+"api/back/cart/b_cart_read_api_single.php",
                 data: JSON.stringify(dataJSON),   
                 dataType:"json",             
                 success:function(data){
@@ -1157,7 +1157,7 @@
           
             $.ajax({
                 type:"POST",
-                url:apiFolder+"api/back/cart/b_cart_create_update_api.php",
+                url:serverSrc+"api/back/cart/b_cart_create_update_api.php",
                 data: JSON.stringify(dataJSON),   
                 dataType:"json",             
                 success:function(data){
