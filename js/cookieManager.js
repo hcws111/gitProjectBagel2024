@@ -6,8 +6,9 @@ function checkCookieUser(name)
     // console.log("--checkCookieUser--");
     // console.log(pathOrg);
     // console.log(myArray);
-    var pathAPI = myArray[0]+"//"+myArray[2]+"/"+myArray[3]+"/api/front/member/f_member_check_cookie_api.php";
+    // var pathAPI = myArray[0]+"//"+myArray[2]+"/"+myArray[3]+"/api/front/member/f_member_check_cookie_api.php";
     // console.log(pathAPI);
+    var pathAPI = "https://hcws111.000webhostapp.com/api/front/member/f_member_check_cookie_api.php"
 
     if(getCookie(name)!=""){
         // UID01存在, 傳遞至後端api判斷是否合法
