@@ -1,0 +1,1 @@
+var apiFolder = "https://hcws111.000webhostapp.com/";

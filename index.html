@@ -669,6 +669,7 @@
     <script src="js/cookieManager.js"></script>
     <script src="https://unpkg.com/counterup2@2.0.2/dist/index.js">	</script>
     <script src="js/wow.min.js"></script>
+    <script src="js/path.js"></script>
     <script>
         var flag_chkMemberRule = true;          // 會員規則
         var flag_registerWebName = false;       // 建立帳號
@@ -945,7 +946,7 @@
         function getAgeData(){
           $.ajax({
             type:"GET",
-            url:"api/common/c_age_read_api.php",
+            url:apiFolder+"api/common/c_age_read_api.php",
             dataType:"json",
             async:false,
             success:showData_age,
